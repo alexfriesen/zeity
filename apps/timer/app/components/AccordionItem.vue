@@ -18,7 +18,7 @@ function handleToggle() {
 		<template #trailing>
 			<span class="inline-flex gap-2 items-center">
 				<span class="text-sm">{{ description }}</span>
-				<UIcon name="i-heroicons-chevron-down" class="transform transition-transform duration-200"
+				<UIcon name="i-lucide-chevron-down" class="transform transition-transform duration-200"
 					:class="{ 'rotate-0': open, '-rotate-180': !open }" />
 			</span>
 		</template>

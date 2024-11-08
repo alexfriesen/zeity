@@ -45,8 +45,8 @@ function openDetails() {
 
 <template>
     <div class="relative mx-2 mb-2">
-        <div v-if="isStarted" class="rounded-md bg-gray-200 dark:bg-gray-500 shadow">
-            <UButton type="button" variant="ghost" color="gray" class="w-full" @mouseup="openDetails">
+        <div v-if="isStarted" class="rounded-md bg-neutral-200 dark:bg-neutral-500 shadow">
+            <UButton type="button" variant="ghost" color="neutral" class="w-full" @mouseup="openDetails">
                 <div class="flex items-center">
                     <p class="font-mono font-light text-4xl">
                         <span class="">{{ runningDuration }}</span>

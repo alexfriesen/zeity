@@ -41,13 +41,21 @@ function getGroupKey(date: DateLike): string {
     return formatDate(toStartOfDay(date), language.value);
 }
 
+const detailOpen = ref(false);
 function openDetail(time: Time) {
     currentDetail.value = time;
+    detailOpen.value = true;
 }
 </script>
 
 <template>
     <div class="page">
+        <UDrawer v-model:open="detailOpen">
+            <UButton label="Open" color="neutral" variant="subtle" trailing-icon="i-lucide-chevron-up" />
+            <template #content>
+                {{ currentDetail?.id }}
+            </template>
+        </UDrawer>
         <section class="main">
             <Accordion v-for="group in groups" :key="group.label" class="mb-4">
                 <AccordionItem class="m-1" :label="group.label"
@@ -57,13 +65,13 @@ function openDetail(time: Time) {
                             openDetail(time)">
 
                         <div>
-                            <span class="text-xs text-gray-400 dark:text-gray-500">
+                            <span class="text-xs text-neutral-400 dark:text-neutral-500">
                                 {{ time.notes || 'Add Notes' }}
                             </span>
                         </div>
 
                         <div class="duration">
-                            <span class="text-md text-gray-700 dark:text-gray-200">
+                            <span class="font-sans text-md text-neutral-700 dark:text-neutral-200">
                                 {{ formatDuration(timeDiff(time.end, time.start)) }}
                             </span>
                         </div>

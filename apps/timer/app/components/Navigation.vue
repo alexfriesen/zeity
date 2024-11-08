@@ -1,8 +1,8 @@
 <template>
     <div :class="$attrs.class">
-        <UVerticalNavigation :links="verticalMenu" class="hidden md:block m-4" />
-        <UHorizontalNavigation :links="horizontalMenu" class="md:hidden justify-evenly"
-            :ui="{ icon: { base: 'h-8 w-8' } }" />
+        <UNavigationMenu orientation="vertical" :items="verticalMenu" highlight class="hidden md:block m-4" />
+        <UNavigationMenu orientation="horizontal" :items="horizontalMenu" highlight class="md:hidden justify-evenly"
+            :ui="{ linkLeadingIcon: 'size-8' }" />
     </div>
 </template>
 
@@ -12,27 +12,27 @@ const verticalMenu = [
     {
         label: 'Timer',
         to: '/',
-        icon: 'i-heroicons-clock',
+        icon: 'i-lucide-clock',
     },
     // {
     //     label: 'Projects',
     //     to: '/projects',
-    //     icon: 'i-heroicons-inbox-stack',
+    //     icon: 'i-lucide-list-todo',
     // },
     // {
     //     label: 'Tags',
     //     to: '/tags',
-    //     icon: 'i-heroicons-tag',
+    //     icon: 'i-lucide-tag',
     // },
     // {
     //     label: 'Reports',
     //     to: '/reports',
-    //     icon: 'i-heroicons-chart-pie',
+    //     icon: 'i-lucide-chart-pie',
     // },
     {
         label: 'Settings',
         to: '/settings',
-        icon: 'i-heroicons-cog-8-tooth',
+        icon: 'i-lucide-settings',
     },
 
 ];
@@ -40,12 +40,12 @@ const horizontalMenu = [
     {
         label: 'Timer',
         to: '/',
-        icon: 'i-heroicons-clock',
+        icon: 'i-lucide-clock',
     },
     {
         label: 'Settings',
         to: '/settings',
-        icon: 'i-heroicons-cog-8-tooth',
+        icon: 'i-lucide-settings',
     },
 ];
 

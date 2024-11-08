@@ -10,6 +10,9 @@
 </template>
 
 <style>
+@import "tailwindcss";
+@import "@nuxt/ui";
+
 html,
 body {
   height: 100%;

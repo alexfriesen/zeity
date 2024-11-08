@@ -10,8 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.12",
     "@nuxt/image": "^1.8.1",
-    "@nuxt/ui": "^2.19.2",
+    "@nuxt/ui": "next",
     "@pinia/nuxt": "^0.7.0",
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",

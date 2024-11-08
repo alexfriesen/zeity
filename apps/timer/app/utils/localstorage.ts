@@ -1,0 +1,22 @@
+const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
+
+export const useLocalStorage = () => ({
+  getItem: function <T>(key: string): T | null {
+    const raw = localStorage?.getItem(key);
+    try {
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  },
+  setItem: function (key: string, value: unknown) {
+    const raw = JSON.stringify(value);
+    localStorage?.setItem(key, raw);
+  },
+  removeItem: function (key: string) {
+    localStorage?.removeItem(key);
+  },
+});
+
+export default useLocalStorage;

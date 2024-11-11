@@ -44,7 +44,7 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
 });
 
 const runningDuration = computed(() => {
-    const time = currentTime?.value;
+    const time = state?.value as Schema;
     if (!time) return '00:00:00';
 
     const start = time?.start;
@@ -123,12 +123,14 @@ function isTimeValue(value: Time | DraftTime | Schema): value is Time {
 <template>
     <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
-        <template #body>
-            <div class="m-4">
-                <div class="text-center">
+        <template #header>
+            <div class="text-center">
+                <span class="text-lg font-mono font-medium tracking-wide">
                     {{ runningDuration }}
-                </div>
+                </span>
             </div>
+        </template>
+        <template #body>
             <UForm :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
                 <UFormField label="start" name="start">
                     <UInput v-model="state.start" type="text" class="w-full" />

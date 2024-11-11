@@ -1,11 +1,10 @@
 export interface Time {
-	id: string;
+  id: string;
 
-	start: string;
-	end: string;
+  start: string;
+  end: string;
 
-	tags: string[];
-	notes: string;
+  notes: string;
 }
 
 export type DraftTime = Omit<Time, 'id' | 'end'>;

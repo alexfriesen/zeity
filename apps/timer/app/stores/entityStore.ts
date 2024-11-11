@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
 
+interface EntitiesMap<T> {
+  [id: string]: T;
+}
+
 interface EntityStoreState<T> {
-  entities: Record<string, T>;
+  entities: EntitiesMap<T>;
   ids: string[];
 }
 
@@ -15,7 +19,7 @@ export function useEntityStore<T extends { id: string }>(name: string) {
     return {
       upsertMany(entities: T[]) {
         for (const entity of entities) {
-          const id = (entity as any).id;
+          const id = entity.id;
           if (!id) {
             console.warn('entity must have an id', entity);
             continue;
@@ -45,8 +49,20 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       },
 
       remove(id: string) {
-        delete state.value.entities[id];
-        state.value.ids = state.value.ids.filter((i) => i !== id);
+        const updatedState = {
+          ids: state.value.ids.filter((i) => i !== id),
+          entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>(
+            (acc, entity) => {
+              if (entity.id !== id) {
+                acc[entity.id] = entity;
+              }
+              return acc;
+            },
+            {}
+          ),
+        };
+
+        state.value = updatedState;
       },
 
       getById(id: string) {

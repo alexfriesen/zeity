@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const timeDetail = useTimeDetail();
+function draftNew() {
+    const now = new Date().toISOString();
+    timeDetail.open({ id: 'new', start: now, end: now, notes: '' });
+}
 </script>
 
 <template>
@@ -12,7 +17,7 @@
                     </a>
                 </div>
                 <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-                    <UButton square class="rounded-full" icon="i-lucide-plus" variant="outline">
+                    <UButton square class="rounded-full" icon="i-lucide-plus" variant="outline" @click="draftNew">
                         <span class="sr-only">Add Time</span>
                     </UButton>
                 </div>

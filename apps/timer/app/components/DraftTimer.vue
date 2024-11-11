@@ -2,6 +2,10 @@
 import { formatDuration, timeDiff } from '@timer/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
+const {
+    open: openDetails,
+} = useTimeDetail();
+
 const store = useTimerStore();
 const { draft, isStarted } = storeToRefs(store);
 
@@ -37,16 +41,13 @@ watch(isStarted, (value) => {
         clearInterval(interval);
     }
 });
-
-function openDetails() {
-    //TODO: open details
-}
 </script>
 
 <template>
     <div class="relative mx-2 mb-2">
         <div v-if="isStarted" class="rounded-md bg-neutral-200 dark:bg-neutral-500 shadow">
-            <UButton type="button" variant="ghost" color="neutral" class="w-full" @mouseup="openDetails">
+            <UButton type="button" variant="ghost" color="neutral" class="w-full"
+                @mouseup="() => draft && openDetails(draft)">
                 <div class="flex items-center">
                     <p class="font-mono font-light text-4xl">
                         <span class="">{{ runningDuration }}</span>

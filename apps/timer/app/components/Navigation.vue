@@ -1,7 +1,7 @@
 <template>
     <div :class="$attrs.class">
-        <UNavigationMenu orientation="vertical" :items="verticalMenu" highlight class="hidden md:block m-4" />
-        <UNavigationMenu orientation="horizontal" :items="horizontalMenu" highlight class="md:hidden justify-evenly"
+        <UNavigationMenu orientation="vertical" :items="verticalMenu" class="hidden md:block m-4" />
+        <UNavigationMenu orientation="horizontal" :items="horizontalMenu" class="md:hidden justify-evenly"
             :ui="{ linkLeadingIcon: 'size-8' }" />
     </div>
 </template>

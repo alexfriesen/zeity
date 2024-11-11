@@ -25,7 +25,6 @@ export const useTimerStore = defineStore('timer', () => {
     updateDraft({
       start: new Date().toISOString(),
       notes: '',
-      tags: [],
       ...time,
     });
   }
@@ -58,10 +57,10 @@ export const useTimerStore = defineStore('timer', () => {
   }
 
   function loadDraftFromLocalStorage() {
-    const draft = useLocalStorage().getItem<DraftTime>('draft');
-    if (!draft) return;
+    const value = useLocalStorage().getItem<DraftTime>('draft');
+    if (!value) return;
 
-    updateDraft(draft);
+    updateDraft(value);
   }
 
   loadTimesFromLocalStorage();
@@ -82,6 +81,7 @@ export const useTimerStore = defineStore('timer', () => {
     updateDraft,
     startDraft,
     stopDraft,
+    resetDraft,
     toggleDraft,
 
     loading,

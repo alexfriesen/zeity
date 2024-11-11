@@ -1,10 +1,16 @@
 <script setup lang="ts">
-const open = defineModel<boolean>({ default: true });
+import type { Time } from '~/types/time';
+import { formatDuration, timeDiff } from '@zeity/utils/date';
+
 defineProps({
 	class: String,
 	label: String,
 	description: String,
+	times: Array as PropType<Time[]>,
 });
+const timeDetail = useTimeDetail();
+
+const open = defineModel<boolean>({ default: true });
 
 function handleToggle() {
 	open.value = !open.value;
@@ -25,6 +31,21 @@ function handleToggle() {
 	</UButton>
 
 	<div v-if="open" :class="$props.class">
-		<slot />
+		<UButton v-for="time in times" :key="time.id" type="button" variant="ghost"
+			class="w-full flex items-center justify-between gap-2" @click="() =>
+				timeDetail.open(time)">
+
+			<div>
+				<span class="text-xs text-neutral-400 dark:text-neutral-500">
+					{{ time.notes || 'Add Notes' }}
+				</span>
+			</div>
+
+			<div class="duration">
+				<span class="font-sans text-md text-neutral-700 dark:text-neutral-200">
+					{{ formatDuration(timeDiff(time.end, time.start)) }}
+				</span>
+			</div>
+		</UButton>
 	</div>
 </template>

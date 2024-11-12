@@ -10,11 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     'nuxt-time',
-    // '@nuxtseo/module',
   ],
-  // pinia: {
-  //   storesDirs: ['./stores/**', './custom-folder/stores/**'],
-  // },
   icon: {
     clientBundle: {
       scan: true,

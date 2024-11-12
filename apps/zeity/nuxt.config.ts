@@ -16,7 +16,24 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-time',
     'nuxt-security',
+    '@vite-pwa/nuxt',
   ],
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      id: 'zeity-pwa',
+      start_url: '/',
+      name: 'zeity Time Tracker',
+      short_name: 'zeity',
+      description: 'A simple timer app',
+      theme_color: '#000000',
+      display: 'standalone',
+      lang: 'en',
+    },
+    devOptions: {
+      enabled: true,
+    },
+  },
   i18n: {
     strategy: 'no_prefix',
     detectBrowserLanguage: false,

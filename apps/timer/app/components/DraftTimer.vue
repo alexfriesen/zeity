@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useIntervalFn } from '@vueuse/core'
+
 import { formatDuration, timeDiff } from '@timer/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
@@ -18,27 +20,25 @@ const runningDuration = computed(() => {
 });
 
 const now = ref(new Date());
-let interval: ReturnType<typeof setInterval> | undefined;
 
-function startInterval() {
+const { pause, resume } = useIntervalFn(() => {
     now.value = new Date();
-    interval = setInterval(() => {
-        now.value = new Date();
-    }, 1000);
-}
+}, 1000, { immediateCallback: true });
+
 onMounted(() => {
     if (isStarted.value) {
-        startInterval();
+        resume();
     }
 });
 onUnmounted(() => {
-    clearInterval(interval);
+    pause();
 });
+
 watch(isStarted, (value) => {
     if (value === true) {
-        startInterval();
+        resume();
     } else {
-        clearInterval(interval);
+        pause();
     }
 });
 </script>
@@ -46,13 +46,11 @@ watch(isStarted, (value) => {
 <template>
     <div class="relative mx-2 mb-2">
         <div v-if="isStarted" class="rounded-md bg-neutral-200 dark:bg-neutral-500 shadow">
-            <UButton type="button" variant="ghost" color="neutral" class="w-full"
+            <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
                 @mouseup="() => draft && openDetails(draft)">
-                <div class="flex items-center">
-                    <p class="font-mono font-light text-4xl">
-                        <span class="">{{ runningDuration }}</span>
-                    </p>
-                </div>
+                <span class="font-mono text-2xl tabular-nums lining-nums tracking-wide">
+                    {{ runningDuration }}
+                </span>
             </UButton>
         </div>
 

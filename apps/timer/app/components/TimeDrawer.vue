@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useIntervalFn } from '@vueuse/core'
 import { nanoid } from 'nanoid';
 import z from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
@@ -14,21 +15,17 @@ const {
     close,
 } = useTimeDetail();
 
-const isDraft = computed(() => currentTime?.value && !('end' in currentTime.value));
+const isDraft = computed(() => isDraftValue(currentTime?.value));
 
 const now = ref(new Date());
-let interval: ReturnType<typeof setInterval> | undefined;
-
-function startInterval() {
-    console.log('startInterval');
+const { pause, resume } = useIntervalFn(() => {
     now.value = new Date();
-    interval = setInterval(() => {
-        now.value = new Date();
-    }, 1000);
-}
+}, 1000, { immediateCallback: true });
+
 onUnmounted(() => {
-    clearInterval(interval);
+    pause();
 });
+
 watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     if (isOpen && currentTime.value) {
         const clone = structuredClone(toRaw(currentTime.value));
@@ -37,15 +34,14 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     }
 
     if (isDraft && isOpen) {
-        startInterval();
+        resume();
     } else {
-        clearInterval(interval);
+        pause();
     }
 });
 
 const runningDuration = computed(() => {
     const time = state?.value as Schema;
-    if (!time) return '00:00:00';
 
     const start = time?.start;
     const end = isTimeValue(time) ? time.end : now.value;
@@ -56,7 +52,6 @@ const runningDuration = computed(() => {
 
     return '00:00:00';
 });
-
 
 const timeSchema = z.object({
     id: z.string(),
@@ -84,8 +79,6 @@ function handleTimeDetailOpenUpdate(state: boolean) {
 function handleSave(event: FormSubmitEvent<Schema>) {
     const time = event.data
 
-    if (!time) return;
-
     if (isDraftValue(time)) {
         store.updateDraft(time);
     }
@@ -105,18 +98,18 @@ function handleRemove() {
         store.resetDraft();
     }
 
-    if (currentTime.value && 'id' in currentTime.value) {
+    if (isTimeValue(currentTime?.value)) {
         store.times.remove(currentTime.value.id);
     }
 
     close();
 }
 
-function isDraftValue(value: Time | DraftTime | Schema): value is DraftTime {
-    return !('end' in value);
+function isDraftValue(value: Time | DraftTime | Schema | undefined | null): value is DraftTime {
+    return !!value && !('end' in value);
 }
-function isTimeValue(value: Time | DraftTime | Schema): value is Time {
-    return 'end' in value;
+function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): value is Time {
+    return !!value && 'end' in value;
 }
 </script>
 
@@ -125,22 +118,22 @@ function isTimeValue(value: Time | DraftTime | Schema): value is Time {
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
             <div class="text-center">
-                <span class="text-lg font-mono font-medium tracking-wide">
+                <span class="font-mono text-2xl tabular-nums lining-nums tracking-wide">
                     {{ runningDuration }}
                 </span>
             </div>
         </template>
         <template #body>
             <UForm :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
-                <UFormField label="start" name="start">
+                <UFormField label="Start time" name="start">
                     <UInput v-model="state.start" type="text" class="w-full" />
                 </UFormField>
 
-                <UFormField v-if="isTimeValue(state) && state.end" label="end" name="end">
+                <UFormField v-if="isTimeValue(state) && state.end" label="End time" name="end">
                     <UInput v-model="state.end" type="text" class="w-full" />
                 </UFormField>
 
-                <UFormField label="notes" name="notes">
+                <UFormField label="Notes" name="notes">
                     <UTextarea v-model="state.notes" type="text" class="w-full" autoresize />
                 </UFormField>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sortDatesDescending } from '@timer/utils/date';
+import { sortDatesDescending } from '@zeity/utils/date';
 
 import { useTimerStore } from '~/stores/timerStore';
 
@@ -13,7 +13,7 @@ const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDe
 
         <TimeDrawer />
 
-        <section class="main">
+        <section class="main my-3">
             <TimeList class="mb-4" :times="sortedTimes" />
         </section>
 

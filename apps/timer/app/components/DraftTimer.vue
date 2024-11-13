@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
 
-import { formatDuration, timeDiff } from '@timer/utils/date';
+import { formatDuration, timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
 const {

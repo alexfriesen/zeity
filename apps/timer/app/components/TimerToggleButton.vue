@@ -19,6 +19,7 @@ function onToggle() {
 </script>
 
 <template>
-    <UButton square size="xl" class="rounded-full shadow-lg" :disabled="loading" :aria-label="tooltipText" :icon="icon"
+    <UButton
+        square size="xl" class="rounded-full shadow-lg" :disabled="loading" :aria-label="tooltipText" :icon="icon"
         @click="onToggle" />
 </template>

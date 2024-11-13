@@ -46,7 +46,8 @@ watch(isStarted, (value) => {
 <template>
     <div class="relative mx-2 mb-2">
         <div v-if="isStarted" class="rounded-md bg-neutral-200 dark:bg-neutral-500 shadow">
-            <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
+            <UButton
+                type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
                 @mouseup="() => draft && openDetails(draft)">
                 <span class="font-mono text-2xl tabular-nums lining-nums tracking-wide">
                     {{ runningDuration }}

@@ -1,12 +1,12 @@
 <template>
     <div class="layout">
-        <Header class="header" />
+        <AppHeader class="header" />
 
         <main class="main">
             <slot />
         </main>
 
-        <Navigation class="nav" />
+        <AppNavigation class="nav" />
     </div>
 </template>
 

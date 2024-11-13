@@ -41,10 +41,12 @@ function getGroupKey(date: DateLike): string {
 </script>
 
 <template>
-	<div v-for="group in groups" :key="group.label"
+	<div
+		v-for="group in groups" :key="group.label"
 		class="w-full flex flex-col overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md"
 		:class="$props.class">
-		<TimeListItem class="m-1" :label="group.label" :description="formatDuration(calculateDiffSum(group.data))"
-			:times="group.data" />
+		<TimeListItem
+			:label="group.label" :description="formatDuration(calculateDiffSum(group.data))"
+			:times="group.data" class="m-1" />
 	</div>
 </template>

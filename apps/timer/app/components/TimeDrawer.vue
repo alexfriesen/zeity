@@ -114,7 +114,8 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
 </script>
 
 <template>
-    <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
+    <UDrawer
+        :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
             <div class="text-center">

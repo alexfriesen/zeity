@@ -2,7 +2,7 @@
 
 Zeity is a productivity app focused on time tracking, managing projects and getting things done.
 
-This project is in an early stage of development.
+*This project is in an early stage of development.*
 
 ## Getting Started
 
@@ -19,21 +19,21 @@ To start the development server, run:
 pnpm dev
 ```
 
-Building the Application
+### Building the Application
 To build the application for production, run:
 
 ```sh
 pnpm build
 ```
 
-Linting
+### Linting
 To lint the code, run:
 
 ```sh
 pnpm lint
 ```
 
-Testing
+### Testing
 To run the tests, run:
 
 ```sh

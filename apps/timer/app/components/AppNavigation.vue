@@ -1,13 +1,21 @@
 <template>
     <div :class="$attrs.class">
         <UNavigationMenu orientation="vertical" :items="verticalMenu" class="hidden md:block m-4" />
-        <UNavigationMenu
-orientation="horizontal" :items="horizontalMenu" class="md:hidden justify-evenly"
+        <UNavigationMenu orientation="horizontal" :items="horizontalMenu" class="md:hidden justify-evenly"
             :ui="{ linkLeadingIcon: 'size-8' }" />
+
+        <USlideover v-model:open="openMoreMenu" title="Menu" side="right">
+            <template #body>
+                <div class="flex flex-col justify-center h-full">
+                    <UNavigationMenu orientation="vertical" :items="verticalMenu" class="full-w" />
+                </div>
+            </template>
+        </USlideover>
     </div>
 </template>
 
 <script setup lang="ts">
+const openMoreMenu = ref(false);
 
 const verticalMenu = [
     {
@@ -15,11 +23,11 @@ const verticalMenu = [
         to: '/',
         icon: 'i-lucide-clock',
     },
-    // {
-    //     label: 'Projects',
-    //     to: '/projects',
-    //     icon: 'i-lucide-list-todo',
-    // },
+    {
+        label: 'Projects',
+        to: '/projects',
+        icon: 'i-lucide-list-todo',
+    },
     // {
     //     label: 'Tags',
     //     to: '/tags',
@@ -48,6 +56,13 @@ const horizontalMenu = [
         to: '/settings',
         icon: 'i-lucide-settings',
     },
+    {
+        label: 'More',
+        icon: 'i-lucide-more-horizontal',
+        onSelect: () => {
+            openMoreMenu.value = true;
+        },
+    }
 ];
 
 </script>

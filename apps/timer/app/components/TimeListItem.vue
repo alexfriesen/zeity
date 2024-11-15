@@ -3,10 +3,22 @@ import type { Time } from '~/types/time';
 import { formatDuration, timeDiff } from '@zeity/utils/date';
 
 defineProps({
-	class: String,
-	label: String,
-	description: String,
-	times: Array as PropType<Time[]>,
+	class: {
+		type: String,
+		default: '',
+	},
+	label: {
+		type: String,
+		required: true,
+	},
+	description: {
+		type: String,
+		default: '',
+	},
+	times: {
+		type: Array as PropType<Time[]>,
+		default: () => [],
+	},
 });
 const timeDetail = useTimeDetail();
 

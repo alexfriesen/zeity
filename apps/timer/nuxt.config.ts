@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     },
     provider: 'iconify',
   },
+  ssr: false,
   routeRules: {
     '/': {
       ssr: false,

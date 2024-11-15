@@ -34,7 +34,7 @@ export const useTimerStore = defineStore('timer', () => {
 
     const time = { id: nanoid(), end: new Date().toISOString(), ...draftValue };
 
-    timesStore().addEntity(time);
+    timesStore().insert(time);
     resetDraft();
 
     return time;

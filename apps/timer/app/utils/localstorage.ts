@@ -2,8 +2,8 @@ const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
 export const useLocalStorage = () => ({
   getItem: function <T>(key: string): T | null {
-    const raw = localStorage?.getItem(key);
     try {
+      const raw = localStorage?.getItem(key);
       return raw ? JSON.parse(raw) : null;
     } catch (e) {
       console.error(e);

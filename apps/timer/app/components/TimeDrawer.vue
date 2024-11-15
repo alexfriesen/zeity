@@ -54,7 +54,7 @@ const runningDuration = computed(() => {
 });
 
 const timeSchema = z.object({
-    id: z.string(),
+    id: z.string().default(nanoid()),
     start: z.coerce.string().date(),
     end: z.coerce.string().date(),
     notes: z.string().default(''),
@@ -84,7 +84,7 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            store.times.addEntity({ ...time, id: nanoid() });
+            store.times.insert({ ...time, id: nanoid() });
         } else {
             store.times.update(time.id, time);
         }
@@ -114,8 +114,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
 </script>
 
 <template>
-    <UDrawer
-        :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
+    <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
             <div class="text-center">

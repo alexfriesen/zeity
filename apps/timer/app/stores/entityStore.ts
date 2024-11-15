@@ -16,63 +16,84 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       ids: [],
     });
 
-    return {
-      upsertMany(entities: T[]) {
-        for (const entity of entities) {
-          const id = entity.id;
-          if (!id) {
-            console.warn('entity must have an id', entity);
-            continue;
-          }
-          state.value.entities[id] = entity;
-          if (!state.value.ids.includes(id)) {
-            state.value.ids.push(id);
-          }
-        }
-      },
-
-      addEntity(entity: T) {
-        if (!entity?.['id']) {
-          console.warn('entity must have an id', entity);
-          return;
-        }
+    function upsertMany(entities: T[]) {
+      for (const entity of entities) {
         const id = entity.id;
-        state.value.entities[id] = entity;
-        state.value.ids.push(id);
-      },
-
-      update(id: string, data: Partial<T>) {
-        const current = state.value.entities[id];
-        if (current) {
-          state.value.entities[id] = { ...current, ...data };
+        if (!id) {
+          console.warn('entity must have an id', entity);
+          continue;
         }
-      },
+        state.value.entities[id] = entity;
+        if (!state.value.ids.includes(id)) {
+          state.value.ids.push(id);
+        }
+      }
+    }
 
-      remove(id: string) {
-        const updatedState = {
-          ids: state.value.ids.filter((i) => i !== id),
-          entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>(
-            (acc, entity) => {
-              if (entity.id !== id) {
-                acc[entity.id] = entity;
-              }
-              return acc;
-            },
-            {}
-          ),
-        };
+    function insert(entity: T) {
+      if (!entity?.['id']) {
+        console.warn('entity must have an id', entity);
+        return;
+      }
+      const id = entity.id;
+      state.value.entities[id] = entity;
+      state.value.ids.push(id);
+    }
 
-        state.value = updatedState;
-      },
+    function update(id: string, data: Partial<T>) {
+      const current = state.value.entities[id];
+      if (current) {
+        state.value.entities[id] = { ...current, ...data };
+      }
+    }
 
-      getById(id: string) {
-        return computed(() => state.value.entities[id]);
-      },
-      getAll() {
-        return computed(() =>
-          state.value.ids.map((id) => state.value.entities[id]!)
-        );
-      },
+    function remove(id: string) {
+      const updatedState = {
+        ids: state.value.ids.filter((i) => i !== id),
+        entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>(
+          (acc, entity) => {
+            if (entity.id !== id) {
+              acc[entity.id] = entity;
+            }
+            return acc;
+          },
+          {}
+        ),
+      };
+
+      state.value = updatedState;
+    }
+
+    function getById(id: string) {
+      return computed(() => state.value.entities[id]);
+    }
+    function getAll() {
+      return computed(() =>
+        state.value.ids.map((id) => state.value.entities[id]!)
+      );
+    }
+    function find(predicate: (entity: T) => boolean) {
+      return computed(() =>
+        state.value.ids.reduce<T[]>((acc, id) => {
+          const entity = state.value.entities[id];
+          if (entity && predicate(entity)) {
+            acc.push(entity);
+          }
+          return acc;
+        }, [])
+      );
+    }
+
+    return {
+      upsertMany,
+
+      insert,
+      update,
+      remove,
+
+      getById,
+      getAll,
+      find,
     };
   });
 }

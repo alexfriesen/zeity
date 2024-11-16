@@ -1,16 +1,44 @@
 <script setup lang="ts">
-import { useSettingsStore } from '~/stores/settingsStore';
+const store = useSettingsStore();
+const { language, themePrimary } = storeToRefs(store);
 
-const store = storeToRefs(useSettingsStore());
+const themePrimaryOptions = [
+    {
+        label: 'Sky',
+        value: 'sky'
+    },
+    {
+        label: 'Amber',
+        value: 'amber'
+    },
+    {
+        label: 'Emerald',
+        value: 'emerald'
+    },
+    {
+        label: 'Indigo',
+        value: 'indigo'
+    },
+    {
+        label: 'Rose',
+        value: 'rose'
+    }
+];
+
 </script>
 
 <template>
     <UContainer class="my-3">
         <h2>Settings</h2>
 
-        <div class="flex justify-between">
+        <label class="flex justify-between">
             <span>Language:</span>
-            <span>{{ store.language }}</span>
-        </div>
+            <span>{{ language }}</span>
+        </label>
+
+        <label class="flex justify-between">
+            <span>Theme:</span>
+            <USelect v-model="themePrimary" :items="themePrimaryOptions" class="min-w-32 " />
+        </label>
     </UContainer>
 </template>

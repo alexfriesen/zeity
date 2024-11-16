@@ -2,7 +2,7 @@
 import type { Time } from '~/types/time';
 import { formatDuration, timeDiff } from '@zeity/utils/date';
 
-defineProps({
+const props = defineProps({
 	class: {
 		type: String,
 		default: '',
@@ -19,10 +19,18 @@ defineProps({
 		type: Array as PropType<Time[]>,
 		default: () => [],
 	},
+	defaultOpen: {
+		type: Boolean,
+		default: false,
+	},
 });
 const timeDetail = useTimeDetail();
 
 const open = defineModel<boolean>({ default: true });
+
+if (props.defaultOpen !== undefined) {
+	open.value = props.defaultOpen;
+}
 
 function handleToggle() {
 	open.value = !open.value;

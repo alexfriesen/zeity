@@ -14,7 +14,7 @@ const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDe
         <TimeDrawer />
 
         <section class="main my-3">
-            <TimeList class="mb-4" :times="sortedTimes" />
+            <TimeList default-open class="mb-4" :times="sortedTimes" />
         </section>
 
         <footer class="footer">

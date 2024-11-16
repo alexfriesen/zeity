@@ -2,10 +2,11 @@
 import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay, type DateLike, } from '@zeity/utils/date';
 import type { Time } from '~/types/time';
 
-const props = defineProps<{
-	class: string;
-	times: Time[];
-}>();
+const props = defineProps({
+	class: { type: String, default: '' },
+	times: { type: Array as PropType<Time[]>, required: true },
+	defaultOpen: { type: Boolean, default: false },
+});
 const times = toRef(props, 'times');
 
 const { language } = storeToRefs(useSettingsStore());
@@ -41,12 +42,11 @@ function getGroupKey(date: DateLike): string {
 </script>
 
 <template>
-	<div
-		v-for="group in groups" :key="group.label"
-		class="w-full flex flex-col overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md"
-		:class="$props.class">
-		<TimeListItem
-			:label="group.label" :description="formatDuration(calculateDiffSum(group.data))"
-			:times="group.data" class="m-1" />
+	<div class="flex flex-col gap-3" :class="$props.class">
+		<div v-for="group in groups" :key="group.label"
+			class="w-full flex flex-col gap-4 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md">
+			<TimeListItem :default-open="defaultOpen" :label="group.label"
+				:description="formatDuration(calculateDiffSum(group.data))" :times="group.data" class="m-1" />
+		</div>
 	</div>
 </template>

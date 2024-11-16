@@ -22,8 +22,12 @@ function handleSubmit(data: Project) {
 
 <template>
     <UContainer as="section" class="page my-3">
-        <h2>Create Project</h2>
+        <UBreadcrumb :items="[{ label: 'Projects', to: '/projects' }]" />
+        <h2
+            class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+            Create Project
+        </h2>
 
-        <ProjectForm :data="data" @submit="handleSubmit" />
+        <ProjectForm :data="data" class="mt-4" @submit="handleSubmit" />
     </UContainer>
 </template>

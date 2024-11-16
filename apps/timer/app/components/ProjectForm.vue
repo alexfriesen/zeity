@@ -3,16 +3,14 @@ import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import type { FormSubmitEvent } from '@nuxt/ui';
 
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED, PROJECT_STATUSES } from '~/types/project';
+import { PROJECT_STATUS_ACTIVE, PROJECT_STATUSES } from '~/types/project';
 
-const statusItems = [
-    { value: PROJECT_STATUS_ACTIVE, label: 'Active' },
-    { value: PROJECT_STATUS_CLOSED, label: 'Closed' },
-];
-
-const props = defineProps<{
-    data?: Schema;
-}>();
+const props = defineProps({
+    data: {
+        type: Object as PropType<Schema>,
+        required: true
+    },
+});
 const emits = defineEmits(['submit']);
 
 const schema = z.object({
@@ -29,9 +27,9 @@ const state = ref<Partial<Schema>>({
     notes: '',
 });
 
-watch(() => props.data, (data) => {
+watch(props.data, (data) => {
     if (data) {
-        state.value = data;
+        state.value = Object.assign({}, data);
     }
 }, { immediate: true });
 
@@ -46,7 +44,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
             <UInput v-model="state.name" class="w-full" />
         </UFormField>
         <UFormField label="Status" name="status">
-            <USelect v-model="state.status" :items="statusItems" class="w-full" />
+            <USelect v-model="state.status" :items="projectStatusFormItems" class="w-full" />
         </UFormField>
         <UFormField label="Notes" name="notes">
             <UTextarea v-model="state.notes" class="w-full" autoresize />

@@ -21,24 +21,32 @@ const filteredProjects = computed(() => {
 
 <template>
     <UContainer class="page my-3">
-        <section class="flex flex-col md:flex-row justify-between">
-            <h2>Projects</h2>
-        </section>
-        <USeparator orientation="horizontal" class="mb-6" />
+        <h2
+            class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+            Projects
+        </h2>
+
         <section class="flex flex-col my-3 space-y-4">
-            <div class="flex flex-col md:flex-row justify-between">
+            <div class="flex items-center justify-between gap-4">
                 <USwitch v-model="showClosed" label="Closed Projects" />
 
-                <UButton to="/projects/create">Create Project</UButton>
+                <UButton to="/projects/create" icon="i-lucide-plus">Create Project</UButton>
             </div>
 
             <UCard v-for="project in filteredProjects" :key="project.id">
                 <template #header>
-                    <h3>{{ project.name }}</h3>
+                    <div class="flex justify-between gap-4 flex-shrink">
+                        <NuxtLink :to="`/projects/${encodeURIComponent(project.id)}`" class="truncate">
+                            {{ project.name }}
+                        </NuxtLink>
+
+                        <UBadge :color="project.status === PROJECT_STATUS_ACTIVE ? 'primary' : 'error'">
+                            {{ project.status }}
+                        </UBadge>
+                    </div>
                 </template>
-                <template #body>
-                    <p>{{ project.id }}</p>
-                </template>
+
+                <p class="line-clamp-3">{{ project.notes }}</p>
             </UCard>
         </section>
     </UContainer>

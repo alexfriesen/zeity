@@ -17,6 +17,9 @@ export default defineNuxtConfig({
     },
     provider: 'iconify',
   },
+  colorMode: {
+    storageKey: 'zeity-color-mode',
+  },
   ssr: false,
   routeRules: {
     '/': {

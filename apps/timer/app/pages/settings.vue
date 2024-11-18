@@ -101,7 +101,7 @@ const themePrimaryOptions = [
 
                 <UButtonGroup v-model="themeMode" class="min-w-60">
                     <UButton v-for="mode in themeModes" :key="mode.label" :label="mode.label" :icon="mode.icon"
-                        :color="themeMode === mode.value ? 'primary' : 'neutral'" variant="subtle" block class="w-full"
+                        :color="themeMode === mode.value ? 'primary' : 'neutral'" variant="outline" block class="w-full"
                         @click="themeMode = mode.value" />
                 </UButtonGroup>
             </label>

@@ -44,7 +44,7 @@ function getGroupKey(date: DateLike): string {
 <template>
 	<div class="flex flex-col gap-3" :class="$props.class">
 		<div v-for="group in groups" :key="group.label"
-			class="w-full flex flex-col gap-4 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md">
+			class="w-full flex flex-col overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md">
 			<TimeListItem :default-open="defaultOpen" :label="group.label"
 				:description="formatDuration(calculateDiffSum(group.data))" :times="group.data" class="m-1" />
 		</div>

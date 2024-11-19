@@ -52,9 +52,9 @@ const horizontalMenu = [
         icon: 'i-lucide-clock',
     },
     {
-        label: 'Settings',
-        to: '/settings',
-        icon: 'i-lucide-settings',
+        label: 'Projects',
+        to: '/projects',
+        icon: 'i-lucide-list-todo',
     },
     {
         label: 'More',

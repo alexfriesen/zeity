@@ -49,7 +49,7 @@ function updateStatus(status: ProjectStatus | string) {
 
         <div class="my-4">
             <h3
-                class="mb-2 inline-block text-lg sm:text-xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                class="mb-2 inline-block text-md sm:text-lg font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                 Times
             </h3>
             <div>

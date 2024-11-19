@@ -163,10 +163,10 @@ describe("timerStore", () => {
     });
 });
 
-function mockDraftLocalstorage(data: any) {
+function mockDraftLocalstorage(data: unknown) {
     vi.spyOn(localStorage, 'getItem').mockImplementation((key) => key === 'draft' ? JSON.stringify(data) : null);
 }
 
-function mockTimesLocalstorage(data: any) {
+function mockTimesLocalstorage(data: unknown) {
     vi.spyOn(localStorage, 'getItem').mockImplementation((key) => key === 'times' ? JSON.stringify(data) : null);
 }

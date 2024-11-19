@@ -17,17 +17,17 @@ export const useProjectStore = defineStore('project', () => {
     const projects = useLocalStorage().getItem<Project[]>('projects');
     if (!projects) return;
 
-    projectsStore().upsertMany(projects);
+    projectsStore.upsertMany(projects);
   }
 
   loadProjectsFromLocalStorage();
 
-  watch(projectsStore().getAll(), (value) => {
+  watch(projectsStore.getAll(), (value) => {
     useLocalStorage().setItem('projects', value);
   });
 
   return {
-    projects: projectsStore(),
+    projects: projectsStore,
 
     loading,
     setLoading,

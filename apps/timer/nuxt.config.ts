@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   modules: [
+    '@nuxt/test-utils/module',
     '@nuxt/eslint',
     '@pinia/nuxt',
     '@nuxt/ui',

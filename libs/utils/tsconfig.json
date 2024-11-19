@@ -7,7 +7,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "vitest"]
+    "types": ["node", "vitest"],
+    "lib": ["es2023"],
   },
   "files": [],
   "include": []

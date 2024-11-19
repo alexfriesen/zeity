@@ -20,7 +20,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const themeMode = computed({
     get() {
-      return useColorMode().value
+      return useColorMode().value || defaultSettings.themeMode;
     },
     set(option) {
       useColorMode().preference = option

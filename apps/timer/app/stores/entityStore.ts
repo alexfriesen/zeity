@@ -10,17 +10,26 @@ interface EntityStoreState<T> {
 }
 
 export function useEntityStore<T extends { id: string }>(name: string) {
-  return defineStore(name, () => {
+  return defineStore(name, function () {
     const state = ref<EntityStoreState<T>>({
       entities: {},
       ids: [],
     });
 
+    function getState() {
+      return state.value;
+    }
+    function setState(data: EntityStoreState<T>) {
+      state.value = data;
+    }
+
     function upsertMany(entities: T[]) {
       for (const entity of entities) {
         const id = entity.id;
         if (!id) {
-          console.warn('entity must have an id', entity);
+          if (import.meta.env.DEV) {
+            console.warn('entity must have an id', entity);
+          }
           continue;
         }
         state.value.entities[id] = entity;
@@ -32,7 +41,9 @@ export function useEntityStore<T extends { id: string }>(name: string) {
 
     function insert(entity: T) {
       if (!entity?.['id']) {
-        console.warn('entity must have an id', entity);
+        if (import.meta.env.DEV) {
+          console.warn('entity must have an id', entity);
+        }
         return;
       }
       const id = entity.id;
@@ -85,6 +96,9 @@ export function useEntityStore<T extends { id: string }>(name: string) {
     }
 
     return {
+      getState,
+      setState,
+
       upsertMany,
 
       insert,
@@ -95,5 +109,5 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       getAll,
       find,
     };
-  });
+  })();
 }

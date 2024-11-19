@@ -6,8 +6,18 @@ import type { FormSubmitEvent } from '@nuxt/ui';
 
 import { formatDuration, timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '~/types/time';
+import { PROJECT_STATUS_ACTIVE } from '~/types/project';
 
-const store = useTimerStore();
+const projectStore = useProjectStore();
+const activeProjects = projectStore.projects.find((project) => project.status === PROJECT_STATUS_ACTIVE);
+const projectItems = computed(() => {
+    return activeProjects.value.map((project) => ({
+        label: project.name,
+        value: project.id,
+    }));
+})
+
+const timeStore = useTimerStore();
 
 const {
     currentTime,
@@ -58,8 +68,10 @@ const timeSchema = z.object({
     start: z.coerce.string().date(),
     end: z.coerce.string().date(),
     notes: z.string().default(''),
+
+    projectId: z.string().optional(),
 });
-const draftSchema = timeSchema.pick({ start: true, notes: true });
+const draftSchema = timeSchema.pick({ start: true, notes: true, projectId: true });
 const schema = z.union([timeSchema, draftSchema]);
 
 type Schema = z.output<typeof schema>
@@ -68,6 +80,8 @@ const state = ref<Partial<Schema>>({
     start: undefined,
     end: undefined,
     notes: '',
+
+    projectId: undefined,
 });
 
 function handleTimeDetailOpenUpdate(state: boolean) {
@@ -80,13 +94,13 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     const time = event.data
 
     if (isDraftValue(time)) {
-        store.updateDraft(time);
+        timeStore.updateDraft(time);
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            store.times.insert({ ...time, id: nanoid() });
+            timeStore.times.insert({ ...time, id: nanoid() });
         } else {
-            store.times.update(time.id, time);
+            timeStore.times.update(time.id, time);
         }
     }
 
@@ -95,11 +109,11 @@ function handleSave(event: FormSubmitEvent<Schema>) {
 
 function handleRemove() {
     if (isDraft.value) {
-        store.resetDraft();
+        timeStore.resetDraft();
     }
 
     if (isTimeValue(currentTime?.value)) {
-        store.times.remove(currentTime.value.id);
+        timeStore.times.remove(currentTime.value.id);
     }
 
     close();
@@ -131,6 +145,10 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
 
                 <UFormField v-if="isTimeValue(state) && state.end" label="End time" name="end">
                     <UInput v-model="state.end" type="text" class="w-full" />
+                </UFormField>
+
+                <UFormField label="Project" name="projectId">
+                    <USelect v-model="state.projectId" :items="projectItems" class="w-full" />
                 </UFormField>
 
                 <UFormField label="Notes" name="notes">

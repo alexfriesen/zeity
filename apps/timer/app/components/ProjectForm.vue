@@ -44,7 +44,12 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
             <UInput v-model="state.name" class="w-full" />
         </UFormField>
         <UFormField label="Status" name="status">
-            <USelect v-model="state.status" :items="projectStatusFormItems" class="w-full" />
+            <USelect v-model="state.status" :items="projectStatusFormItems" class="w-full">
+                <template #leading="{ modelValue, ui }">
+                    <UChip v-if="modelValue" inset standalone :color="getProjectStatusColor(state.status!)"
+                        :size="ui.itemLeadingChipSize()" :class="ui.itemLeadingChip()" />
+                </template>
+            </USelect>
         </UFormField>
         <UFormField label="Notes" name="notes">
             <UTextarea v-model="state.notes" class="w-full" autoresize />

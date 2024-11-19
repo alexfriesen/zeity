@@ -39,7 +39,12 @@ function updateStatus(status: ProjectStatus | string) {
         </h2>
 
         <div class="my-4 flex justify-between gap-2">
-            <USelect v-model="project.status" :items="projectStatusFormItems" @update:model-value="updateStatus" />
+            <USelect v-model="project.status" :items="projectStatusFormItems" @update:model-value="updateStatus">
+                <template #leading="{ modelValue, ui }">
+                    <UChip v-if="modelValue" inset standalone :color="getProjectStatusColor(project.status)"
+                        :size="ui.itemLeadingChipSize()" :class="ui.itemLeadingChip()" />
+                </template>
+            </USelect>
             <UButton :to="`/projects/${encodeURIComponent(projectId)}/edit`">Edit</UButton>
         </div>
 

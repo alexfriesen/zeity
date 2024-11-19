@@ -36,11 +36,12 @@ const filteredProjects = computed(() => {
             <UCard v-for="project in filteredProjects" :key="project.id">
                 <template #header>
                     <div class="flex justify-between gap-4 flex-shrink">
-                        <NuxtLink :to="`/projects/${encodeURIComponent(project.id)}`" class="truncate">
+                        <UButton :to="`/projects/${encodeURIComponent(project.id)}`" variant="link"
+                            class="block truncate">
                             {{ project.name }}
-                        </NuxtLink>
+                        </UButton>
 
-                        <UBadge :color="project.status === PROJECT_STATUS_ACTIVE ? 'primary' : 'error'">
+                        <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">
                             {{ project.status }}
                         </UBadge>
                     </div>

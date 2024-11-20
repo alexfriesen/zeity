@@ -180,7 +180,8 @@ function isSelected(item: DateFilter) {
         <div class="scrollable flex gap-2 py-2">
             <UButton v-for="value of dateFilters" :key=value.key :label="value.label || value.text"
                 :icon="isSelected(value) ? 'i-lucide-check' : undefined"
-                :color="isSelected(value) ? 'primary' : 'neutral'" @click="onChangeDateFilter(value)" />
+                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"
+                @click="onChangeDateFilter(value)" />
         </div>
         <form v-show="selectedFilterKey === 'custom'">
             <UForm :schema="schema" :state="state">

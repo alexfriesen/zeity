@@ -28,8 +28,8 @@ function isSelected(item: Project) {
         <div class="scrollable flex gap-2 py-2">
             <UButton v-for="value of activeProjects" :key=value.id :label="value.name"
                 :icon="isSelected(value) ? 'i-lucide-check' : undefined"
-                :color="isSelected(value) ? 'primary' : 'neutral'" class="truncate max-w-48"
-                @click="toggleSelected(value)" />
+                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle"
+                class="rounded-full truncate max-w-48" @click="toggleSelected(value)" />
         </div>
     </section>
 </template>

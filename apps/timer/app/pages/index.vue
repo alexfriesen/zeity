@@ -9,7 +9,7 @@ const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDe
 </script>
 
 <template>
-    <div class="page">
+    <UContainer class="page">
 
         <TimeDrawer />
 
@@ -21,7 +21,7 @@ const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDe
             <DraftTimer />
         </footer>
 
-    </div>
+    </UContainer>
 </template>
 
 <style scoped>

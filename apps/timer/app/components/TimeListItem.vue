@@ -43,7 +43,7 @@ function handleToggle() {
 		<span class="text-left break-all line-clamp-1">{{ label }}</span>
 		<template #trailing>
 			<span class="inline-flex gap-2 items-center">
-				<span class="text-sm">{{ description }}</span>
+				<span class="tabular-nums text-sm">{{ description }}</span>
 				<UIcon name="i-lucide-chevron-down" class="transform transition-transform duration-200"
 					:class="{ 'rotate-0': open, '-rotate-180': !open }" />
 			</span>
@@ -62,7 +62,7 @@ function handleToggle() {
 			</div>
 
 			<div class="duration">
-				<span class="font-sans text-md text-neutral-700 dark:text-neutral-200">
+				<span class="tabular-nums font-sans text-md text-neutral-700 dark:text-neutral-200">
 					{{ formatDuration(timeDiff(time.end, time.start)) }}
 				</span>
 			</div>

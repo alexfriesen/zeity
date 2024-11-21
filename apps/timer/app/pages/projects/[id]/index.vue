@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { calculateDiffSum, formatDuration } from '@zeity/utils/date';
 import type { ProjectStatus } from '~/types/project';
 
 const route = useRoute()
@@ -17,6 +18,7 @@ const projectId = route.params.id as string;
 
 const project = projectStore.projects.getById(projectId)
 const projectTimes = timeStore.times.find((time) => time.projectId === projectId)
+const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 
 if (!project) {
     router.push('/projects')
@@ -53,10 +55,16 @@ function updateStatus(status: ProjectStatus | string) {
         <USeparator orientation="horizontal" class="my-4" />
 
         <div class="my-4">
-            <h3
-                class="mb-2 inline-block text-md sm:text-lg font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                Times
-            </h3>
+            <div class="flex justify-between">
+                <h3
+                    class="mb-2 inline-block text-md sm:text-lg font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                    Times
+                </h3>
+                <p class="font-sans text-md tabular-nums">
+                    <span class="text-sm text-neutral-400 dark:text-neutral-500">Total:</span>
+                    {{ projectTimeSum }}
+                </p>
+            </div>
             <div>
                 <TimeList :times="projectTimes" />
             </div>

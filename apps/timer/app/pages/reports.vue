@@ -4,10 +4,7 @@ import { calculateDiffSum, formatDuration, parseDate } from '@zeity/utils/date';
 
 import type { DateRange } from '~/types/date-filter';
 
-const dateFilter = ref<DateRange>({
-    start: new Date(),
-    end: new Date(),
-});
+const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
 
 const timeStore = useTimerStore();
@@ -21,8 +18,8 @@ const filteredTimes = computed(() => {
     if (dFilter && dFilter.start && dFilter.end) {
         times = times.filter(
             (item) =>
-                isAfter(parseDate(item.start), dFilter.start as Date) &&
-                isBefore(parseDate(item.end), dFilter.end as Date),
+                isAfter(parseDate(item.start), parseDate(dFilter.start)) &&
+                isBefore(parseDate(item.end), parseDate(dFilter.end)),
         );
     }
 

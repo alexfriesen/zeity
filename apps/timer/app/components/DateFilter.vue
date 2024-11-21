@@ -24,26 +24,27 @@ import { DateFilterType, type DateFilter, type DateRange } from '~/types/date-fi
 
 const settings = useSettingsStore();
 
-const selectedFilterKey = ref('today');
+const selectedFilterKey = ref();
 const dateFilters = getDateFilters();
 
 const model = defineModel<Schema | DateRange>();
 
 const schema = z.object({
-    start: z.string().date().default(new Date().toISOString()),
-    end: z.string().date().default(new Date().toISOString()),
+    start: z.string().date(),
+    end: z.string().date(),
 });
 type Schema = z.output<typeof schema>
-const state = ref<Schema>({
-    start: new Date().toISOString(),
-    end: new Date().toISOString(),
-});
+const state = ref<Schema>();
 
 watch(state, (state) => {
     model.value = state;
 });
 
-function onChangeDateFilter(event?: DateFilter) {
+onMounted(() => {
+    changeDateFilter(dateFilters[0]);
+});
+
+function changeDateFilter(event?: DateFilter) {
     switch (event?.type) {
         case 'day':
             setDateRangeDay(setDay(new Date(), event.value));
@@ -61,6 +62,7 @@ function onChangeDateFilter(event?: DateFilter) {
             setDateRangeYear(setYear(new Date(), event.value));
             break;
     }
+
     selectedFilterKey.value = event?.key || 'custom';
 }
 
@@ -170,21 +172,21 @@ function getYearFilters(count: number) {
     return filters;
 }
 
-function isSelected(item: DateFilter) {
-    return item.key === selectedFilterKey.value;
+function isSelected(filter: DateFilter) {
+    return filter.key === selectedFilterKey.value;
 }
 </script>
 
 <template>
     <section class="flex flex-col gap-4 my-3">
         <div class="scrollable flex gap-2 py-2">
-            <UButton v-for="value of dateFilters" :key=value.key :label="value.label || value.text"
-                :icon="isSelected(value) ? 'i-lucide-check' : undefined"
-                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"
-                @click="onChangeDateFilter(value)" />
+            <UButton v-for="filter of dateFilters" :key=filter.key :label="filter.label || filter.text"
+                :icon="isSelected(filter) ? 'i-lucide-check' : undefined"
+                :color="isSelected(filter) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"
+                @click="changeDateFilter(filter)" />
         </div>
         <form v-show="selectedFilterKey === 'custom'">
-            <UForm :schema="schema" :state="state">
+            <UForm v-if="state" :schema="schema" :state="state">
                 <UFormField label="Start" name="start">
                     <UInput v-model="state.start" type="date" class="w-full" />
                 </UFormField>

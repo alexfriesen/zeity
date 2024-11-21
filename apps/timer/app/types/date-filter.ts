@@ -1,5 +1,3 @@
-import type { DateLike } from "@zeity/utils/date";
-
 export enum DateFilterType {
     Custom = 'custom',
     Day = 'day',
@@ -17,6 +15,6 @@ export interface DateFilter {
 }
 
 export interface DateRange {
-    start: DateLike;
-    end: DateLike;
+    start: string;
+    end: string;
 }

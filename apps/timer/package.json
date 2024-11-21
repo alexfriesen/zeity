@@ -25,7 +25,7 @@
     "@nuxt/ui": "next",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^15.11.6",
-    "nuxt": "^3.14.159",
+    "nuxt": "^3.14.1592",
     "nuxt-time": "^1.0.2"
   }
 }

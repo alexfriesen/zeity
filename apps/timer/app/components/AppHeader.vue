@@ -7,7 +7,7 @@ function timeNew() {
 </script>
 
 <template>
-    <header :class="$attrs.class" class="min-h-full">
+    <header :class="$attrs.class">
         <nav
             class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50 border-neutral-200 dark:border-neutral-800 min-h-12">
             <div class="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-16">

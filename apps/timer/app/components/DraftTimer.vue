@@ -44,7 +44,7 @@ watch(isStarted, (value) => {
 </script>
 
 <template>
-    <div class="relative mx-2 mb-2">
+    <div class="relative mx-2">
         <div v-if="isStarted" class="rounded-md shadow bg-[var(--ui-bg-accented)]">
             <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
                 @mouseup="() => draft && openDetails(draft)">

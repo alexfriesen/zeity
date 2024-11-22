@@ -16,11 +16,11 @@ function timeNew() {
 </script>
 
 <template>
-    <UContainer class="page">
+    <UContainer class="flex flex-col h-full">
 
         <TimeDrawer />
 
-        <section class="main my-3">
+        <section class="grow p-3 my-3">
             <TimeList default-open class="mb-4" :times="sortedTimes" />
 
             <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
@@ -31,32 +31,9 @@ function timeNew() {
                 ]" />
         </section>
 
-        <footer class="footer">
+        <footer class="sticky bottom-3">
             <DraftTimer />
         </footer>
 
     </UContainer>
 </template>
-
-<style scoped>
-.page {
-    height: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    grid-template-areas:
-        'main'
-        'footer';
-}
-
-.main {
-    grid-area: main;
-    overflow: auto;
-    padding: 0.725rem;
-}
-
-.footer {
-    grid-area: footer;
-}
-</style>

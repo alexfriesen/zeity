@@ -13,6 +13,7 @@ const projectStatusFilter = computed(() => {
 
 const store = useProjectStore();
 const projects = store.projects.getAll();
+const isEmpty = computed(() => projects.value.length === 0);
 
 const filteredProjects = computed(() => {
     return projects.value.filter((project) => projectStatusFilter.value.includes(project.status));
@@ -49,6 +50,12 @@ const filteredProjects = computed(() => {
 
                 <p class="line-clamp-3">{{ project.notes }}</p>
             </UCard>
+
+            <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
+                description="It looks like you don't have any projects yet. Why not create one?" icon="i-lucide-info"
+                :ui="{ icon: 'size-20' }" :actions="[
+                    { label: 'Create Project', icon: 'i-lucide-plus', to: '/projects/create' }
+                ]" />
         </section>
     </UContainer>
 </template>

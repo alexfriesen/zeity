@@ -56,13 +56,13 @@ function handleToggle() {
 				timeDetail.open(time)">
 
 			<div>
-				<span class="text-xs text-neutral-400 dark:text-neutral-500">
+				<span class="text-xs text-[var(--ui-text-dimmed)]">
 					{{ time.notes || 'Add Notes' }}
 				</span>
 			</div>
 
 			<div class="duration">
-				<span class="tabular-nums font-sans text-md text-neutral-700 dark:text-neutral-200">
+				<span class="tabular-nums font-sans text-md text-[var(--ui-text-toned)]">
 					{{ formatDuration(timeDiff(time.end, time.start)) }}
 				</span>
 			</div>

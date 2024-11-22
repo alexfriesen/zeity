@@ -37,7 +37,7 @@ const filteredProjects = computed(() => {
                 <template #header>
                     <div class="flex justify-between gap-4 flex-shrink">
                         <UButton :to="`/projects/${encodeURIComponent(project.id)}`" variant="link"
-                            class="block truncate">
+                            class="block -mx-3 truncate">
                             {{ project.name }}
                         </UButton>
 

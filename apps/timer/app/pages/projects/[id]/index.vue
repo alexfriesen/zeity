@@ -61,7 +61,7 @@ function updateStatus(status: ProjectStatus | string) {
                     Times
                 </h3>
                 <p class="font-sans text-md tabular-nums">
-                    <span class="text-sm text-neutral-400 dark:text-neutral-500">Total:</span>
+                    <span class="text-sm text-[var(--ui-text-muted)]">Total:</span>
                     {{ projectTimeSum }}
                 </p>
             </div>

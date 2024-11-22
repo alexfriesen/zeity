@@ -36,12 +36,15 @@ export const useTimerStore = defineStore('timer', () => {
 
     return draft;
   }
-  function startDraft(time?: Partial<DraftTime>) {
-    setDraft({
+  function startDraft(time?: Partial<DraftTime>): DraftTime {
+    const newDraft = {
       start: new Date().toISOString(),
       notes: '',
       ...time,
-    });
+    }
+    setDraft(newDraft);
+
+    return newDraft;
   }
   function stopDraft() {
     const draftValue = draft.value;
@@ -54,7 +57,7 @@ export const useTimerStore = defineStore('timer', () => {
 
     return time;
   }
-  function toggleDraft() {
+  function toggleDraft(): DraftTime | Time | undefined {
     if (!draft.value) {
       return startDraft();
     }

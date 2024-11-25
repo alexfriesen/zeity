@@ -33,11 +33,11 @@ const verticalMenu = [
     //     to: '/tags',
     //     icon: 'i-lucide-tag',
     // },
-    // {
-    //     label: 'Reports',
-    //     to: '/reports',
-    //     icon: 'i-lucide-chart-pie',
-    // },
+    {
+        label: 'Reports',
+        to: '/reports',
+        icon: 'i-lucide-chart-pie',
+    },
     {
         label: 'Settings',
         to: '/settings',

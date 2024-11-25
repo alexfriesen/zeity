@@ -16,7 +16,7 @@ definePageMeta({
 
 const projectId = route.params.id as string;
 
-const project = projectStore.getProjectById(projectId)
+const project = projectStore.findProjectById(projectId)
 const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 

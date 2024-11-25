@@ -18,31 +18,40 @@
 const openMoreMenu = ref(false);
 
 const verticalMenu = [
-    {
-        label: 'Timer',
-        to: '/',
-        icon: 'i-lucide-clock',
-    },
-    {
-        label: 'Projects',
-        to: '/projects',
-        icon: 'i-lucide-list-todo',
-    },
-    // {
-    //     label: 'Tags',
-    //     to: '/tags',
-    //     icon: 'i-lucide-tag',
-    // },
-    {
-        label: 'Reports',
-        to: '/reports',
-        icon: 'i-lucide-chart-pie',
-    },
-    {
-        label: 'Settings',
-        to: '/settings',
-        icon: 'i-lucide-settings',
-    },
+    [
+        {
+            label: 'Timer',
+            to: '/',
+            icon: 'i-lucide-clock',
+        },
+        {
+            label: 'Projects',
+            to: '/projects',
+            icon: 'i-lucide-list-todo',
+        },
+        // {
+        //     label: 'Tags',
+        //     to: '/tags',
+        //     icon: 'i-lucide-tag',
+        // },
+        {
+            label: 'Reports',
+            to: '/reports',
+            icon: 'i-lucide-chart-pie',
+        },
+        {
+            label: 'Settings',
+            to: '/settings',
+            icon: 'i-lucide-settings',
+        },
+    ],
+    [
+        {
+            label: 'About',
+            to: '/about',
+            icon: 'i-lucide-info',
+        },
+    ]
 
 ];
 const horizontalMenu = [

@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck",
     "build": "nuxt build",
     "build:gh": "nuxt generate --prefix github_pages",
     "dev": "nuxt dev",
@@ -28,6 +29,7 @@
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^15.11.6",
     "nuxt": "^3.14.1592",
-    "nuxt-time": "^1.0.2"
+    "nuxt-time": "^1.0.2",
+    "vue-tsc": "^2.1.10"
   }
 }

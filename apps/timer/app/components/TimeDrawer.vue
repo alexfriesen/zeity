@@ -11,10 +11,14 @@ import { PROJECT_STATUS_ACTIVE } from '~/types/project';
 const projectStore = useProjectStore();
 const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
-    return activeProjects.value.map((project) => ({
+    const projectOptions = activeProjects.value.map((project) => ({
         label: project.name,
         value: project.id,
     }));
+    return [
+        { label: 'No project', value: undefined },
+        ...projectOptions
+    ];
 })
 
 const timeStore = useTimerStore();
@@ -75,14 +79,7 @@ const draftSchema = timeSchema.pick({ start: true, notes: true, projectId: true 
 const schema = z.union([timeSchema, draftSchema]);
 
 type Schema = z.output<typeof schema>
-const state = ref<Partial<Schema>>({
-    id: undefined,
-    start: undefined,
-    end: undefined,
-    notes: '',
-
-    projectId: undefined,
-});
+const state = ref<Schema>();
 
 function handleTimeDetailOpenUpdate(state: boolean) {
     if (!state) {
@@ -138,7 +135,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
             </div>
         </template>
         <template #body>
-            <UForm :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
+            <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
                 <UFormField label="Start time" name="start">
                     <UInput v-model="state.start" type="text" class="w-full" />
                 </UFormField>
@@ -148,7 +145,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                 </UFormField>
 
                 <UFormField label="Project" name="projectId">
-                    <USelect v-model="state.projectId" :items="projectItems" class="w-full" />
+                    <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full" />
                 </UFormField>
 
                 <UFormField label="Notes" name="notes">

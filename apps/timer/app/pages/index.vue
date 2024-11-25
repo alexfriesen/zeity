@@ -5,7 +5,7 @@ import { useTimerStore } from '~/stores/timerStore';
 
 const timeDetail = useTimeDetail();
 const timerStore = useTimerStore();
-const allTimes = timerStore.times.getAll();
+const allTimes = timerStore.getAllTimes();
 const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
 const isEmpty = computed(() => allTimes.value.length < 1);
 

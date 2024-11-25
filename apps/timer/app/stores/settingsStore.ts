@@ -60,7 +60,9 @@ export const useSettingsStore = defineStore('settings', () => {
     updateSettings(settings);
   }
 
-  loadFromLocalStorage();
+  onMounted(() => {
+    loadFromLocalStorage();
+  });
 
   watch(settings, (value) => {
     useLocalStorage().setItem('settings', value);
@@ -78,5 +80,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     themePrimary,
     setThemePrimary,
+
+    loadFromLocalStorage,
   };
 });

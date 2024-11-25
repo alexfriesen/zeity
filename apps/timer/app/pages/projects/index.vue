@@ -12,7 +12,7 @@ const projectStatusFilter = computed(() => {
 });
 
 const store = useProjectStore();
-const projects = store.projects.getAll();
+const projects = store.getAllProjects();
 const isEmpty = computed(() => projects.value.length === 0);
 
 const filteredProjects = computed(() => {

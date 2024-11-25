@@ -21,11 +21,9 @@ export default defineNuxtConfig({
   colorMode: {
     storageKey: 'zeity-color-mode',
   },
-  ssr: false,
   routeRules: {
-    '/': {
-      ssr: false,
-      prerender: false,
+    '**': {
+      prerender: true,
     },
   },
   devtools: { enabled: true },

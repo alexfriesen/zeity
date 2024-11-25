@@ -9,7 +9,7 @@ const projectFilters = ref<string[]>([]);
 
 const timeStore = useTimerStore();
 
-const allTimes = timeStore.times.getAll();
+const allTimes = timeStore.getAllTimes();
 const filteredTimes = computed(() => {
     const dFilter = dateFilter.value;
     const pFilters = projectFilters.value;

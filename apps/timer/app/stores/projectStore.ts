@@ -13,23 +13,36 @@ export const useProjectStore = defineStore('project', () => {
   // Projects
   const projectsStore = useEntityStore<Project>('projects');
 
-  function loadProjectsFromLocalStorage() {
+  function loadFromLocalStorage() {
     const projects = useLocalStorage().getItem<Project[]>('projects');
     if (!projects) return;
 
     projectsStore.upsertMany(projects);
   }
 
-  loadProjectsFromLocalStorage();
+  onMounted(() => {
+    loadFromLocalStorage();
+  });
 
   watch(projectsStore.getAll(), (value) => {
     useLocalStorage().setItem('projects', value);
   });
 
   return {
-    projects: projectsStore,
+    upsertProjects: projectsStore.upsertMany,
+
+    getAllProjects: projectsStore.getAll,
+    findProjectById: projectsStore.findById,
+    findProject: projectsStore.find,
+
+    insertProject: projectsStore.insert,
+    updateProject: projectsStore.update,
+    removeProject: projectsStore.remove,
+
 
     loading,
     setLoading,
+
+    loadFromLocalStorage,
   };
 });

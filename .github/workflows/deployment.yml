@@ -21,7 +21,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          pnpm --filter ./apps/timer/ build:gh
+          pnpm --filter ./apps/timer/ generate:gh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

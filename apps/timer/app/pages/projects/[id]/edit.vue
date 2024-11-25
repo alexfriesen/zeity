@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Project } from '~/types/project';
 
-
 const route = useRoute()
 const router = useRouter()
 const projectStore = useProjectStore()
@@ -15,10 +14,10 @@ definePageMeta({
 
 const projectId = route.params.id as string;
 
-const project = projectStore.projects.getById(projectId)
+const project = projectStore.findProjectById(projectId)
 
 function save(data: Project) {
-    projectStore.projects.update(projectId, data)
+    projectStore.updateProject(projectId, data)
 
     router.push(`/projects/${projectId}`);
 }

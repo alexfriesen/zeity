@@ -28,6 +28,8 @@ describe("useSettingsStore", () => {
             vi.spyOn(localStorage, 'getItem').mockReturnValue((JSON.stringify({ language: 'fr', themeMode: 'dark', themePrimary: 'red' })));
 
             const store = useSettingsStore();
+            store.loadFromLocalStorage();
+
             expect(store.settings).toEqual({ language: 'fr', themeMode: 'dark', themePrimary: 'red' });
         });
 

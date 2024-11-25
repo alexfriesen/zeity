@@ -16,8 +16,8 @@ definePageMeta({
 
 const projectId = route.params.id as string;
 
-const project = projectStore.projects.getById(projectId)
-const projectTimes = timeStore.times.find((time) => time.projectId === projectId)
+const project = projectStore.getProjectById(projectId)
+const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 
 if (!project) {
@@ -25,7 +25,7 @@ if (!project) {
 }
 
 function updateStatus(status: ProjectStatus | string) {
-    projectStore.projects.update(projectId, { status: status as ProjectStatus })
+    projectStore.updateProject(projectId, { status: status as ProjectStatus })
 
     router.push(`/projects/${projectId}`);
 }

@@ -108,18 +108,18 @@ describe('entityStore', () => {
         });
     });
 
-    describe('getById', () => {
+    describe('findById', () => {
         it('should get an entity by id', () => {
             const store = useEntityStore<{ id: string, name: string }>('test');
             store.insert({ id: '1', name: 'test' });
 
-            expect(store.getById('1').value).toEqual({ id: '1', name: 'test' });
+            expect(store.findById('1').value).toEqual({ id: '1', name: 'test' });
         });
 
         it('should return undefined if the entity does not exist', () => {
             const store = useEntityStore('test');
 
-            expect(store.getById('1').value).toBeUndefined();
+            expect(store.findById('1').value).toBeUndefined();
         });
     });
 

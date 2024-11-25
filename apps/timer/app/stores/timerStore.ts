@@ -81,8 +81,14 @@ export const useTimerStore = defineStore('timer', () => {
     setDraft(value);
   }
 
-  loadTimesFromLocalStorage();
-  loadDraftFromLocalStorage();
+  function loadFromLocalStorage() {
+    loadTimesFromLocalStorage();
+    loadDraftFromLocalStorage();
+  }
+
+  onMounted(() => {
+    loadFromLocalStorage();
+  });
 
   watch(draft, (value) => {
     useLocalStorage().setItem('draft', value);
@@ -92,7 +98,15 @@ export const useTimerStore = defineStore('timer', () => {
   });
 
   return {
-    times: timesStore,
+    upsertTimes: timesStore.upsertMany,
+
+    getAllTimes: timesStore.getAll,
+    findTimeById: timesStore.findById,
+    findTime: timesStore.find,
+
+    insertTime: timesStore.insert,
+    updateTime: timesStore.update,
+    removeTime: timesStore.remove,
 
     draft,
     isStarted,
@@ -104,5 +118,7 @@ export const useTimerStore = defineStore('timer', () => {
 
     loading,
     setLoading,
+
+    loadFromLocalStorage,
   };
 });

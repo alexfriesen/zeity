@@ -75,7 +75,7 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       state.value = updatedState;
     }
 
-    function getById(id: string) {
+    function findById(id: string) {
       return computed(() => state.value.entities[id]);
     }
     function getAll() {
@@ -105,8 +105,8 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       update,
       remove,
 
-      getById,
       getAll,
+      findById,
       find,
     };
   })();

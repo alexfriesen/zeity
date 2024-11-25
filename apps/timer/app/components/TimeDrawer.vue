@@ -9,7 +9,7 @@ import type { DraftTime, Time } from '~/types/time';
 import { PROJECT_STATUS_ACTIVE } from '~/types/project';
 
 const projectStore = useProjectStore();
-const activeProjects = projectStore.projects.find((project) => project.status === PROJECT_STATUS_ACTIVE);
+const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
     return activeProjects.value.map((project) => ({
         label: project.name,
@@ -98,9 +98,9 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            timeStore.times.insert({ ...time, id: nanoid() });
+            timeStore.insertTime({ ...time, id: nanoid() });
         } else {
-            timeStore.times.update(time.id, time);
+            timeStore.updateTime(time.id, time);
         }
     }
 
@@ -113,7 +113,7 @@ function handleRemove() {
     }
 
     if (isTimeValue(currentTime?.value)) {
-        timeStore.times.remove(currentTime.value.id);
+        timeStore.removeTime(currentTime.value.id);
     }
 
     close();

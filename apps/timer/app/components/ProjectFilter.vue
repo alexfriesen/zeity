@@ -4,7 +4,7 @@ import { PROJECT_STATUS_ACTIVE, type Project } from '~/types/project';
 const model = defineModel<string[]>();
 
 const store = useProjectStore();
-const projects = store.projects.getAll();
+const projects = store.getAllProjects();
 const activeProjects = computed(() => projects.value.filter((project) => project.status === PROJECT_STATUS_ACTIVE));
 
 function toggleSelected(item: Project) {

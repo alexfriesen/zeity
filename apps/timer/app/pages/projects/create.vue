@@ -14,7 +14,7 @@ const data = ref<Project>({
 });
 
 function handleSubmit(data: Project) {
-    store.projects.insert(data);
+    store.insertProject(data);
 
     router.push('/projects');
 }

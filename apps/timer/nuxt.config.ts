@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+import packageJson from '../../package.json' with { type: 'json' }
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   future: {
@@ -25,6 +28,11 @@ export default defineNuxtConfig({
     '**': {
       prerender: true,
     },
+  },
+  runtimeConfig: {
+    public: {
+      version: packageJson.version || '0.0.0',
+    }
   },
   devtools: { enabled: true },
 });

@@ -37,7 +37,7 @@ const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.val
 
 <template>
 
-    <UContainer class="my-3">
+    <UContainer class="my-3 space-y-6">
         <section>
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
@@ -49,6 +49,14 @@ const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.val
             </template>
 
             <div class="text-center text-xl font-mono">{{ timeSum }}</div>
+        </UCard>
+
+        <UCard as="section">
+            <template #header>
+                <h2>Report</h2>
+            </template>
+
+            <ReportDownload :times="filteredTimes" />
         </UCard>
     </UContainer>
 

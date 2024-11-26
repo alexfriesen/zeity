@@ -17,6 +17,11 @@
 <script setup lang="ts">
 const openMoreMenu = ref(false);
 
+const route = useRoute();
+watch(() => route.path, () => {
+    openMoreMenu.value = false;
+});
+
 const verticalMenu = [
     [
         {

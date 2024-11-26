@@ -13,13 +13,13 @@ importers:
         version: 5.0.8
     devDependencies:
       '@types/node':
-        specifier: ^22.9.3
+        specifier: 22.9.3
         version: 22.9.3
       '@vitest/coverage-v8':
         specifier: ^2.1.5
         version: 2.1.5(vitest@2.1.5(@types/node@22.9.3)(happy-dom@15.11.6)(lightningcss@1.28.2)(terser@5.36.0))
       typescript:
-        specifier: ^5.7.2
+        specifier: 5.7.2
         version: 5.7.2
       vitest:
         specifier: ^2.1.5
@@ -41,34 +41,34 @@ importers:
         version: 3.23.8
     devDependencies:
       '@iconify-json/lucide':
-        specifier: ^1.2.16
+        specifier: 1.2.16
         version: 1.2.16
       '@nuxt/eslint':
-        specifier: ^0.6.2
+        specifier: 0.6.2
         version: 0.6.2(eslint@9.15.0(jiti@2.4.0))(magicast@0.3.5)(rollup@4.27.4)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.2)(terser@5.36.0))
       '@nuxt/image':
-        specifier: ^1.8.1
+        specifier: 1.8.1
         version: 1.8.1(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.27.4)
       '@nuxt/test-utils':
-        specifier: ^3.14.4
+        specifier: 3.14.4
         version: 3.14.4(@vue/test-utils@2.4.6)(h3@1.13.0)(happy-dom@15.11.6)(magicast@0.3.5)(nitropack@2.10.4(typescript@5.7.2))(rollup@4.27.4)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.2)(terser@5.36.0))(vitest@2.1.5(@types/node@22.9.3)(happy-dom@15.11.6)(lightningcss@1.28.2)(terser@5.36.0))(vue-router@4.4.5(vue@3.5.13(typescript@5.7.2)))(vue@3.5.13(typescript@5.7.2))
       '@nuxt/ui':
         specifier: next
         version: 3.0.0-alpha.9(@babel/core@7.26.0)(@babel/parser@7.26.2)(change-case@5.4.4)(embla-carousel@8.5.1)(ioredis@5.4.1)(magicast@0.3.5)(postcss@8.4.49)(rollup@4.27.4)(svelte@5.2.3)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.2)(terser@5.36.0))(vue@3.5.13(typescript@5.7.2))
       '@vue/test-utils':
-        specifier: ^2.4.6
+        specifier: 2.4.6
         version: 2.4.6
       happy-dom:
-        specifier: ^15.11.6
+        specifier: 15.11.6
         version: 15.11.6
       nuxt:
-        specifier: ^3.14.1592
+        specifier: 3.14.1592
         version: 3.14.1592(@parcel/watcher@2.5.0)(@types/node@22.9.3)(eslint@9.15.0(jiti@2.4.0))(ioredis@5.4.1)(lightningcss@1.28.2)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.27.4)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.2)(terser@5.36.0))(vue-tsc@2.1.10(typescript@5.7.2))
       nuxt-time:
-        specifier: ^1.0.2
+        specifier: 1.0.2
         version: 1.0.2(magicast@0.3.5)(nuxt@3.14.1592(@parcel/watcher@2.5.0)(@types/node@22.9.3)(eslint@9.15.0(jiti@2.4.0))(ioredis@5.4.1)(lightningcss@1.28.2)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.27.4)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.2)(terser@5.36.0))(vue-tsc@2.1.10(typescript@5.7.2)))(rollup@4.27.4)
       vue-tsc:
-        specifier: ^2.1.10
+        specifier: 2.1.10
         version: 2.1.10(typescript@5.7.2)
 
   libs/utils:
@@ -78,16 +78,16 @@ importers:
         version: 4.1.0
     devDependencies:
       '@eslint/js':
-        specifier: ^9.15.0
+        specifier: 9.15.0
         version: 9.15.0
       eslint:
-        specifier: ^9.15.0
+        specifier: 9.15.0
         version: 9.15.0(jiti@2.4.0)
       typescript:
-        specifier: ^5.7.2
+        specifier: 5.7.2
         version: 5.7.2
       typescript-eslint:
-        specifier: ^8.15.0
+        specifier: 8.15.0
         version: 8.15.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.7.2)
 
 packages:

@@ -17,9 +17,9 @@
     "nanoid": "^5.0.8"
   },
   "devDependencies": {
-    "@types/node": "^22.9.3",
+    "@types/node": "22.9.3",
     "@vitest/coverage-v8": "^2.1.5",
-    "typescript": "^5.7.2",
+    "typescript": "5.7.2",
     "vitest": "^2.1.5"
   },
   "packageManager": "pnpm@9.13.0"

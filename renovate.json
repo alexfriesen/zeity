@@ -4,7 +4,6 @@
         "config:recommended",
         "group:allNonMajor",
         ":semanticCommitTypeAll(chore)",
-        ":pinDevDependencies",
         ":widenPeerDependencies"
     ],
     "rangeStrategy": "bump",

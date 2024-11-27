@@ -9,18 +9,12 @@ export interface DateTimeProps {
     disabled?: boolean
     class?: unknown
 }
-
-export interface InputEmits {
-    (e: 'update:modelValue', payload: string | number): void
-    (e: 'blur', event: FocusEvent): void
-    (e: 'change', event: Event): void
-}
 </script>
 
 <script setup lang="ts">
 
+const model = defineModel<string>();
 const props = defineProps<DateTimeProps>();
-const model = defineModel<string>({ default: '' });
 
 const settings = useSettingsStore();
 const datetimeValue = ref<ZonedDateTime>();
@@ -32,14 +26,11 @@ watch(model, (value) => {
     datetimeValue.value = value ? parseAbsolute(value, tz) : now(tz);
 }, { immediate: true });
 watch(datetimeValue, (value) => {
-    if (!value) {
-        return;
-    }
-    model.value = value.toAbsoluteString();
+    model.value = value ? value.toAbsoluteString() : '';
 });
 
 const ui = {
-    base: 'flex items-center gap-0.5 rounded-[calc(var(--ui-radius)*1.5)] bg-[var(--ui-bg)] transition-colors tabular-nums text-sm text-center text-[var(--ui-text-highlighted)] border-0 px-2.5 py-1.5 ring ring-inset ring-[var(--ui-border-accented)] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ui-primary)] disabled:cursor-not-allowed disabled:opacity-75',
+    base: 'flex items-center gap-0.5 rounded-[calc(var(--ui-radius)*1.5)] bg-[var(--ui-bg)] transition-colors tabular-nums text-sm text-center text-[var(--ui-text-highlighted)] border-0 px-3 py-1.25 ring ring-inset ring-[var(--ui-border-accented)] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ui-primary)] disabled:cursor-not-allowed disabled:opacity-75',
     segment: 'min-w-8 rounded p-0.5 border border-transparent focus:outline-none focus:border-[var(--ui-primary)] data-[placeholder]:text-[var(--ui-text-muted)]',
 }
 </script>

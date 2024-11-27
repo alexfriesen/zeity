@@ -144,11 +144,11 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                     <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 
-                <UFormField label="Project" name="projectId">
+                <UFormField label="Project" name="projectId" size="lg">
                     <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full" />
                 </UFormField>
 
-                <UFormField label="Notes" name="notes">
+                <UFormField label="Notes" name="notes" size="lg">
                     <UTextarea v-model="state.notes" type="text" class="w-full" autoresize />
                 </UFormField>
 

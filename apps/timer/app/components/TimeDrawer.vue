@@ -136,12 +136,12 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
         </template>
         <template #body>
             <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
-                <UFormField label="Start time" name="start">
-                    <UInput v-model="state.start" type="text" class="w-full" />
-                </UFormField>
 
-                <UFormField v-if="isTimeValue(state) && state.end" label="End time" name="end">
-                    <UInput v-model="state.end" type="text" class="w-full" />
+                <UFormField label="Start time" name="start">
+                    <DateTimeField v-model="state.start" />
+                </UFormField>
+                <UFormField label="End time" name="end">
+                    <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 
                 <UFormField label="Project" name="projectId">

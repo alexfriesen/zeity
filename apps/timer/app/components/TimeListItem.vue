@@ -52,8 +52,7 @@ function handleToggle() {
 
 	<div v-if="open" :class="$props.class">
 		<UButton v-for="time in times" :key="time.id" type="button" variant="ghost"
-			class="w-full flex items-center justify-between gap-2" @click="() =>
-				timeDetail.open(time)">
+			class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
 
 			<div>
 				<span class="text-xs text-[var(--ui-text-dimmed)]">

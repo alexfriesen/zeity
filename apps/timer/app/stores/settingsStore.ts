@@ -1,22 +1,20 @@
 import { defineStore } from 'pinia';
+import type { Locale } from '~/types/lang';
 
 interface SettingsState {
-  language: string;
+  locale: Locale;
   themeMode: string;
   themePrimary: string;
 }
 
 const defaultSettings: SettingsState = {
-  language: 'en',
+  locale: 'en',
   themeMode: 'system',
   themePrimary: 'sky',
 };
 
 export const useSettingsStore = defineStore('settings', () => {
-  const language = ref(defaultSettings.language);
-  function setLanguage(value: string) {
-    language.value = value;
-  }
+  const { locale, setLocale } = useI18n();
 
   const themeMode = computed({
     get() {
@@ -36,13 +34,13 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   const settings = computed<SettingsState>(() => ({
-    language: language.value,
+    locale: locale.value,
     themeMode: themeMode.value,
     themePrimary: themePrimary.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
-    if (data.language !== undefined) {
-      setLanguage(data.language);
+    if (data.locale !== undefined) {
+      setLocale(data.locale);
     }
 
     if (data.themeMode !== undefined) {
@@ -72,8 +70,8 @@ export const useSettingsStore = defineStore('settings', () => {
     settings,
     updateSettings,
 
-    language,
-    setLanguage,
+    locale,
+    setLocale,
 
     themeMode,
     setThemeMode,

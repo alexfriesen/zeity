@@ -1,29 +1,35 @@
 <script setup lang="ts">
 import { downloadAs } from '~/utils/download-file';
 
+const { t } = useI18n();
+
 const timeStore = useTimerStore();
 const projectStore = useProjectStore();
 const settingsStore = useSettingsStore();
 
-const languageOptions = [
+const localeOptions = [
     {
         label: 'English',
         value: 'en',
     },
+    {
+        label: 'Deutsch',
+        value: 'de',
+    },
 ];
 
-const themeModes = [
+const themeModes = computed(() => [
     {
-        label: 'Light',
+        label: t('settings.light'),
         value: 'light',
         icon: 'i-lucide-sun'
     },
     {
-        label: 'Dark',
+        label: t('settings.dark'),
         value: 'dark',
         icon: 'i-lucide-moon'
     },
-];
+]);
 
 const themePrimaryOptions = [
     {
@@ -117,16 +123,16 @@ async function handleImport(event: Event) {
             Settings
         </h2>
 
-        <FieldSet label="General">
+        <FieldSet :label="$t('settings.general')">
             <label class="flex items-center justify-between">
-                <span>Language:</span>
-                <USelect v-model="settingsStore.language" :items="languageOptions" class="min-w-60" />
+                <span>{{ $t('settings.language') }}</span>
+                <USelect v-model="settingsStore.locale" :items="localeOptions" class="min-w-60" />
             </label>
         </FieldSet>
 
-        <FieldSet label="Theme">
+        <FieldSet :label="$t('settings.appearance')">
             <label class="flex items-center justify-between">
-                <span>Theme color:</span>
+                <span>{{ $t('settings.color') }}</span>
                 <USelect v-model="settingsStore.themePrimary" :items="themePrimaryOptions" class="min-w-60">
                     <template #leading="{ modelValue, ui }">
                         <UChip v-if="modelValue" inset standalone :size="ui.itemLeadingChipSize()"
@@ -136,7 +142,7 @@ async function handleImport(event: Event) {
             </label>
 
             <label class="flex items-center justify-between">
-                <span>Theme Mode:</span>
+                <span>{{ $t('settings.theme') }}</span>
 
                 <ClientOnly>
                     <UButtonGroup v-model="settingsStore.themeMode" class="min-w-60">
@@ -148,15 +154,15 @@ async function handleImport(event: Event) {
             </label>
         </FieldSet>
 
-        <FieldSet label="Import & Export">
+        <FieldSet :label="$t('settings.data')">
 
             <div class="flex gap-3">
                 <input hidden ref="fileprompt" type="file" accept="application/json" @change="handleImport" />
-                <UButton block color="neutral" variant="subtle" label="Import" icon="i-lucide-hard-drive-download"
-                    @click="filePrompt?.click()" />
+                <UButton :label="$t('settings.import')" block color="neutral" variant="subtle"
+                    icon="i-lucide-hard-drive-download" @click="filePrompt?.click()" />
 
-                <UButton block color="neutral" variant="subtle" label="Export" icon="i-lucide-hard-drive-upload"
-                    @click="handleExport()" />
+                <UButton :label="$t('settings.export')" block color="neutral" variant="subtle"
+                    icon="i-lucide-hard-drive-upload" @click="handleExport()" />
             </div>
         </FieldSet>
     </UContainer>

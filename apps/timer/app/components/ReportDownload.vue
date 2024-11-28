@@ -82,7 +82,7 @@ function generateCSVReport(data: EnhancedTime[]) {
 <template>
     <div class="text-center">
         <UButtonGroup>
-            <UButton label="Download" variant="subtle" color="neutral" size="lg" icon="i-lucide-download"
+            <UButton :label="$t('common.download')" variant="subtle" color="neutral" size="lg" icon="i-lucide-download"
                 @click="downloadReport(format)" />
             <USelectMenu v-model="format" :items="formatOptions" value-key="value" class="w-22" />
         </UButtonGroup>

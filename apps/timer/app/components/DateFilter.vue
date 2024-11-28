@@ -19,13 +19,15 @@ import {
     addDays,
 } from 'date-fns';
 import { z } from 'zod';
+import { formatRelativeDateDiff } from '@zeity/utils/date';
 
 import { DateFilterType, type DateFilter, type DateRange } from '~/types/date-filter';
 
+const { t } = useI18n();
 const settings = useSettingsStore();
 
 const selectedFilterKey = ref();
-const dateFilters = getDateFilters();
+const dateFilters = computed(() => getDateFilters(settings.locale));
 
 const model = defineModel<Schema | DateRange>();
 
@@ -41,7 +43,7 @@ watch(state, (state) => {
 });
 
 onMounted(() => {
-    changeDateFilter(dateFilters[0]);
+    changeDateFilter(dateFilters.value[0]);
 });
 
 function changeDateFilter(event?: DateFilter) {
@@ -94,29 +96,34 @@ function setDateRange(start: Date, end: Date) {
     state.value = { start: start.toISOString(), end: end.toISOString() };
 }
 
-function getDateFilters(): DateFilter[] {
+function getDateFilters(locale: string): DateFilter[] {
     return [
-        ...getDayFilters(),
-        ...getWeekFilters(3),
-        ...getMonthFilters(4),
-        ...getYearFilters(2),
-        { key: 'custom', label: 'Custom Filter', type: DateFilterType.Custom, value: 0 },
+        ...getDayFilters(locale),
+        ...getWeekFilters(locale, 3),
+        ...getMonthFilters(locale, 4),
+        ...getYearFilters(locale, 2),
+        { key: 'custom', label: t('common.custom'), type: DateFilterType.Custom, value: 0 },
     ];
 }
 
-function getDayFilters() {
+function getDayFilters(locale: string) {
     return [
-        { key: 'today', label: 'Today', type: DateFilterType.Day, value: new Date().getDay() },
+        {
+            key: 'today',
+            text: formatRelativeDateDiff(0, locale),
+            type: DateFilterType.Day,
+            value: new Date().getDay()
+        },
         {
             key: 'yesterday',
-            label: 'Yesterday',
+            text: formatRelativeDateDiff(-1, locale),
             type: DateFilterType.Day,
             value: subDays(new Date(), 1).getDay(),
         },
     ];
 }
 
-function getWeekFilters(count: number) {
+function getWeekFilters(locale: string, count: number) {
     const now = new Date();
 
     const filters = [];
@@ -134,14 +141,14 @@ function getWeekFilters(count: number) {
     return filters;
 }
 
-function getMonthFilters(count: number) {
+function getMonthFilters(locale: string, count: number) {
     const now = new Date();
 
     const filters = [];
     for (let i = 0; i < count; i++) {
         const date = subMonths(now, i);
         const month = date.getMonth();
-        const monthName = date.toLocaleString(settings.language, { month: 'short' });
+        const monthName = date.toLocaleString(locale, { month: 'short' });
         filters.push({
             key: 'm' + month,
             // label: `Month.${month}`,
@@ -154,7 +161,7 @@ function getMonthFilters(count: number) {
     return filters;
 }
 
-function getYearFilters(count: number) {
+function getYearFilters(locale: string, count: number) {
     const now = new Date();
 
     const filters = [];

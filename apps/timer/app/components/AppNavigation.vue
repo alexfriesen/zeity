@@ -22,61 +22,68 @@ watch(() => route.path, () => {
     openMoreMenu.value = false;
 });
 
-const verticalMenu = [
-    [
+const { locale, t } = useI18n();
+const verticalMenu = computed(() => {
+    const currentLocale = locale.value;
+    return [
+        [
+            {
+                label: t('navigation.timer'),
+                to: '/',
+                icon: 'i-lucide-clock',
+            },
+            {
+                label: t('navigation.projects'),
+                to: '/projects',
+                icon: 'i-lucide-list-todo',
+            },
+            // {
+            //     label: 'Tags',
+            //     to: '/tags',
+            //     icon: 'i-lucide-tag',
+            // },
+            {
+                label: t('navigation.reports'),
+                to: '/reports',
+                icon: 'i-lucide-chart-pie',
+            },
+            {
+                label: t('navigation.settings'),
+                to: '/settings',
+                icon: 'i-lucide-settings',
+            },
+        ],
+        [
+            {
+                label: t('navigation.about'),
+                to: '/about',
+                icon: 'i-lucide-info',
+            },
+        ]
+
+    ];
+});
+const horizontalMenu = computed(() => {
+    const currentLocale = locale.value;
+    return [
         {
-            label: 'Timer',
+            label: t('navigation.timer'),
             to: '/',
             icon: 'i-lucide-clock',
         },
         {
-            label: 'Projects',
+            label: t('navigation.projects'),
             to: '/projects',
             icon: 'i-lucide-list-todo',
         },
-        // {
-        //     label: 'Tags',
-        //     to: '/tags',
-        //     icon: 'i-lucide-tag',
-        // },
         {
-            label: 'Reports',
-            to: '/reports',
-            icon: 'i-lucide-chart-pie',
-        },
-        {
-            label: 'Settings',
-            to: '/settings',
-            icon: 'i-lucide-settings',
-        },
-    ],
-    [
-        {
-            label: 'About',
-            to: '/about',
-            icon: 'i-lucide-info',
-        },
-    ]
-
-];
-const horizontalMenu = [
-    {
-        label: 'Timer',
-        to: '/',
-        icon: 'i-lucide-clock',
-    },
-    {
-        label: 'Projects',
-        to: '/projects',
-        icon: 'i-lucide-list-todo',
-    },
-    {
-        label: 'More',
-        icon: 'i-lucide-more-horizontal',
-        onSelect: () => {
-            openMoreMenu.value = true;
-        },
-    }
-];
+            label: t('navigation.more'),
+            icon: 'i-lucide-more-horizontal',
+            onSelect: () => {
+                openMoreMenu.value = true;
+            },
+        }
+    ];
+});
 
 </script>

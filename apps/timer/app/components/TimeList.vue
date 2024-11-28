@@ -9,7 +9,7 @@ const props = defineProps({
 });
 const times = toRef(props, 'times');
 
-const { language } = storeToRefs(useSettingsStore());
+const { locale } = storeToRefs(useSettingsStore());
 
 const groups = computed(() => {
 	const all = times.value || [];
@@ -34,10 +34,10 @@ function getGroupKey(date: DateLike): string {
 	const diff = dayDiff(date, now);
 
 	if (diff < 1) {
-		return formatRelativeDate(now, toStartOfDay(date), language.value);
+		return formatRelativeDate(now, toStartOfDay(date), locale.value);
 	}
 
-	return formatDate(toStartOfDay(date), language.value);
+	return formatDate(toStartOfDay(date), locale.value);
 }
 </script>
 

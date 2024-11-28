@@ -112,7 +112,14 @@ export function formatRelativeDate(
 ) {
   const diff = dayDiff(value, compare);
 
-  return getRelativeDateFormatter(locale).format(diff, 'day');
+  return formatRelativeDateDiff(diff, locale);
+}
+
+export function formatRelativeDateDiff(
+  value: number,
+  locale?: string
+) {
+  return getRelativeDateFormatter(locale).format(value, 'day');
 }
 
 export function sortDatesAscending(

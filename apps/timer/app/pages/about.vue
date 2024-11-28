@@ -7,10 +7,10 @@ const config = useRuntimeConfig();
 
         <div>
             <p class="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ui-primary)]">
-                Zeity
+                {{ $t('about.title') }}
             </p>
             <p class="text-center">
-                Zeity is a productivity app for getting things done.
+                {{ $t('about.description') }}
             </p>
         </div>
 

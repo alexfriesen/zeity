@@ -120,7 +120,7 @@ async function handleImport(event: Event) {
     <UContainer class="my-3 space-y-4">
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-            Settings
+            {{ $t('settings.title') }}
         </h2>
 
         <FieldSet :label="$t('settings.general')">
@@ -157,7 +157,7 @@ async function handleImport(event: Event) {
         <FieldSet :label="$t('settings.data')">
 
             <div class="flex gap-3">
-                <input hidden ref="fileprompt" type="file" accept="application/json" @change="handleImport" />
+                <input ref="fileprompt" hidden type="file" accept="application/json" @change="handleImport" />
                 <UButton :label="$t('settings.import')" block color="neutral" variant="subtle"
                     icon="i-lucide-hard-drive-download" @click="filePrompt?.click()" />
 

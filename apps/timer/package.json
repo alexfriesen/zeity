@@ -15,9 +15,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@internationalized/date": "^3.6.0",
     "@pinia/nuxt": "^0.7.0",
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",
+    "reka-ui": "1.0.0-alpha.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {

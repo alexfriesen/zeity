@@ -188,10 +188,10 @@ function isSelected(filter: DateFilter) {
         <form v-show="selectedFilterKey === 'custom'">
             <UForm v-if="state" :schema="schema" :state="state">
                 <UFormField label="Start" name="start">
-                    <UInput v-model="state.start" type="date" class="w-full" />
+                    <DateTimeField v-model="state.start" granularity="day" class="w-full" />
                 </UFormField>
                 <UFormField label="End" name="end">
-                    <UInput v-model="state.end" type="date" class="w-full" />
+                    <DateTimeField v-model="state.end" granularity="day" class="w-full" />
                 </UFormField>
             </UForm>
         </form>

@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     'nuxt-time',
+    'nuxt-security',
   ],
   icon: {
     clientBundle: {

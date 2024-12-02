@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "@vitest/coverage-v8": "^2.1.6",
+    "@vitest/coverage-v8": "^2.1.7",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.6"
+    "vitest": "^2.1.7"
   },
   "packageManager": "pnpm@9.14.4"
 }

@@ -58,15 +58,22 @@ export const useSettingsStore = defineStore('settings', () => {
     updateSettings(settings);
   }
 
-  onMounted(() => {
+  // load and save settings to localStorage needs to be done in the setup function, otherwise locale will be overwritten by the i18n module
+  function init() {
     loadFromLocalStorage();
-  });
 
-  watch(settings, (value) => {
-    useLocalStorage().setItem('settings', value);
+    watch(settings, (value) => {
+      useLocalStorage().setItem('settings', value);
+    });
+  }
+
+  onMounted(() => {
+    init();
   });
 
   return {
+    init,
+
     settings,
     updateSettings,
 

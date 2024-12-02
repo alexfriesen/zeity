@@ -49,6 +49,8 @@ describe("useSettingsStore", () => {
         it('should save settings to localStorage', async () => {
             const spy = vi.spyOn(localStorage, 'setItem');
             const store = useSettingsStore();
+
+            store.init();
             store.updateSettings({ locale: 'de' });
 
             await nextTick();

@@ -54,14 +54,14 @@ function handleToggle() {
 		<UButton v-for="time in times" :key="time.id" type="button" variant="ghost"
 			class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
 
-			<div>
-				<span class="text-xs text-[var(--ui-text-dimmed)]">
-					{{ time.notes || 'Add Notes' }}
+			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
+				<span>
+					{{ time.notes || $t('times.addNotes') }}
 				</span>
 			</div>
 
-			<div class="duration">
-				<span class="tabular-nums font-sans text-md text-[var(--ui-text-toned)]">
+			<div class="font-sans text-md text-[var(--ui-text-toned)]">
+				<span class="tabular-nums">
 					{{ formatDuration(timeDiff(time.end, time.start)) }}
 				</span>
 			</div>

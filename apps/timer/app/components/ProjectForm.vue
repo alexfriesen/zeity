@@ -40,21 +40,18 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="handleSubmit">
-        <UFormField label="Name" name="name">
+        <UFormField :label="$t('projects.form.name')" name="name">
             <UInput v-model="state.name" class="w-full" />
         </UFormField>
-        <UFormField label="Status" name="status">
-            <USelect v-model="state.status" :items="projectStatusFormItems" class="w-full">
-                <template #leading="{ modelValue, ui }">
-                    <UChip v-if="modelValue" inset standalone :color="getProjectStatusColor(state.status!)"
-                        :size="ui.itemLeadingChipSize()" :class="ui.itemLeadingChip()" />
-                </template>
-            </USelect>
+        <UFormField :label="$t('projects.form.status')" name="status">
+            <ProjectStatusSelect v-model="state.status" class="w-full" />
         </UFormField>
-        <UFormField label="Notes" name="notes">
+        <UFormField :label="$t('projects.form.notes')" name="notes">
             <UTextarea v-model="state.notes" class="w-full" autoresize />
         </UFormField>
 
-        <UButton block type="submit">Save</UButton>
+        <UButton block type="submit">
+            {{ $t('common.save') }}
+        </UButton>
     </UForm>
 </template>

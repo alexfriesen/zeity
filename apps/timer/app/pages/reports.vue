@@ -45,7 +45,7 @@ const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.val
 
         <UCard as="section">
             <template #header>
-                <h2>Summary</h2>
+                <h2>{{ $t('reports.summary') }}</h2>
             </template>
 
             <div class="text-center text-xl font-mono">{{ timeSum }}</div>
@@ -53,7 +53,7 @@ const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.val
 
         <UCard as="section">
             <template #header>
-                <h2>Report</h2>
+                <h2>{{ $t('reports.report') }}</h2>
             </template>
 
             <ReportDownload :times="filteredTimes" />

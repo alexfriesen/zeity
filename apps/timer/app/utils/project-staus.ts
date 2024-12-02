@@ -7,8 +7,3 @@ const projectStatusColorMap = {
 export function getProjectStatusColor(status: ProjectStatus) {
     return projectStatusColorMap[status];
 }
-
-export const projectStatusFormItems = [
-    { value: PROJECT_STATUS_ACTIVE, label: 'Active', chip: { color: getProjectStatusColor(PROJECT_STATUS_ACTIVE) } },
-    { value: PROJECT_STATUS_CLOSED, label: 'Closed', chip: { color: getProjectStatusColor(PROJECT_STATUS_CLOSED) } },
-];

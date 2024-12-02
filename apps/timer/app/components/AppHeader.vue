@@ -13,12 +13,14 @@ function timeNew() {
             <div class="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-16">
                 <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">
                     <a href="/" class="flex items-end gap-2 font-bold text-xl text-neutral-900 dark:text-white min-w-0">
-                        zeity
+                        {{ $t('about.title') }}
                     </a>
                 </div>
                 <div class="flex items-center justify-end lg:flex-1 gap-1.5">
                     <UButton square class="rounded-full" icon="i-lucide-plus" variant="outline" @click="timeNew">
-                        <span class="sr-only">Add Time</span>
+                        <span class="sr-only">
+                            {{ $t('appName') }}
+                        </span>
                     </UButton>
                 </div>
             </div>

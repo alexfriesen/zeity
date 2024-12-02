@@ -12,6 +12,19 @@ const { useColorMode } = vi.hoisted(() => ({
 }));
 mockNuxtImport('useColorMode', () => useColorMode);
 
+const { useI18n } = vi.hoisted(() => ({
+    useI18n: () => {
+        const locale = ref('en');
+        return {
+            locale,
+            setLocale: (val: string) => {
+                locale.value = val;
+            },
+        };
+    },
+}));
+mockNuxtImport('useI18n', () => useI18n);
+
 describe("useSettingsStore", () => {
     beforeEach(() => {
         vi.resetAllMocks();
@@ -20,45 +33,47 @@ describe("useSettingsStore", () => {
 
     it('should have a default state', () => {
         const store = useSettingsStore();
-        expect(store.settings).toStrictEqual({ language: 'en', themeMode: 'dark', themePrimary: 'sky' });
+        expect(store.settings).toStrictEqual({ locale: 'en', themeMode: 'dark', themePrimary: 'sky' });
     });
 
     describe('localStorage', () => {
         it('should load settings from localStorage', () => {
-            vi.spyOn(localStorage, 'getItem').mockReturnValue((JSON.stringify({ language: 'fr', themeMode: 'dark', themePrimary: 'red' })));
+            vi.spyOn(localStorage, 'getItem').mockReturnValue((JSON.stringify({ locale: 'fr', themeMode: 'dark', themePrimary: 'red' })));
 
             const store = useSettingsStore();
             store.loadFromLocalStorage();
 
-            expect(store.settings).toEqual({ language: 'fr', themeMode: 'dark', themePrimary: 'red' });
+            expect(store.settings).toEqual({ locale: 'fr', themeMode: 'dark', themePrimary: 'red' });
         });
 
         it('should save settings to localStorage', async () => {
             const spy = vi.spyOn(localStorage, 'setItem');
             const store = useSettingsStore();
-            store.updateSettings({ language: 'fr' });
+
+            store.init();
+            store.updateSettings({ locale: 'de' });
 
             await nextTick();
 
-            expect(spy).toHaveBeenCalledWith('settings', JSON.stringify({ language: 'fr', themeMode: 'dark', themePrimary: 'sky' }));
+            expect(spy).toHaveBeenCalledWith('settings', JSON.stringify({ locale: 'de', themeMode: 'dark', themePrimary: 'sky' }));
         });
     });
 
     describe('updateSettings', () => {
         it('should update settings', () => {
             const store = useSettingsStore();
-            store.updateSettings({ language: 'fr' });
+            store.updateSettings({ locale: 'de' });
 
-            expect(store.settings).toStrictEqual({ language: 'fr', themeMode: 'dark', themePrimary: 'sky' });
+            expect(store.settings).toStrictEqual({ locale: 'de', themeMode: 'dark', themePrimary: 'sky' });
         });
     });
 
-    describe('setLanguage', () => {
-        it('should set the language', () => {
+    describe('setLocale', () => {
+        it('should set the locale', () => {
             const store = useSettingsStore();
-            store.setLanguage('fr');
+            store.setLocale('de');
 
-            expect(store.settings.language).toStrictEqual('fr');
+            expect(store.settings.locale).toStrictEqual('de');
         });
     });
 });

@@ -1,12 +1,28 @@
 <script setup lang="ts">
+import * as locales from '@nuxt/ui/locale';
+
 const appConfig = useAppConfig()
 const settingsStore = useSettingsStore();
 
-const { themePrimary } = storeToRefs(settingsStore);
+const { locale, themePrimary } = storeToRefs(settingsStore);
 
 watch(themePrimary, (value) => {
   appConfig.ui.colors.primary = value;
 }, { immediate: true });
+
+const uiLocale = computed(() => {
+  return locales[locale.value || 'en'];
+});
+
+const lang = computed(() => locales[locale.value].code)
+const dir = computed(() => locales[locale.value].dir)
+useHead({
+  htmlAttrs: {
+    lang,
+    dir
+  }
+})
+
 </script>
 
 <template>
@@ -15,9 +31,11 @@ watch(themePrimary, (value) => {
     <Title>zeity</Title>
   </Head>
 
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <UApp :locale="uiLocale">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 
 </template>
 

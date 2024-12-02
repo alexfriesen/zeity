@@ -8,6 +8,8 @@ import { formatDuration, timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '~/types/time';
 import { PROJECT_STATUS_ACTIVE } from '~/types/project';
 
+const { t } = useI18n();
+
 const projectStore = useProjectStore();
 const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
@@ -16,7 +18,7 @@ const projectItems = computed(() => {
         value: project.id,
     }));
     return [
-        { label: 'No project', value: undefined },
+        { label: t('times.noProject'), value: undefined },
         ...projectOptions
     ];
 })
@@ -136,25 +138,29 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
         </template>
         <template #body>
             <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
-
-                <UFormField label="Start time" name="start">
+                <UFormField :label="$t('times.form.start')" name="start">
                     <DateTimeField v-model="state.start" />
                 </UFormField>
-                <UFormField label="End time" name="end">
+
+                <UFormField v-if="isTimeValue(state) && state.end" :label="$t('times.form.end')" name="end">
                     <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 
-                <UFormField label="Project" name="projectId" size="lg">
+                <UFormField :label="$t('times.form.project')" name="projectId">
                     <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full" />
                 </UFormField>
 
-                <UFormField label="Notes" name="notes" size="lg">
+                <UFormField :label="$t('times.form.notes')" name="notes">
                     <UTextarea v-model="state.notes" type="text" class="w-full" autoresize />
                 </UFormField>
 
                 <div class="flex justify-evenly">
-                    <UButton type="button" color="error" @click="handleRemove">Remove</UButton>
-                    <UButton type="submit">Save</UButton>
+                    <UButton type="button" color="error" @click="handleRemove">
+                        {{ $t('common.delete') }}
+                    </UButton>
+                    <UButton type="submit">
+                        {{ $t('common.save') }}
+                    </UButton>
                 </div>
             </UForm>
         </template>

@@ -10,12 +10,27 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/test-utils/module',
     '@nuxt/eslint',
+    '@nuxtjs/i18n',
     '@pinia/nuxt',
     '@nuxt/ui',
     '@nuxt/image',
     'nuxt-time',
     'nuxt-security',
   ],
+  i18n: {
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
+    locales: [
+      {
+        code: 'de',
+        name: 'Deutsch'
+      }, {
+        code: 'en',
+        name: 'English'
+      }
+    ],
+    defaultLocale: 'en',
+  },
   icon: {
     clientBundle: {
       scan: true,

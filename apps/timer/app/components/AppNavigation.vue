@@ -22,15 +22,16 @@ watch(() => route.path, () => {
     openMoreMenu.value = false;
 });
 
-const verticalMenu = [
+const { t } = useI18n();
+const verticalMenu = computed(() => [
     [
         {
-            label: 'Timer',
+            label: t('navigation.timer'),
             to: '/',
             icon: 'i-lucide-clock',
         },
         {
-            label: 'Projects',
+            label: t('navigation.projects'),
             to: '/projects',
             icon: 'i-lucide-list-todo',
         },
@@ -40,43 +41,43 @@ const verticalMenu = [
         //     icon: 'i-lucide-tag',
         // },
         {
-            label: 'Reports',
+            label: t('navigation.reports'),
             to: '/reports',
             icon: 'i-lucide-chart-pie',
         },
         {
-            label: 'Settings',
+            label: t('navigation.settings'),
             to: '/settings',
             icon: 'i-lucide-settings',
         },
     ],
     [
         {
-            label: 'About',
+            label: t('navigation.about'),
             to: '/about',
             icon: 'i-lucide-info',
         },
     ]
 
-];
-const horizontalMenu = [
+]);
+const horizontalMenu = computed(() => [
     {
-        label: 'Timer',
+        label: t('navigation.timer'),
         to: '/',
         icon: 'i-lucide-clock',
     },
     {
-        label: 'Projects',
+        label: t('navigation.projects'),
         to: '/projects',
         icon: 'i-lucide-list-todo',
     },
     {
-        label: 'More',
+        label: t('navigation.more'),
         icon: 'i-lucide-more-horizontal',
         onSelect: () => {
             openMoreMenu.value = true;
         },
     }
-];
+]);
 
 </script>

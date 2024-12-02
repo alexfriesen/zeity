@@ -24,14 +24,14 @@ const filteredProjects = computed(() => {
     <UContainer class="page my-3">
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-            Projects
+            {{ $t('projects.title') }}
         </h2>
 
         <section class="flex flex-col my-3 space-y-4">
             <div class="flex items-center justify-between gap-4">
-                <USwitch v-model="showClosed" label="Closed Projects" />
+                <USwitch v-model="showClosed" :label="$t('projects.showClosed')" />
 
-                <UButton to="/projects/create" icon="i-lucide-plus">Create Project</UButton>
+                <UButton to="/projects/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
             </div>
 
             <UCard v-for="project in filteredProjects" :key="project.id">
@@ -43,7 +43,7 @@ const filteredProjects = computed(() => {
                         </UButton>
 
                         <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">
-                            {{ project.status }}
+                            {{ $t(`projects.status.${project.status}`) }}
                         </UBadge>
                     </div>
                 </template>
@@ -54,7 +54,7 @@ const filteredProjects = computed(() => {
             <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
                 description="It looks like you don't have any projects yet. Why not create one?" icon="i-lucide-info"
                 :ui="{ icon: 'size-20' }" :actions="[
-                    { label: 'Create Project', icon: 'i-lucide-plus', to: '/projects/create' }
+                    { label: $t('common.add'), icon: 'i-lucide-plus', to: '/projects/create' }
                 ]" />
         </section>
     </UContainer>

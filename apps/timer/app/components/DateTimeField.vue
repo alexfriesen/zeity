@@ -43,7 +43,7 @@ const ui = {
 
 <template>
     <DateFieldRoot :id="id" v-bind="$attrs" v-slot="{ segments }" v-model="datetimeValue" :class="ui.base" :name="name"
-        :required="required" :disabled="disabled" :locale="settings.language" :granularity="granularity" hide-time-zone>
+        :required="required" :disabled="disabled" :locale="settings.locale" :granularity="granularity" hide-time-zone>
         <template v-for="item in segments" :key="item.part">
             <DateFieldInput v-if="item.part === 'literal'" :part="item.part">
                 {{ item.value }}

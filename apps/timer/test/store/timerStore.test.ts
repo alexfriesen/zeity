@@ -116,14 +116,14 @@ describe("timerStore", () => {
 
             await nextTick();
 
-            expect(localstorageSpy).toHaveBeenCalledWith('times', JSON.stringify([{ 'id': '1', 'start': '2021-08-01T00:00:00.000Z', 'end': '2021-08-01T00:00:00.000Z', 'notes': '' }]));
+            expect(localstorageSpy).toHaveBeenCalledWith('times', JSON.stringify([{ 'id': '1', 'start': '2021-08-01T00:00:00.000Z', 'end': '2021-08-01T00:00:00.000Z', 'notes': '', duration: 0 }]));
         });
 
         it('should be able to insert a time', () => {
             const store = useTimerStore();
             store.insertTime({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
 
-            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' }]);
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' }]);
         });
 
         it('should be able to update a time', () => {
@@ -132,7 +132,21 @@ describe("timerStore", () => {
 
             store.updateTime('1', { notes: 'test' });
 
-            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: 'test' }]);
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', duration: 0, notes: 'test' }]);
+        });
+
+        it('should update duration if start or end is changed', () => {
+            const store = useTimerStore();
+            store.insertTime({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
+
+            store.updateTime('1', { start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:01:00.000Z' });
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:01:00.000Z', duration: 60000, notes: '' }]);
+
+            store.updateTime('1', { end: '2021-08-01T00:01:30.000Z' });
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:01:30.000Z', duration: 90000, notes: '' }]);
+
+            store.updateTime('1', { start: '2021-08-01T00:01:00.000Z' });
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:01:00.000Z', end: '2021-08-01T00:01:30.000Z', duration: 30000, notes: '' }]);
         });
 
         it('should be able to remove a time', () => {
@@ -148,21 +162,21 @@ describe("timerStore", () => {
             const store = useTimerStore();
             store.insertTime({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
 
-            expect(store.findTimeById('1').value).toEqual({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
+            expect(store.findTimeById('1').value).toEqual({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' });
         });
 
         it('should be able to find a time by predicate', () => {
             const store = useTimerStore();
             store.insertTime({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
 
-            expect(store.findTime((time) => time.id === '1').value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' }]);
+            expect(store.findTime((time) => time.id === '1').value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' }]);
         });
 
         it('should be able to get all times', () => {
             const store = useTimerStore();
             store.insertTime({ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' });
 
-            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', notes: '' }]);
+            expect(store.getAllTimes().value).toEqual([{ id: '1', start: '2021-08-01T00:00:00.000Z', end: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' }]);
         });
     });
 });

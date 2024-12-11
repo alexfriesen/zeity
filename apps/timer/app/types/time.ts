@@ -3,6 +3,7 @@ export interface Time {
 
   start: string;
   end: string;
+  duration?: number;
 
   notes: string;
 

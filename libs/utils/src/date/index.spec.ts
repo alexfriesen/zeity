@@ -163,5 +163,20 @@ describe('DateUtils', function () {
         ])
       ).toEqual(120_000);
     });
+
+    it('should calculate time diff with duration', function () {
+      expect(
+        calculateDiffSum([
+          // @ts-expect-error: intentionally invalid input
+          {
+            duration: 60_000,
+          },
+          {
+            start: '2023-04-15T10:00:00.500Z',
+            end: '2023-04-15T10:01:00.500Z',
+          },
+        ])
+      ).toEqual(120_000);
+    });
   });
 });

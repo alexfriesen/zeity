@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { nanoid } from 'nanoid';
 
+import { timeDiff } from '@zeity/utils/date';
 import { useEntityStore } from './entityStore';
 import type { DraftTime, Time } from '../types/time';
 import useLocalStorage from '~/utils/localstorage';
@@ -50,9 +51,13 @@ export const useTimerStore = defineStore('timer', () => {
     const draftValue = draft.value;
     if (!draftValue) return;
 
-    const time = { id: nanoid(), end: new Date().toISOString(), ...draftValue };
+    const start = draftValue.start;
+    const end = new Date();
+    const duration = timeDiff(end, start);
 
-    timesStore.insert(time);
+    const time = { id: nanoid(), end: end.toISOString(), duration, ...draftValue };
+
+    insertTime(time);
     resetDraft();
 
     return time;
@@ -65,6 +70,32 @@ export const useTimerStore = defineStore('timer', () => {
   }
   function resetDraft() {
     draft.value = null;
+  }
+
+  function upsertTimes(times: Time[]) {
+    const enhancedTimes = times.map((time) => {
+      const duration = time.duration ?? timeDiff(time.end || new Date(), time.start);
+      return { ...time, duration };
+    });
+
+    return timesStore.upsertMany(enhancedTimes);
+  }
+
+  function insertTime(time: Time) {
+    const duration = time.duration ?? timeDiff(time.end || new Date(), time.start);
+    return timesStore.insert({ ...time, duration })
+  }
+
+  function updateTime(id: string, time: Partial<Time>) {
+    // update duration if start or end is changed
+    if ((time.start || time.end) && !time.duration) {
+      const originalTime = timesStore.findById(id);
+      const start = time.start ?? originalTime.value?.start ?? new Date();
+      const end = time.end ?? originalTime.value?.end ?? new Date();
+      time.duration = time.duration ?? timeDiff(end, start);
+    }
+
+    return timesStore.update(id, time);
   }
 
   function loadTimesFromLocalStorage() {
@@ -98,14 +129,13 @@ export const useTimerStore = defineStore('timer', () => {
   });
 
   return {
-    upsertTimes: timesStore.upsertMany,
-
     getAllTimes: timesStore.getAll,
     findTimeById: timesStore.findById,
     findTime: timesStore.find,
 
-    insertTime: timesStore.insert,
-    updateTime: timesStore.update,
+    upsertTimes,
+    insertTime,
+    updateTime,
     removeTime: timesStore.remove,
 
     draft,

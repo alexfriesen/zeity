@@ -57,12 +57,12 @@ export function dayDiff(a: DateLike, b: DateLike) {
 }
 
 export function calculateDiffSum(
-  items: { start: DateLike; end: DateLike }[]
+  items: { start: DateLike; end: DateLike, duration?: number }[]
 ): number {
   let sum = 0;
 
   for (const item of items) {
-    sum += timeDiff(item.end, item.start);
+    sum += item.duration ?? timeDiff(item.end, item.start);
   }
 
   return sum;

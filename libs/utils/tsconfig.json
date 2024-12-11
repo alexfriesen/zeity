@@ -11,5 +11,5 @@
     "lib": ["es2023"],
   },
   "files": [],
-  "include": []
+  "include": ["src/**/*.ts"],
 }

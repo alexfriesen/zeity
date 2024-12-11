@@ -59,6 +59,10 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
 const runningDuration = computed(() => {
     const time = state?.value as Schema;
 
+    if (isTimeValue(time) && time.duration) {
+        return formatDuration(time.duration);
+    }
+
     const start = time?.start;
     const end = isTimeValue(time) ? time.end : now.value;
 
@@ -96,6 +100,7 @@ function handleSave(event: FormSubmitEvent<Schema>) {
         timeStore.updateDraft(time);
     }
     if (isTimeValue(time)) {
+        time.duration = timeDiff(time.end, time.start);
         if (time.id === 'new') {
             timeStore.insertTime({ ...time, id: nanoid() });
         } else {
@@ -122,7 +127,7 @@ function isDraftValue(value: Time | DraftTime | Schema | undefined | null): valu
     return !!value && !('end' in value);
 }
 function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): value is Time {
-    return !!value && 'end' in value;
+    return !!value && ('end' in value || 'duration' in value);
 }
 </script>
 

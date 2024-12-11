@@ -17,9 +17,10 @@ function timeNew() {
                     </a>
                 </div>
                 <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-                    <UButton square class="rounded-full" icon="i-lucide-plus" variant="outline" @click="timeNew">
+                    <UButton v-if="$route.path === '/'" square class="rounded-full" icon="i-lucide-plus"
+                        variant="outline" @click="timeNew">
                         <span class="sr-only">
-                            {{ $t('appName') }}
+                            {{ $t('common.add') }}
                         </span>
                     </UButton>
                 </div>

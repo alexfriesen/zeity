@@ -18,7 +18,8 @@ import {
     startOfYear,
     addDays,
 } from 'date-fns';
-import { z } from 'zod';
+import type { DateRange as CalendarDateRange } from 'reka-ui';
+import { getLocalTimeZone, parseAbsolute } from '@internationalized/date';
 import { formatRelativeDateDiff } from '@zeity/utils/date';
 
 import { DateFilterType, type DateFilter, type DateRange } from '~/types/date-filter';
@@ -29,14 +30,22 @@ const settings = useSettingsStore();
 const selectedFilterKey = ref();
 const dateFilters = computed(() => getDateFilters(settings.locale));
 
-const model = defineModel<Schema | DateRange>();
+const model = defineModel<DateRange>();
 
-const schema = z.object({
-    start: z.string().date(),
-    end: z.string().date(),
+const state = ref<DateRange>();
+const calendarRange = computed({
+    get: () => {
+        if (!state.value) return;
+
+        const tz = getLocalTimeZone();
+        return { start: parseAbsolute(state.value.start, tz), end: parseAbsolute(state.value.end, tz) } as CalendarDateRange;
+    },
+    set: (value: CalendarDateRange) => {
+        if (!value || !value.start || !value.end) return;
+        const tz = getLocalTimeZone();
+        setDateRange(startOfDay(value.start.toDate(tz)), endOfDay(value.end.toDate(tz)));
+    },
 });
-type Schema = z.output<typeof schema>
-const state = ref<Schema>();
 
 watch(state, (state) => {
     model.value = state;
@@ -192,16 +201,9 @@ function isSelected(filter: DateFilter) {
                 :color="isSelected(filter) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"
                 @click="changeDateFilter(filter)" />
         </div>
-        <form v-show="selectedFilterKey === 'custom'">
-            <UForm v-if="state" :schema="schema" :state="state">
-                <UFormField label="Start" name="start">
-                    <DateTimeField v-model="state.start" granularity="day" class="w-full" />
-                </UFormField>
-                <UFormField label="End" name="end">
-                    <DateTimeField v-model="state.end" granularity="day" class="w-full" />
-                </UFormField>
-            </UForm>
-        </form>
+        <div v-show="selectedFilterKey === 'custom'" class="flex m-auto">
+            <UCalendar v-model="calendarRange" range />
+        </div>
     </section>
 </template>
 

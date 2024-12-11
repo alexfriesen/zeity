@@ -8,7 +8,7 @@ export interface DateTimeProps {
     required?: boolean
     disabled?: boolean
     class?: unknown
-    granularity: 'second' | 'minute' | 'hour' | 'day'
+    granularity?: 'second' | 'minute' | 'hour' | 'day'
 }
 </script>
 

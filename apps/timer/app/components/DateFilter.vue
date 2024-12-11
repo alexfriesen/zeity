@@ -201,7 +201,7 @@ function isSelected(filter: DateFilter) {
                 :color="isSelected(filter) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"
                 @click="changeDateFilter(filter)" />
         </div>
-        <div v-show="selectedFilterKey === 'custom'" class="flex m-auto">
+        <div :class="{ hidden: selectedFilterKey !== 'custom' }" class="custom">
             <UCalendar v-model="calendarRange" range />
         </div>
     </section>
@@ -211,5 +211,25 @@ function isSelected(filter: DateFilter) {
 .scrollable {
     overflow: auto;
     scroll-behavior: smooth;
+}
+
+.custom {
+    display: flex;
+    margin: auto;
+    overflow: hidden;
+    height: 15.5rem;
+    transition: opacity 0.5s, transform 0.5s, height 0.5s, display 0.5s allow-discrete;
+}
+
+.custom.hidden {
+    opacity: 0;
+    height: 0;
+}
+
+@starting-style {
+    .custom {
+        opacity: 0;
+        height: 0;
+    }
 }
 </style>

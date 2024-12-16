@@ -111,6 +111,11 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     close();
 }
 
+function stop() {
+    timeStore.stopDraft();
+    close();
+}
+
 function handleRemove() {
     if (isDraft.value) {
         timeStore.resetDraft();
@@ -160,10 +165,15 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                 </UFormField>
 
                 <div class="flex justify-evenly">
-                    <UButton type="button" color="error" @click="handleRemove">
+                    <UButton type="button" color="error" variant="subtle" @click="handleRemove">
                         {{ $t('common.delete') }}
                     </UButton>
-                    <UButton type="submit">
+
+                    <UButton v-if="isDraft" type="button" color="neutral" variant="subtle" @click="stop">
+                        {{ $t('common.stop') }}
+                    </UButton>
+
+                    <UButton type="submit" variant="subtle">
                         {{ $t('common.save') }}
                     </UButton>
                 </div>

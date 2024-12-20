@@ -46,8 +46,14 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     public: {
       version: packageJson.version || '0.0.0',
+    }
+  },
+  nitro: {
+    experimental: {
+      tasks: true,
     }
   },
   devtools: { enabled: true },

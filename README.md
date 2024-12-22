@@ -2,7 +2,9 @@
 
 Zeity is a productivity app focused on time tracking, managing projects and getting things done.
 
-*This project is in an early stage of development.*
+> [!IMPORTANT]
+> 
+> This project is in an early stage of development.
 
 ## Getting Started
 

@@ -19,22 +19,22 @@
     "@pinia/nuxt": "^0.9.0",
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",
-    "reka-ui": "1.0.0-alpha.6",
+    "reka-ui": "1.0.0-alpha.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.18",
-    "@nuxt/eslint": "^0.7.3",
+    "@iconify-json/lucide": "^1.2.20",
+    "@nuxt/eslint": "^0.7.4",
     "@nuxt/image": "^1.8.1",
     "@nuxt/test-utils": "^3.15.1",
     "@nuxt/ui": "next",
     "@nuxtjs/i18n": "^9.1.1",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^15.11.7",
-    "nuxt": "^3.14.1592",
+    "nuxt": "^3.15.0",
     "nuxt-security": "^2.1.5",
     "nuxt-time": "^1.0.3",
     "vue-i18n": "10.0.5",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   }
 }

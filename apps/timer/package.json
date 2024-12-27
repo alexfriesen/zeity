@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.6.0",
+    "@number-flow/vue": "^0.3.3",
     "@pinia/nuxt": "^0.9.0",
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",

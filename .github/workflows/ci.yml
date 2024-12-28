@@ -38,3 +38,14 @@ jobs:
 
       - name: Run Tests
         run: pnpm test
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run Typecheck
+        run: pnpm -r typecheck

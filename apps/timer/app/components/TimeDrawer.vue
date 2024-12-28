@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import z from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
 
-import { formatDuration, timeDiff } from '@zeity/utils/date';
+import { timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '~/types/time';
 import { PROJECT_STATUS_ACTIVE } from '~/types/project';
 
@@ -56,21 +56,21 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     }
 });
 
-const runningDuration = computed(() => {
+const diff = computed(() => {
     const time = state?.value as Schema;
 
     if (isTimeValue(time) && time.duration) {
-        return formatDuration(time.duration);
+        return time.duration;
     }
 
     const start = time?.start;
     const end = isTimeValue(time) ? time.end : now.value;
 
     if (start && end) {
-        return formatDuration(timeDiff(end, start));
+        return timeDiff(end, start);
     }
 
-    return '00:00:00';
+    return 0;
 });
 
 const timeSchema = z.object({
@@ -140,11 +140,8 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
     <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
-            <div class="text-center">
-                <span class="font-mono text-2xl tabular-nums lining-nums tracking-wide">
-                    {{ runningDuration }}
-                </span>
-            </div>
+            <TimeDurationFlowing v-model="diff"
+                class="flex justify-center font-mono text-2xl tabular-nums lining-nums tracking-wide" />
         </template>
         <template #body>
             <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">

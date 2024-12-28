@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
 
-import { formatDuration, timeDiff } from '@zeity/utils/date';
+import { timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
 const {
@@ -11,12 +11,12 @@ const {
 const store = useTimerStore();
 const { draft, isStarted } = storeToRefs(store);
 
-const runningDuration = computed(() => {
+const diff = computed(() => {
     const start = draft.value?.start;
     if (start) {
-        return formatDuration(timeDiff(now.value, start));
+        return timeDiff(now.value, start);
     }
-    return '00:00:00';
+    return 0;
 });
 
 const now = ref(new Date());
@@ -48,9 +48,7 @@ watch(isStarted, (value) => {
         <div v-if="isStarted" class="rounded-md shadow bg-[var(--ui-bg-accented)]">
             <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
                 @mouseup="() => draft && openDetails(draft)">
-                <span class="font-mono text-2xl tabular-nums lining-nums tracking-wide">
-                    {{ runningDuration }}
-                </span>
+                <TimeDurationFlowing v-model="diff" class="font-mono text-2xl tabular-nums lining-nums tracking-wide" />
             </UButton>
         </div>
 

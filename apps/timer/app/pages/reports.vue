@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAfter, isBefore } from 'date-fns';
-import { calculateDiffSum, formatDuration, parseDate } from '@zeity/utils/date';
+import { calculateDiffSum, parseDate } from '@zeity/utils/date';
 
 import type { DateRange } from '~/types/date-filter';
 
@@ -32,7 +32,7 @@ const filteredTimes = computed(() => {
     return times;
 });
 
-const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.value)));
+const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
 </script>
 
 <template>
@@ -48,7 +48,7 @@ const timeSum = computed(() => formatDuration(calculateDiffSum(filteredTimes.val
                 <h2>{{ $t('reports.summary') }}</h2>
             </template>
 
-            <div class="text-center text-xl font-mono">{{ timeSum }}</div>
+            <TimeDurationFlowing v-model="timeSum" class="flex justify-center text-xl font-mono" />
         </UCard>
 
         <UCard as="section">

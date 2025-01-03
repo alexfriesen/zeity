@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import {
-    setDay,
     subDays,
     endOfDay,
     startOfDay,
     getWeek,
-    setWeek,
     subWeeks,
     startOfWeek,
-    setMonth,
     subMonths,
     endOfMonth,
     startOfMonth,
-    setYear,
     subYears,
     endOfYear,
     startOfYear,
     addDays,
 } from 'date-fns';
 import type { DateRange as CalendarDateRange } from 'reka-ui';
-import { getLocalTimeZone, parseAbsolute } from '@internationalized/date';
+import { fromDate, getLocalTimeZone } from '@internationalized/date';
 import { formatRelativeDateDiff } from '@zeity/utils/date';
 
 import { DateFilterType, type DateFilter, type DateRange } from '~/types/date-filter';
@@ -38,12 +34,12 @@ const calendarRange = computed({
         if (!state.value) return;
 
         const tz = getLocalTimeZone();
-        return { start: parseAbsolute(state.value.start, tz), end: parseAbsolute(state.value.end, tz) } as CalendarDateRange;
+        return { start: fromDate(state.value.start, tz), end: fromDate(state.value.end, tz) } as CalendarDateRange;
     },
     set: (value: CalendarDateRange) => {
         if (!value || !value.start || !value.end) return;
         const tz = getLocalTimeZone();
-        setDateRange(startOfDay(value.start.toDate(tz)), endOfDay(value.end.toDate(tz)));
+        setDateRange({ start: startOfDay(value.start.toDate(tz)), end: endOfDay(value.end.toDate(tz)) });
     },
 });
 
@@ -56,53 +52,15 @@ onMounted(() => {
 });
 
 function changeDateFilter(event?: DateFilter) {
-    switch (event?.type) {
-        case 'day':
-            setDateRangeDay(setDay(new Date(), event.value));
-            break;
-
-        case 'week':
-            setDateRangeWeek(setWeek(new Date(), event.value));
-            break;
-
-        case 'month':
-            setDateRangeMonth(setMonth(new Date(), event.value));
-            break;
-
-        case 'year':
-            setDateRangeYear(setYear(new Date(), event.value));
-            break;
+    if (event?.range) {
+        setDateRange(event.range);
     }
 
     selectedFilterKey.value = event?.key || 'custom';
 }
 
-function setDateRangeDay(date: Date) {
-    const start = startOfDay(date);
-    const end = endOfDay(date);
-    setDateRange(start, end);
-}
-
-function setDateRangeWeek(date: Date) {
-    const start = startOfWeek(date, { weekStartsOn: 1 });
-    const end = endOfDay(addDays(start, 7));
-    setDateRange(start, end);
-}
-
-function setDateRangeMonth(date: Date) {
-    const start = startOfMonth(date);
-    const end = endOfMonth(start);
-    setDateRange(start, end);
-}
-
-function setDateRangeYear(date: Date) {
-    const start = startOfYear(date);
-    const end = endOfYear(start);
-    setDateRange(start, end);
-}
-
-function setDateRange(start: Date, end: Date) {
-    state.value = { start: start.toISOString(), end: end.toISOString() };
+function setDateRange(value: DateRange) {
+    state.value = value;
 }
 
 function getDateFilters(locale: string): DateFilter[] {
@@ -111,23 +69,31 @@ function getDateFilters(locale: string): DateFilter[] {
         ...getWeekFilters(locale, 3),
         ...getMonthFilters(locale, 4),
         ...getYearFilters(locale, 2),
-        { key: 'custom', label: t('common.custom'), type: DateFilterType.Custom, value: 0 },
+        { key: 'custom', label: t('common.custom'), type: DateFilterType.Custom },
     ];
 }
 
 function getDayFilters(locale: string) {
+    const today = new Date();
+    const yesterday = subDays(today, 1);
     return [
         {
             key: 'today',
             text: formatRelativeDateDiff(0, locale),
             type: DateFilterType.Day,
-            value: new Date().getDay()
+            range: {
+                start: startOfDay(today),
+                end: endOfDay(today),
+            }
         },
         {
             key: 'yesterday',
             text: formatRelativeDateDiff(-1, locale),
             type: DateFilterType.Day,
-            value: subDays(new Date(), 1).getDay(),
+            range: {
+                start: startOfDay(yesterday),
+                end: endOfDay(yesterday),
+            }
         },
     ];
 }
@@ -139,11 +105,15 @@ function getWeekFilters(locale: string, count: number) {
     for (let i = 0; i < count; i++) {
         const date = subWeeks(now, i);
         const week = getWeek(date);
+
+        const start = startOfWeek(date, { weekStartsOn: 1 });
+        const end = endOfDay(addDays(start, 7));
+
         filters.push({
             key: 'kw' + week,
             text: `KW ${week}`,
             type: DateFilterType.Week,
-            value: week,
+            range: { start, end },
         });
     }
 
@@ -158,12 +128,16 @@ function getMonthFilters(locale: string, count: number) {
         const date = subMonths(now, i);
         const month = date.getMonth();
         const monthName = date.toLocaleString(locale, { month: 'short' });
+
+        const start = startOfMonth(date);
+        const end = endOfMonth(start);
+
         filters.push({
             key: 'm' + month,
             // label: `Month.${month}`,
             text: monthName,
             type: DateFilterType.Month,
-            value: month,
+            range: { start, end },
         });
     }
 
@@ -177,11 +151,15 @@ function getYearFilters(locale: string, count: number) {
     for (let i = 0; i < count; i++) {
         const date = subYears(now, i);
         const year = date.getFullYear();
+
+        const start = startOfYear(date);
+        const end = endOfYear(start);
+
         filters.push({
             key: 'y' + year,
             text: `${year}`,
             type: DateFilterType.Year,
-            value: year,
+            range: { start, end },
         });
     }
 

@@ -9,12 +9,12 @@ export enum DateFilterType {
 export interface DateFilter {
     key: string;
     type: DateFilterType | `${DateFilterType}`;
-    value: number;
+    range?: DateRange;
     label?: string;
     text?: string;
 }
 
 export interface DateRange {
-    start: string;
-    end: string;
+    start: Date;
+    end: Date;
 }

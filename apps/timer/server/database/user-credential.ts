@@ -1,10 +1,10 @@
 import {
   boolean,
   integer,
-  json,
+  jsonb,
   pgTable,
+  primaryKey,
   text,
-  unique,
   uuid,
 } from 'drizzle-orm/pg-core';
 
@@ -20,7 +20,7 @@ export const userCredentials = pgTable(
     publicKey: text('public_key').notNull(),
     counter: integer('counter').notNull(),
     backedUp: boolean('backed_up').notNull(),
-    transports: json('transports').notNull().$type<object[]>(),
+    transports: jsonb('transports').notNull().$type<object[]>(),
   },
-  (table) => [unique().on(table.userId, table.id)]
+  (table) => [primaryKey({ columns: [table.userId, table.id] })]
 );

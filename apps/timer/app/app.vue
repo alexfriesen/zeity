@@ -34,6 +34,8 @@ useHead({
 
   <Head>
     <Title>zeity</Title>
+
+    <Link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </Head>
 
   <UApp :locale="uiLocale">

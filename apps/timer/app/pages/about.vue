@@ -6,10 +6,14 @@ const config = useRuntimeConfig();
     <UContainer class="my-3 space-y-6">
 
         <div>
+            <div class="text-center">
+                <Logo size="lg" />
+            </div>
+
             <p class="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ui-primary)]">
                 {{ $t('about.title') }}
             </p>
-            <p class="text-center">
+            <p class="text-center text-pretty">
                 {{ $t('about.description') }}
             </p>
         </div>

@@ -1,6 +1,6 @@
 # Zeity
 
-Zeity is a productivity app focused on time tracking, managing projects and getting things done.
+Zeity is a time tracking app with a focus on UX.
 
 > [!IMPORTANT]
 > 

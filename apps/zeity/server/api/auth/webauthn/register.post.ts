@@ -34,6 +34,13 @@ export default defineWebAuthnRegisterEventHandler({
         });
       });
 
+    if (!dbUser) {
+      throw createError({
+        statusCode: 400,
+        message: 'User already exists',
+      });
+    }
+
     await db.insert(userCredentials).values({
       id: credential.id,
       userId: dbUser.id,

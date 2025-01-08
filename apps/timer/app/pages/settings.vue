@@ -157,7 +157,7 @@ async function handleImport(event: Event) {
         <FieldSet :label="$t('settings.data')">
 
             <div class="flex gap-3">
-                <input ref="fileprompt" hidden type="file" accept="application/json" @change="handleImport" />
+                <input ref="fileprompt" hidden type="file" accept="application/json" @change="handleImport" >
                 <UButton :label="$t('settings.import')" block color="neutral" variant="subtle"
                     icon="i-lucide-hard-drive-download" @click="filePrompt?.click()" />
 

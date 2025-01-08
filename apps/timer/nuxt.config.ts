@@ -32,6 +32,12 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
   icon: {
+    customCollections: [
+      {
+        prefix: 'zeity',
+        dir: './public/icons'
+      },
+    ],
     clientBundle: {
       scan: true,
     },

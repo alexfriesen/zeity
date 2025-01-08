@@ -13,7 +13,8 @@ export const users = pgTable(
   {
     id: uuid('id').defaultRandom().notNull().primaryKey(),
 
-    name: varchar('name', { length: 150 }).notNull(),
+    userName: varchar('user_name', { length: 150 }).notNull().unique(),
+    displayName: varchar('display_name', { length: 150 }).notNull(),
 
     email: text('email').notNull().unique(),
     emailVerified: timestamp('email_verified', {

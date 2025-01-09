@@ -7,7 +7,7 @@ const config = useRuntimeConfig();
 
         <div>
             <div class="text-center">
-                <Logo size="lg" />
+                <AppLogo size="lg" />
             </div>
 
             <p class="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ui-primary)]">

@@ -1,6 +1,6 @@
 <template>
     <div :class="$attrs.class">
-        <UNavigationMenu orientation="vertical" :items="verticalMenu" class="hidden md:block m-4" />
+        <UNavigationMenu orientation="vertical" :items="verticalMenu" class="hidden md:block m-4 min-w-44" />
         <UNavigationMenu orientation="horizontal" :items="horizontalMenu" class="md:hidden justify-evenly"
             :ui="{ linkLeadingIcon: 'size-8' }" />
 

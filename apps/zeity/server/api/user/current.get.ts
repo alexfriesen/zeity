@@ -2,11 +2,9 @@ import { eq } from '../../utils/drizzle';
 import { users } from '../../database/user';
 
 export default defineEventHandler(async (event) => {
-  const db = useDrizzle();
-
   const session = await requireUserSession(event);
 
-  const user = await db
+  const user = await useDrizzle()
     .select()
     .from(users)
     .where(eq(users.id, session.user.id))

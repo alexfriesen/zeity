@@ -8,15 +8,12 @@ definePageMeta({
 
 const toast = useToast()
 const { fetch } = useUserSession()
-const { register, authenticate } = useWebAuthn({
-    registerEndpoint: '/api/auth/webauthn/register',
-    authenticateEndpoint: '/api/auth/webauthn/authenticate',
-})
+const { register, authenticate } = useWebAuthn()
 
 const registerSchema = z.object({
+    email: z.string().email().min(1).toLowerCase().trim(),
     userName: z.string().min(1).toLowerCase().trim(),
     displayName: z.string().min(1).trim(),
-    email: z.string().email().min(1).toLowerCase().trim(),
 });
 type RegisterSchema = z.output<typeof registerSchema>
 const registerState = ref<Partial<RegisterSchema>>({
@@ -25,9 +22,7 @@ const registerState = ref<Partial<RegisterSchema>>({
     email: ''
 });
 
-const authSchema = z.object({
-    userName: z.string().min(1).trim(),
-});
+const authSchema = registerSchema.pick({ userName: true });
 type AuthSchema = z.output<typeof authSchema>
 const authState = ref<Partial<AuthSchema>>({
     userName: '',
@@ -99,5 +94,4 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
             </div>
         </UCard>
     </UContainer>
-
 </template>

@@ -17,12 +17,11 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       statusCode: 400,
-      message: 'Invalid body',
+      message: 'Invalid request body',
     });
   }
 
-  const db = useDrizzle();
-  const user = await db
+  const user = await useDrizzle()
     .update(users)
     .set(body.data)
     .where(eq(users.id, session.user.id))

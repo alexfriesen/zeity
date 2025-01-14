@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-time',
     'nuxt-security',
+    'nuxt-auth-utils',
   ],
   i18n: {
     strategy: 'no_prefix',
@@ -45,6 +46,9 @@ export default defineNuxtConfig({
   },
   colorMode: {
     storageKey: 'zeity-color-mode',
+  },
+  auth: {
+    webAuthn: true,
   },
   routeRules: {
     '**': {

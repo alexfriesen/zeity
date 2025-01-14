@@ -1,4 +1,5 @@
-export { sessions } from './session';
+export { authChallenge } from './auth-challenge';
+
 export { users } from './user';
 export { userCredentials } from './user-credential';
 

@@ -154,8 +154,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                 </UFormField>
 
                 <UFormField :label="$t('times.form.project')" name="projectId">
-                    <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full"
-                        :ui="{ content: 'pointer-events-auto' }" />
+                    <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full" />
                 </UFormField>
 
                 <UFormField :label="$t('times.form.notes')" name="notes">

@@ -1,7 +1,16 @@
-import { users } from '../../../database/user';
-import { userCredentials } from '../../../database/user-credential';
+import { users } from '../../database/user';
+import { userCredentials } from '../../database/user-credential';
+import { getChallenge, storeChallenge } from '../../utils/webauthn';
 
 export default defineWebAuthnAuthenticateEventHandler({
+  storeChallenge(event, challenge, attemptId) {
+    return storeChallenge(challenge, attemptId);
+  },
+
+  getChallenge(event, attemptId) {
+    return getChallenge(attemptId);
+  },
+
   async allowCredentials(event, userName) {
     const user = await useDrizzle()
       .select({ credentials: userCredentials })

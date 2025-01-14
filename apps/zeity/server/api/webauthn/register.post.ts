@@ -1,9 +1,18 @@
 import { z } from 'zod';
 
-import { users } from '../../../database/user';
-import { userCredentials } from '../../../database/user-credential';
+import { users } from '../../database/user';
+import { userCredentials } from '../../database/user-credential';
+import { getChallenge, storeChallenge } from '../../utils/webauthn';
 
 export default defineWebAuthnRegisterEventHandler({
+  storeChallenge(event, challenge, attemptId) {
+    return storeChallenge(challenge, attemptId);
+  },
+
+  getChallenge(event, attemptId) {
+    return getChallenge(attemptId);
+  },
+
   validateUser: (user) =>
     z
       .object({

@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-time',
     'nuxt-security',
+    'nuxt-auth-utils',
   ],
   i18n: {
     strategy: 'no_prefix',
@@ -46,14 +47,23 @@ export default defineNuxtConfig({
   colorMode: {
     storageKey: 'zeity-color-mode',
   },
+  auth: {
+    webAuthn: true,
+  },
   routeRules: {
     '**': {
       prerender: true,
     },
   },
   runtimeConfig: {
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     public: {
       version: packageJson.version || '0.0.0',
+    }
+  },
+  nitro: {
+    experimental: {
+      tasks: true,
     }
   },
   devtools: { enabled: true },

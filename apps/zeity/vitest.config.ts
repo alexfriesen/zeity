@@ -14,7 +14,7 @@ export default defineVitestConfig({
             enabled: true,
             provider: 'v8',
         },
-        include: ['apps/timer/test/**/*.(test|spec).ts'],
+        include: ['apps/zeity/test/**/*.(test|spec).ts'],
     }
     // any custom Vitest config you require
 })

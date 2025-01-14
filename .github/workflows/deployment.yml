@@ -21,12 +21,12 @@ jobs:
 
       - name: Install and Build
         run: |
-          pnpm --filter ./apps/timer/ generate:gh
+          pnpm --filter ./apps/zeity/ generate:gh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./apps/timer/.output/public
+          path: ./apps/zeity/.output/public
 
   deploy:
     # Add a dependency to the build job

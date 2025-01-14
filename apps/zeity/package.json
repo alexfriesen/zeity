@@ -1,5 +1,5 @@
 {
-  "name": "@zeity/timer",
+  "name": "zeity",
   "private": true,
   "type": "module",
   "scripts": {

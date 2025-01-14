@@ -16,9 +16,8 @@ export default defineWebAuthnRegisterEventHandler({
   validateUser: (user) =>
     z
       .object({
-        userName: z.string().min(1).toLowerCase().trim(),
+        userName: z.string().email().min(1).toLowerCase().trim(),
         displayName: z.string().min(1).trim(),
-        email: z.string().email().min(1).toLowerCase().trim(),
       })
       .parseAsync(user),
 
@@ -28,11 +27,14 @@ export default defineWebAuthnRegisterEventHandler({
     const dbUser = await db
       .insert(users)
       .values({
-        userName: user.userName,
-        displayName: user.displayName,
-        email: user.email,
+        name: user.displayName,
+        email: user.userName,
       })
-      .returning()
+      .returning({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+      })
       .then((rows) => rows[0])
       .catch((e) => {
         console.error(e);
@@ -62,11 +64,13 @@ export default defineWebAuthnRegisterEventHandler({
     await setUserSession(event, {
       user: {
         id: dbUser.id,
-        userName: dbUser.userName,
+        name: dbUser.name,
+        email: dbUser.email,
       },
     });
   },
-  async excludeCredentials(event, userName) {
+
+  async excludeCredentials(event, username) {
     return useDrizzle()
       .select({
         id: userCredentials.id,
@@ -74,6 +78,6 @@ export default defineWebAuthnRegisterEventHandler({
       })
       .from(users)
       .innerJoin(userCredentials, eq(userCredentials.userId, users.id))
-      .where(eq(users.userName, userName.toLowerCase().trim()));
+      .where(eq(users.email, username.toLowerCase().trim()));
   },
 });

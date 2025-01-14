@@ -12,24 +12,25 @@ const { register, authenticate } = useWebAuthn()
 
 const registerSchema = z.object({
     email: z.string().email().min(1).toLowerCase().trim(),
-    userName: z.string().min(1).toLowerCase().trim(),
-    displayName: z.string().min(1).trim(),
+    name: z.string().min(1).trim(),
 });
 type RegisterSchema = z.output<typeof registerSchema>
 const registerState = ref<Partial<RegisterSchema>>({
-    userName: '',
-    displayName: '',
+    name: '',
     email: ''
 });
 
-const authSchema = registerSchema.pick({ userName: true });
+const authSchema = registerSchema.pick({ email: true });
 type AuthSchema = z.output<typeof authSchema>
 const authState = ref<Partial<AuthSchema>>({
-    userName: '',
+    email: '',
 });
 
 async function signUp(event: FormSubmitEvent<RegisterSchema>) {
-    await register(event.data)
+    await register({
+        userName: event.data.email,
+        displayName: event.data.name,
+    })
         .then(fetch)
         .then(async () => await navigateTo('/user'))
         .catch((error) => {
@@ -42,7 +43,7 @@ async function signUp(event: FormSubmitEvent<RegisterSchema>) {
 }
 
 async function signIn(event: FormSubmitEvent<AuthSchema>) {
-    await authenticate(event.data.userName)
+    await authenticate(event.data.email)
         .then(fetch)
         .then(async () => await navigateTo('/user'))
         .catch((error) => {
@@ -67,17 +68,14 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
             <div class="flex flex-col gap-2 justify-between">
                 <UForm class="flex flex-col gap-2" :schema="registerSchema" :state="registerState"
                     @submit.prevent="signUp">
-                    <UFormField label="Username" required>
-                        <UInput v-model="registerState.userName" name="userName" class="w-full" />
+                    <UFormField label="Email" required>
+                        <UInput v-model="registerState.email" type="email" name="email" class="w-full" />
                     </UFormField>
 
                     <UFormField label="Full Name" required>
-                        <UInput v-model="registerState.displayName" name="displayName" class="w-full" />
+                        <UInput v-model="registerState.name" name="name" class="w-full" />
                     </UFormField>
 
-                    <UFormField label="Email" required>
-                        <UInput v-model="registerState.email" name="email" class="w-full" />
-                    </UFormField>
 
                     <UButton block type="submit" label="Sign up" />
                 </UForm>
@@ -85,8 +83,8 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
                 <USeparator orientation="vertical" label="or" />
 
                 <UForm class="flex flex-col gap-2" :schema="authSchema" :state="authState" @submit.prevent="signIn">
-                    <UFormField label="Username" required>
-                        <UInput v-model="authState.userName" name="userName" class="w-full" />
+                    <UFormField label="Email" required>
+                        <UInput v-model="authState.email" type="email" name="email" class="w-full" />
                     </UFormField>
 
                     <UButton block type="submit" label="Sign in" />

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const schema = z
     .object({
-      displayName: z.string().min(1).trim(),
+      name: z.string().min(1).trim(),
     })
     .partial();
 
@@ -25,7 +25,12 @@ export default defineEventHandler(async (event) => {
     .update(users)
     .set(body.data)
     .where(eq(users.id, session.user.id))
-    .returning()
+    .returning({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      emailVerified: users.emailVerified,
+    })
     .then((rows) => rows[0]);
 
   return {

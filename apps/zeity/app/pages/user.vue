@@ -11,11 +11,11 @@ const { clear } = useUserSession()
 const { data } = await useFetch('/api/user/current')
 
 const userSchema = z.object({
-    displayName: z.string().min(1).trim(),
+    name: z.string().min(1).trim(),
 });
 type UserSchema = z.output<typeof userSchema>
 const userState = ref<Partial<UserSchema>>({
-    displayName: data.value?.user?.displayName ?? '',
+    name: data.value?.user?.name ?? '',
 });
 
 function updateUser(event: FormSubmitEvent<UserSchema>) {
@@ -78,7 +78,7 @@ async function deleteUser() {
 
             <UForm class="flex flex-col gap-2" :schema="userSchema" :state="userState" @submit.prevent="updateUser">
                 <UFormField label="Full Name" required>
-                    <UInput v-model="userState.displayName" name="displayName" class="w-full" />
+                    <UInput v-model="userState.name" name="name" class="w-full" />
                 </UFormField>
 
                 <UButton block type="submit" label="Save" />

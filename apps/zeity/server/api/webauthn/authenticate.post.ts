@@ -11,12 +11,12 @@ export default defineWebAuthnAuthenticateEventHandler({
     return getChallenge(attemptId);
   },
 
-  async allowCredentials(event, userName) {
+  async allowCredentials(event, username) {
     const user = await useDrizzle()
       .select({ credentials: userCredentials })
       .from(users)
       .rightJoin(userCredentials, eq(userCredentials.userId, users.id))
-      .where(eq(tables.users.userName, userName));
+      .where(eq(users.email, username));
 
     return user.map((item) => item.credentials) || [];
   },
@@ -51,7 +51,8 @@ export default defineWebAuthnAuthenticateEventHandler({
     await setUserSession(event, {
       user: {
         id: credential.user.id,
-        userName: credential.user.userName,
+        name: credential.user.name,
+        email: credential.user.email,
       },
     });
   },

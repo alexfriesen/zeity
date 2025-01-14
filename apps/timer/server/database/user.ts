@@ -3,8 +3,8 @@ import {
   pgTable,
   uuid,
   varchar,
-  boolean,
   uniqueIndex,
+  timestamp,
 } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 
@@ -14,13 +14,12 @@ export const users = pgTable(
     id: uuid('id').defaultRandom().notNull().primaryKey(),
 
     name: varchar('name', { length: 150 }).notNull(),
-    description: text('description').notNull().default(''),
 
     email: text('email').notNull().unique(),
-    emailVerified: boolean('email_verified').notNull().default(false),
-
-    passwordHash: text('password_hash').notNull(),
-    passwordSalt: text('password_salt').notNull(),
+    emailVerified: timestamp('email_verified', {
+      mode: 'date',
+      withTimezone: true,
+    }),
 
     ...timestampColumns(),
   },

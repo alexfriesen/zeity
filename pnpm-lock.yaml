@@ -51,6 +51,9 @@ importers:
       drizzle-orm:
         specifier: ^0.38.3
         version: 0.38.3(@types/pg@8.11.10)(pg@8.13.1)
+      emailjs:
+        specifier: ^4.0.3
+        version: 4.0.3(typescript@5.7.3)
       pg:
         specifier: ^8.13.1
         version: 8.13.1
@@ -2819,6 +2822,15 @@ packages:
 
   electron-to-chromium@1.5.81:
     resolution: {integrity: sha512-SFsAz1hoR+u1eAWjofSPQnx0InE1QHGUAQ92pqYJPT8GARzmyP1zcEBDBxFFC6okJk2E94Ryfmib4DB8Sc6LBw==}
+
+  emailjs@4.0.3:
+    resolution: {integrity: sha512-1CDXoE3FxkSg7QRTlLsDCYG9elFNu/JQsYWu3Xfrk77ubbg5zYgFGg+JRUKQJ56mceM8o3rHHX0VB4wo9XsyLQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      typescript: '>=4.3.5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   embla-carousel-auto-height@8.5.2:
     resolution: {integrity: sha512-cWO35ThnVVr8kSS5zni/Ywf6gNSpROV8PgFTd/jfiQZ73Wd6SltugitVQ74kHfchLXMWXGQgHxmUg4Ya+r4axg==}
@@ -8580,6 +8592,10 @@ snapshots:
   ee-first@1.1.1: {}
 
   electron-to-chromium@1.5.81: {}
+
+  emailjs@4.0.3(typescript@5.7.3):
+    optionalDependencies:
+      typescript: 5.7.3
 
   embla-carousel-auto-height@8.5.2(embla-carousel@8.5.2):
     dependencies:

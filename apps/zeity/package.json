@@ -24,6 +24,7 @@
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.38.3",
+    "emailjs": "^4.0.3",
     "pg": "^8.13.1",
     "reka-ui": "1.0.0-alpha.6",
     "zod": "^3.24.1"

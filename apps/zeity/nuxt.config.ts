@@ -57,14 +57,21 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
+    mailer: {
+      from: 'Zeity <noreply@localhost>',
+      smtp: {
+        host: 'localhost',
+        port: 1025,
+      }
+    },
     public: {
       version: packageJson.version || '0.0.0',
-    }
+    },
   },
   nitro: {
     experimental: {
       tasks: true,
-    }
+    },
   },
   devtools: { enabled: true },
 });

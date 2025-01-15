@@ -10,5 +10,11 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
 
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
 volumes:
   pg-data:

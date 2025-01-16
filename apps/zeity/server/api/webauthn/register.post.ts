@@ -68,6 +68,14 @@ export default defineWebAuthnRegisterEventHandler({
         email: dbUser.email,
       },
     });
+
+    // TODO: Implement verification link
+    const verificationLink = undefined;
+    await useMailer().sendWelcomeMail(
+      dbUser.email,
+      dbUser.name,
+      verificationLink
+    );
   },
 
   async excludeCredentials(event, username) {

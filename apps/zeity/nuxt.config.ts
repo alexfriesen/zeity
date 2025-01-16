@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import vue from '@vitejs/plugin-vue'
 
 import packageJson from '../../package.json' with { type: 'json' }
 
@@ -71,6 +72,9 @@ export default defineNuxtConfig({
   nitro: {
     experimental: {
       tasks: true,
+    },
+    rollupConfig: {
+      plugins: [vue()],
     },
   },
   devtools: { enabled: true },

@@ -1,6 +1,8 @@
 import { SMTPClient } from 'emailjs';
 import consola from 'consola';
 
+import { useMailTemplate } from './mail-template';
+
 type MailTo = string | string[];
 type MailContent =
   | { html?: string; text: string }
@@ -32,6 +34,7 @@ async function sendMail(options: SendMailOptions) {
   const to = parseMailTo(options.to);
 
   if (!to) {
+    logger.warn('Could not wend mail: No recipient specified', options.subject);
     throw new Error('No recipient specified');
   }
 
@@ -53,7 +56,25 @@ async function sendMail(options: SendMailOptions) {
       logger.error(e);
     });
 
-  logger.log('Message sent: %s', info);
+  logger.debug('Message sent: %s', info);
+}
+
+async function sendWelcomeMail(
+  to: string,
+  name: string,
+  verificationLink?: string
+) {
+  const { html, text } = await useMailTemplate().renderWelcomeMail({
+    name,
+    verificationLink,
+  });
+
+  return sendMail({
+    to: `${name} <${to}>`,
+    subject: 'Welcome to zeity',
+    html,
+    text,
+  });
 }
 
 export function useMailer() {
@@ -61,5 +82,6 @@ export function useMailer() {
 
   return {
     sendMail,
+    sendWelcomeMail,
   };
 }

@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import vue from '@vitejs/plugin-vue'
 
 import packageJson from '../../package.json' with { type: 'json' }
 
@@ -57,14 +58,24 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
+    mailer: {
+      from: 'Zeity <noreply@localhost>',
+      smtp: {
+        host: 'localhost',
+        port: 1025,
+      }
+    },
     public: {
       version: packageJson.version || '0.0.0',
-    }
+    },
   },
   nitro: {
     experimental: {
       tasks: true,
-    }
+    },
+    rollupConfig: {
+      plugins: [vue()],
+    },
   },
   devtools: { enabled: true },
 });

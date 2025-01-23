@@ -32,7 +32,9 @@ async function signUp(event: FormSubmitEvent<RegisterSchema>) {
         displayName: event.data.name,
     })
         .then(fetch)
-        .then(async () => await navigateTo('/user'))
+        .then(async () => {
+            return useAuthRedirect().apply() ?? navigateTo('/user');
+        })
         .catch((error) => {
             toast.add({
                 title: error.data?.message || error.message,
@@ -45,7 +47,9 @@ async function signUp(event: FormSubmitEvent<RegisterSchema>) {
 async function signIn(event: FormSubmitEvent<AuthSchema>) {
     await authenticate(event.data.email)
         .then(fetch)
-        .then(async () => await navigateTo('/user'))
+        .then(async () => {
+            return useAuthRedirect().apply() ?? navigateTo('/user');
+        })
         .catch((error) => {
             toast.add({
                 title: error.data?.message || error.message,
@@ -69,7 +73,8 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
                 <UForm class="flex flex-col gap-2" :schema="registerSchema" :state="registerState"
                     @submit.prevent="signUp">
                     <UFormField :label="$t('user.email')" required>
-                        <UInput v-model="registerState.email" type="email" name="email" class="w-full" />
+                        <UInput v-model="registerState.email" type="email" name="email" autocomplete="username webauthn"
+                            class="w-full" />
                     </UFormField>
 
                     <UFormField :label="$t('user.name')" required>
@@ -84,7 +89,8 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
 
                 <UForm class="flex flex-col gap-2" :schema="authSchema" :state="authState" @submit.prevent="signIn">
                     <UFormField :label="$t('user.email')" required>
-                        <UInput v-model="authState.email" type="email" name="email" class="w-full" />
+                        <UInput v-model="authState.email" type="email" name="email" autocomplete="username webauthn"
+                            class="w-full" />
                     </UFormField>
 
                     <UButton block type="submit" :label="$t('auth.login')" />

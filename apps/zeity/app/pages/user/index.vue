@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 definePageMeta({
     middleware: 'auth'
 })
@@ -13,6 +12,23 @@ const { user, loading } = storeToRefs(userStore);
 
 function logout() {
     clear().finally(async () => navigateTo('/auth'))
+}
+
+async function resendVerificationEmail() {
+    await $fetch('/api/user/resend-verification', {
+        method: 'POST',
+    }).then(() => {
+        toast.add({
+            color: 'success',
+            title: t('user.verificationEmailSent'),
+        })
+    }).catch((error) => {
+        console.error(error)
+        toast.add({
+            color: 'error',
+            title: t('user.verificationEmailError'),
+        })
+    })
 }
 
 async function deleteUser() {
@@ -51,7 +67,12 @@ async function deleteUser() {
                 </h3>
             </template>
 
-            
+            <UAlert v-if="user && !user.emailVerified" icon="i-lucide-circle-alert" color="info"
+                title="Verify your email!" description="You need to verify your email to access all features."
+                class="mb-4" :actions="[
+                    { label: $t('user.resendVerification'), icon: 'i-lucide-send', onClick: resendVerificationEmail },
+                ]" />
+
             <UserForm v-model="user" :loading="loading" />
 
             <USeparator class="my-4" />

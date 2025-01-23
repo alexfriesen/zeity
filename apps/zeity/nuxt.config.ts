@@ -51,11 +51,6 @@ export default defineNuxtConfig({
   auth: {
     webAuthn: true,
   },
-  routeRules: {
-    '**': {
-      prerender: true,
-    },
-  },
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     mailer: {

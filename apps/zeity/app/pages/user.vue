@@ -1,40 +1,15 @@
 <script setup lang="ts">
-import { z } from 'zod';
-import type { FormSubmitEvent } from '@nuxt/ui';
 
 definePageMeta({
     middleware: 'auth'
 })
 
+const { t } = useI18n()
 const toast = useToast()
+const userStore = useUserStore()
 const { clear } = useUserSession()
-const { data } = await useFetch('/api/user/current')
 
-const userSchema = z.object({
-    name: z.string().min(1).trim(),
-});
-type UserSchema = z.output<typeof userSchema>
-const userState = ref<Partial<UserSchema>>({
-    name: data.value?.user?.name ?? '',
-});
-
-function updateUser(event: FormSubmitEvent<UserSchema>) {
-    $fetch('/api/user/current', {
-        method: 'PATCH',
-        body: event.data,
-    }).then(() => {
-        toast.add({
-            color: 'success',
-            title: 'User updated successfully',
-        })
-    }).catch((error) => {
-        console.error(error)
-        toast.add({
-            color: 'error',
-            title: 'Failed to update user',
-        })
-    })
-}
+const { user, loading } = storeToRefs(userStore);
 
 function logout() {
     clear().finally(async () => navigateTo('/auth'))
@@ -53,7 +28,7 @@ async function deleteUser() {
     }).then(async () => {
         toast.add({
             color: 'success',
-            title: 'User deleted successfully',
+            title: t('user.deleteSuccess'),
         })
         await clear()
         await navigateTo('/auth')
@@ -61,7 +36,7 @@ async function deleteUser() {
         console.error(error)
         toast.add({
             color: 'error',
-            title: 'Failed to delete user',
+            title: t('user.deleteError'),
         })
     })
 }
@@ -72,27 +47,22 @@ async function deleteUser() {
         <UCard class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">
-                    User
+                    {{ $t('user.title') }}
                 </h3>
             </template>
 
-            <UForm class="flex flex-col gap-2" :schema="userSchema" :state="userState" @submit.prevent="updateUser">
-                <UFormField label="Full Name" required>
-                    <UInput v-model="userState.name" name="name" class="w-full" />
-                </UFormField>
-
-                <UButton block type="submit" label="Save" />
-            </UForm>
+            
+            <UserForm v-model="user" :loading="loading" />
 
             <USeparator class="my-4" />
 
             <div class="flex flex-col gap-2 justify-between">
                 <UButton color="warning" block @click="logout">
-                    Logout
+                    {{ $t('auth.logout') }}
                 </UButton>
 
                 <UButton color="warning" block @click="deleteUser">
-                    Delete Account
+                    {{ $t('user.delete') }}
                 </UButton>
             </div>
         </UCard>

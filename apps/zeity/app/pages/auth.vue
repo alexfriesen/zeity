@@ -61,33 +61,33 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
         <UCard class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">
-                    Auth
+                    {{ $t('auth.title') }}
                 </h3>
             </template>
 
             <div class="flex flex-col gap-2 justify-between">
                 <UForm class="flex flex-col gap-2" :schema="registerSchema" :state="registerState"
                     @submit.prevent="signUp">
-                    <UFormField label="Email" required>
+                    <UFormField :label="$t('user.email')" required>
                         <UInput v-model="registerState.email" type="email" name="email" class="w-full" />
                     </UFormField>
 
-                    <UFormField label="Full Name" required>
+                    <UFormField :label="$t('user.name')" required>
                         <UInput v-model="registerState.name" name="name" class="w-full" />
                     </UFormField>
 
 
-                    <UButton block type="submit" label="Sign up" />
+                    <UButton block type="submit" :label="$t('auth.register')" />
                 </UForm>
 
                 <USeparator orientation="vertical" label="or" />
 
                 <UForm class="flex flex-col gap-2" :schema="authSchema" :state="authState" @submit.prevent="signIn">
-                    <UFormField label="Email" required>
+                    <UFormField :label="$t('user.email')" required>
                         <UInput v-model="authState.email" type="email" name="email" class="w-full" />
                     </UFormField>
 
-                    <UButton block type="submit" label="Sign in" />
+                    <UButton block type="submit" :label="$t('auth.login')" />
                 </UForm>
             </div>
         </UCard>

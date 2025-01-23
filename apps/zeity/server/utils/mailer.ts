@@ -77,11 +77,32 @@ async function sendWelcomeMail(
   });
 }
 
+async function sendMessageMail(
+  to: string,
+  subject: string,
+  messages: string[],
+  link?: { text: string; url: string }
+) {
+  const { html, text } = await useMailTemplate().renderMessageMail({
+    subject,
+    messages,
+    link,
+  });
+
+  return sendMail({
+    to,
+    subject,
+    html,
+    text,
+  });
+}
+
 export function useMailer() {
   client ??= new SMTPClient(useRuntimeConfig().mailer.smtp);
 
   return {
     sendMail,
+    sendMessageMail,
     sendWelcomeMail,
   };
 }

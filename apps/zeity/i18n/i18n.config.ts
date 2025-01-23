@@ -96,6 +96,9 @@ export default defineI18nConfig(() => ({
         delete: 'Delete User',
         deleteSuccess: 'User deleted successfully',
         deleteError: 'Error deleting user',
+        resendVerification: 'Resend Verification',
+        resendVerificationSuccess: 'Verification resent successfully',
+        resendVerificationError: 'Error resending verification',
       },
       auth: {
         title: 'Authentication',
@@ -174,6 +177,9 @@ export default defineI18nConfig(() => ({
         delete: 'Benutzer löschen',
         deleteSuccess: 'Benutzer erfolgreich gelöscht',
         deleteError: 'Fehler beim Löschen des Benutzers',
+        resendVerification: 'Verifizierung erneut senden',
+        resendVerificationSuccess: 'Verifizierung erneut gesendet',
+        resendVerificationError: 'Fehler beim Senden der Verifizierung',
       },
       auth: {
         title: 'Authentifizierung',

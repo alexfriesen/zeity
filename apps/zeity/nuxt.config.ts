@@ -51,8 +51,18 @@ export default defineNuxtConfig({
   auth: {
     webAuthn: true,
   },
+  routeRules: {
+    '/user/verify': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 3,
+          interval: 10000,
+        },
+      }
+    },
+  },
   runtimeConfig: {
-    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity', 
     mailer: {
       from: 'Zeity <noreply@localhost>',
       smtp: {
@@ -60,6 +70,7 @@ export default defineNuxtConfig({
         port: 1025,
       }
     },
+    jwtSecret: 'supersecret',
     public: {
       version: packageJson.version || '0.0.0',
     },

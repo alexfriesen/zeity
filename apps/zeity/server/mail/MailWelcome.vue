@@ -29,7 +29,7 @@ defineProps({
             To get started, please verify your email address by clicking the button below:
         </Text>
         <Section v-if="verificationLink" class="text-center">
-            <Button v-if="verificationLink" :href="verificationLink"
+            <Button v-if="verificationLink" :href="verificationLink" referrerpolicy="strict-origin"
                 class="rounded-md font-medium inline-flex items-center focus:outline-hidden transition-colors px-2.5 py-1.5 m-auto text-sm gap-1.5 justify-center text-text bg-primary-400 hover:bg-primary/75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
                 Verify Your Account
             </Button>

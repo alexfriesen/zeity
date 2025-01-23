@@ -2,6 +2,7 @@ import { type ExtractComponentProps, render } from '@vue-email/render';
 import type { Component } from 'vue';
 
 import MailWelcome from '../mail/MailWelcome.vue';
+import MailMessage from '../mail/MailMessage.vue';
 
 async function renderVueMail<T extends Component>(
   component: T,
@@ -22,9 +23,14 @@ function renderWelcomeMail(props: ExtractComponentProps<typeof MailWelcome>) {
   return renderVueMail(MailWelcome, props);
 }
 
+function renderMessageMail(props: ExtractComponentProps<typeof MailMessage>) {
+  return renderVueMail(MailMessage, props);
+}
+
 export function useMailTemplate() {
   return {
     renderVueMail,
+    renderMessageMail,
     renderWelcomeMail,
   };
 }

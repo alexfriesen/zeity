@@ -1,4 +1,4 @@
-import { authChallenge } from '../database/auth-challenge';
+import { authChallenge } from '@zeity/database/auth-challenge';
 
 export async function storeChallenge(
   challenge: string,

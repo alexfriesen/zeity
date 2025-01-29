@@ -1,7 +1,7 @@
 import { index, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
-import { users } from './user';
 import { organisations } from './organisation';
+import { users } from './user';
 
 export const projects = pgTable(
   'project',

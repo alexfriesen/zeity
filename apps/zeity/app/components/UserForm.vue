@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { User } from '~/types/user';
+import type { User } from '@zeity/types/user';
 
 const props = defineProps({
     loading: {
@@ -59,11 +59,14 @@ function updateUser(event: FormSubmitEvent<UserSchema>) {
             <USkeleton class="h-8 w-full" />
         </div>
         <UForm v-else class="flex flex-col gap-2" :schema="userSchema" :state="userState" @submit.prevent="updateUser">
+            <UFormField :label="$t('user.email')" required loading>
+                <UInput :value="user?.email" disabled readonly class="w-full" />
+            </UFormField>
             <UFormField :label="$t('user.name')" required>
                 <UInput v-model="userState.name" name="name" class="w-full" />
             </UFormField>
 
-            <UButton :disabled="isLoading" block type="submit" :label="$t('common.save')" />
+            <UButton :disabled="isLoading" :label="$t('common.save')" block type="submit" />
         </UForm>
     </div>
 </template>

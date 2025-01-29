@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 import { timeDiff } from '@zeity/utils/date';
 import { useEntityStore } from './entityStore';
-import type { DraftTime, Time } from '../types/time';
+import type { DraftTime, Time } from '@zeity/types/time';
 import useLocalStorage from '~/utils/localstorage';
 
 export const useTimerStore = defineStore('timer', () => {
@@ -28,11 +28,11 @@ export const useTimerStore = defineStore('timer', () => {
         console.warn('Draft is not started');
       }
       return draft.value;
-    };
+    }
 
     draft.value = {
       ...draft.value,
-      ...data
+      ...data,
     };
 
     return draft;
@@ -42,7 +42,7 @@ export const useTimerStore = defineStore('timer', () => {
       start: new Date().toISOString(),
       notes: '',
       ...time,
-    }
+    };
     setDraft(newDraft);
 
     return newDraft;
@@ -55,7 +55,12 @@ export const useTimerStore = defineStore('timer', () => {
     const end = new Date();
     const duration = timeDiff(end, start);
 
-    const time = { id: nanoid(), end: end.toISOString(), duration, ...draftValue };
+    const time = {
+      id: nanoid(),
+      end: end.toISOString(),
+      duration,
+      ...draftValue,
+    };
 
     insertTime(time);
     resetDraft();
@@ -74,7 +79,8 @@ export const useTimerStore = defineStore('timer', () => {
 
   function upsertTimes(times: Time[]) {
     const enhancedTimes = times.map((time) => {
-      const duration = time.duration ?? timeDiff(time.end || new Date(), time.start);
+      const duration =
+        time.duration ?? timeDiff(time.end || new Date(), time.start);
       return { ...time, duration };
     });
 
@@ -82,8 +88,9 @@ export const useTimerStore = defineStore('timer', () => {
   }
 
   function insertTime(time: Time) {
-    const duration = time.duration ?? timeDiff(time.end || new Date(), time.start);
-    return timesStore.insert({ ...time, duration })
+    const duration =
+      time.duration ?? timeDiff(time.end || new Date(), time.start);
+    return timesStore.insert({ ...time, duration });
   }
 
   function updateTime(id: string, time: Partial<Time>) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { calculateDiffSum, formatDuration } from '@zeity/utils/date';
-import type { ProjectStatus } from '~/types/project';
+import type { ProjectStatus } from '@zeity/types/project';
 
 const route = useRoute()
 const router = useRouter()

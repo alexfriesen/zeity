@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "module": "esnext",
+    "types": ["node", "vitest"]
+  },
+  "files": ["src/index.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "../../node_modules"]
+}

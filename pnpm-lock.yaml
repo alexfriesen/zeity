@@ -48,6 +48,12 @@ importers:
       '@vue-email/render':
         specifier: ^0.0.9
         version: 0.0.9(typescript@5.7.3)
+      '@zeity/database':
+        specifier: workspace:^
+        version: link:../../libs/database
+      '@zeity/types':
+        specifier: workspace:^
+        version: link:../../libs/types
       '@zeity/utils':
         specifier: workspace:*
         version: link:../../libs/utils
@@ -63,9 +69,6 @@ importers:
       jose:
         specifier: ^5.9.6
         version: 5.9.6
-      pg:
-        specifier: ^8.13.2
-        version: 8.13.2
       reka-ui:
         specifier: 1.0.0-alpha.6
         version: 1.0.0-alpha.6(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
@@ -91,9 +94,6 @@ importers:
       '@nuxtjs/i18n':
         specifier: ^9.2.0
         version: 9.2.0(@vue/compiler-dom@3.5.13)(eslint@9.20.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.34.6)(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
-      '@types/pg':
-        specifier: ^8.11.11
-        version: 8.11.11
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
         version: 5.2.1(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.38.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
@@ -124,6 +124,58 @@ importers:
       vue-tsc:
         specifier: ^2.2.0
         version: 2.2.0(typescript@5.7.3)
+
+  libs/database:
+    dependencies:
+      '@zeity/types':
+        specifier: workspace:^
+        version: link:../types
+      drizzle-orm:
+        specifier: ^0.39.3
+        version: 0.39.3(@types/pg@8.11.11)(pg@8.13.2)
+      pg:
+        specifier: ^8.13.2
+        version: 8.13.2
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.20.0
+        version: 9.20.0
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.13.1
+      '@types/pg':
+        specifier: ^8.11.11
+        version: 8.11.11
+      drizzle-kit:
+        specifier: ^0.30.4
+        version: 0.30.4
+      eslint:
+        specifier: ^9.20.0
+        version: 9.20.0(jiti@2.4.2)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.24.0
+        version: 8.24.0(eslint@9.20.0(jiti@2.4.2))(typescript@5.7.3)
+
+  libs/types:
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.20.0
+        version: 9.20.0
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.13.1
+      eslint:
+        specifier: ^9.20.0
+        version: 9.20.0(jiti@2.4.2)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.24.0
+        version: 8.24.0(eslint@9.20.0(jiti@2.4.2))(typescript@5.7.3)
 
   libs/utils:
     dependencies:

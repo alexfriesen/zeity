@@ -1,22 +1,19 @@
 import { createConsola } from 'consola';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import pg from 'pg';
 
-import * as schema from '../database/schema';
+import {
+  createDrizzle,
+  createDrizzleMigration,
+  createPool,
+} from '@zeity/database';
 
-export { sql, gte, lte, gt, lt, eq, and, or, asc, desc } from 'drizzle-orm';
-
-export const tables = schema;
+export { sql, gte, lte, gt, lt, eq, and, or, asc, desc } from '@zeity/database';
 
 const logger = createConsola({}).withTag('db');
 
-const pool = new pg.Pool({
-  connectionString: useRuntimeConfig().DATABASE_URL,
-});
+const pool = createPool(useRuntimeConfig().DATABASE_URL);
 
 export function useDrizzle() {
-  const db = drizzle({ client: pool, schema });
+  const db = createDrizzle(pool);
   return db;
 }
 
@@ -25,9 +22,7 @@ export function useDrizzleMigration() {
     async run() {
       try {
         if (import.meta.dev) {
-          await migrate(useDrizzle(), {
-            migrationsFolder: './server/database/migrations',
-          });
+          await createDrizzleMigration(pool, './server/database/migrations');
 
           logger.success('schema and db migrated');
         }

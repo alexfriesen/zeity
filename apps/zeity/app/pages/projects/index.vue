@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useProjectStore } from '~/stores/projectStore';
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED } from '~/types/project';
+import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED } from '@zeity/types/project';
 
 const showClosed = ref(false);
 

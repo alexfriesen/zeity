@@ -1,4 +1,4 @@
-import { users } from '~~/server/database/user';
+import { users } from '@zeity/database/user';
 import { useUserVerification } from '~~/server/utils/user-verification';
 
 export default defineEventHandler(async (event) => {
@@ -9,6 +9,14 @@ export default defineEventHandler(async (event) => {
     .from(users)
     .where(eq(users.id, session.user.id))
     .then((rows) => rows[0]);
+
+  if (!user) {
+    throw createError({
+      statusCode: 400,
+      message: 'User not found',
+    });
+  }
+
   if (user.emailVerified) {
     throw createError({
       statusCode: 400,

@@ -1,5 +1,5 @@
 export interface User {
-  id?: string;
+  readonly id?: string;
   name: string;
   email: string;
   emailVerified: string | Date | null;

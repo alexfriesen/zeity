@@ -1,0 +1,29 @@
+{
+  "name": "@zeity/database",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@zeity/types": "workspace:^",
+    "drizzle-orm": "^0.39.3",
+    "pg": "^8.13.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^22.13.1",
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.30.4",
+    "eslint": "^9.20.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
+  }
+}

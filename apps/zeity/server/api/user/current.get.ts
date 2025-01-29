@@ -1,5 +1,5 @@
-import { eq } from '../../utils/drizzle';
-import { users } from '../../database/user';
+import { eq } from '@zeity/database';
+import { users } from '@zeity/database/user';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);

@@ -1,6 +1,9 @@
 import { z } from 'zod';
-import { users } from '~~/server/database/user';
-import { useUserVerification } from '~~/server/utils/user-verification';
+import { users } from '@zeity/database/user';
+import {
+  isUserVerified,
+  useUserVerification,
+} from '~~/server/utils/user-verification';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -34,13 +37,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // check if email is already verified
-  const emailVerified = await useDrizzle()
-    .select({
-      emailVerified: users.emailVerified,
-    })
-    .from(users)
-    .where(eq(users.id, session.user.id))
-    .then((res) => res[0].emailVerified);
+  const emailVerified = await isUserVerified(session.user.id);
 
   if (emailVerified) {
     throw createError({

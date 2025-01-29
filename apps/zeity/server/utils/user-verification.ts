@@ -1,9 +1,18 @@
 import type { H3Event } from 'h3';
 import { SignJWT, jwtVerify } from 'jose';
 
+import { users } from '@zeity/database/user';
 import { JWT_ALGORITHM, useJwtSecret } from './jwt-secret';
 
 const JWT_ISSUER = 'zeity';
+
+export function isUserVerified(userId: string) {
+  return useDrizzle()
+    .select({ emailVerified: users.emailVerified })
+    .from(users)
+    .where(eq(users.id, userId))
+    .then((rows) => !!rows[0]?.emailVerified);
+}
 
 export function generateEmailVerificationToken(
   secret: Uint8Array,

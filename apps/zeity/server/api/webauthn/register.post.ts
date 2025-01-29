@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { users } from '../../database/user';
-import { userCredentials } from '../../database/user-credential';
+import { users } from '@zeity/database/user';
+import { userCredentials } from '@zeity/database/user-credential';
 import { getChallenge, storeChallenge } from '../../utils/webauthn';
 
 export default defineWebAuthnRegisterEventHandler({

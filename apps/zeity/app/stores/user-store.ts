@@ -1,4 +1,4 @@
-import type { User } from '~/types/user';
+import type { User } from '@zeity/types/user';
 
 export const useUserStore = defineStore('user', () => {
   const { loggedIn, clear } = useUserSession();

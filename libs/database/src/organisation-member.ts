@@ -1,10 +1,12 @@
 import { pgTable, primaryKey, uuid, varchar } from 'drizzle-orm/pg-core';
+
+import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import { timestampColumns } from './common';
 import { organisations } from './organisation';
 import { users } from './user';
 
 export const organisationMembers = pgTable(
-  'organisationMember',
+  'organisation_member',
   {
     userId: uuid('user_id')
       .notNull()
@@ -13,7 +15,9 @@ export const organisationMembers = pgTable(
       .notNull()
       .references(() => organisations.id, { onDelete: 'cascade' }),
 
-    role: varchar('role', { length: 10 }).notNull(),
+    role: varchar('role', { length: 10 })
+      .notNull()
+      .$type<OrganisationMemberRole>(),
 
     ...timestampColumns(),
   },

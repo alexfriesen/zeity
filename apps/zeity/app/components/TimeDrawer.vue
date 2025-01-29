@@ -5,8 +5,8 @@ import z from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
 
 import { timeDiff } from '@zeity/utils/date';
-import type { DraftTime, Time } from '~/types/time';
-import { PROJECT_STATUS_ACTIVE } from '~/types/project';
+import type { DraftTime, Time } from '@zeity/types/time';
+import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
 const { t } = useI18n();
 

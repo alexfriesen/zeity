@@ -1,5 +1,3 @@
-import type { profile } from 'console';
-
 export default defineI18nConfig(() => ({
   legacy: false,
 

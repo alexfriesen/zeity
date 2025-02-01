@@ -57,13 +57,16 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
 }
 
 async function handleRedirect() {
-    if (!await useAuthRedirect().apply()) {
-        const orgs = await refreshOrganisations();
-        if ((orgs?.length ?? 0) < 1) {
-            console.log('No organisations found, redirecting to create organisation');
-            return navigateTo('/organisations/create');
-        }
+    if (useAuthRedirect().has()) {
+        return useAuthRedirect().redirect();
     }
+
+    const orgs = await refreshOrganisations();
+    if ((orgs?.length ?? 0) < 1) {
+        console.log('No organisations found, redirecting to create organisation');
+        return navigateTo('/organisations/create');
+    }
+
     return navigateTo('/user');
 }
 </script>

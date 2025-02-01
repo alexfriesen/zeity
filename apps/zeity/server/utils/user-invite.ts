@@ -19,7 +19,7 @@ export function generateInviteToken(secret: Uint8Array, inviteId: string) {
 }
 
 export async function verifyInviteToken(secret: Uint8Array, token: string) {
-  const { payload } = await jwtVerify(token, secret, {
+  const { payload } = await jwtVerify<{ inviteId: string }>(token, secret, {
     issuer: JWT_ISSUER,
     algorithms: [JWT_ALGORITHM],
   });

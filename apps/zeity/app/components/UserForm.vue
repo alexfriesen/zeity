@@ -66,7 +66,7 @@ function updateUser(event: FormSubmitEvent<UserSchema>) {
                 <UInput v-model="userState.name" name="name" class="w-full" />
             </UFormField>
 
-            <UButton :disabled="isLoading" :label="$t('common.save')" block type="submit" />
+            <UButton :disabled="isLoading" :label="$t('common.save')" block type="submit" icon="i-lucide-save" />
         </UForm>
     </div>
 </template>

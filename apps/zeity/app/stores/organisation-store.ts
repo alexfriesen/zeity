@@ -39,14 +39,22 @@ export const useOrganisationStore = defineStore('organisation', () => {
       })
       .catch((error) => {
         console.error('Failed to fetch user:', error);
+        return [];
       })
       .finally(() => {
         loading.value = false;
       });
   }
 
-  function refreshOrganisations() {
-    return fetchOrganisations();
+  async function refreshOrganisations() {
+    const orgs = await fetchOrganisations();
+
+    const orgId = currentOrganisationId.value;
+    if (!orgId || !orgs?.map((org) => org.id).includes(orgId)) {
+      setCurrentOrganisationId(orgs[0]?.id ?? null);
+    }
+
+    return orgs;
   }
 
   if (import.meta.client) {

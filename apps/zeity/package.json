@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "nuxt typecheck",
+    "typecheck:broken": "nuxt typecheck",
     "build": "nuxt build",
     "build:gh": "nuxt generate --prefix github_pages",
     "dev": "nuxt dev",

@@ -16,6 +16,7 @@ definePageMeta({
 const organisationId = route.params.id as string;
 
 const { status, data, refresh } = useAsyncData(`organisation/${organisationId}`, () => $fetch(`/api/organisation/${organisationId}`), {
+    server: false,
     lazy: true,
 })
 

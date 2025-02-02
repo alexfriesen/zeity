@@ -37,7 +37,7 @@ async function handleSubmit(data: Organisation | NewOrganisation) {
 
     if (organisation) {
         store.insertOrganisation(organisation);
-        navigateTo('/organisations/' + organisation.id);
+        await navigateTo('/organisations/' + organisation.id);
     }
 }
 </script>

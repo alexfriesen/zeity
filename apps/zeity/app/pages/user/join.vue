@@ -19,21 +19,22 @@ const { status, data } = useLazyAsyncData('organisation/join',
 );
 const isLoading = computed(() => ['pending', 'idle'].includes(status.value))
 
-function acceptInvite() {
-    return $fetch(`/api/organisation/join/accept`, {
+async function acceptInvite() {
+    await $fetch(`/api/organisation/join/accept`, {
         method: 'POST',
         query: {
             token
         }
     })
         .then(() => {
-            useToast().add({
+            return useToast().add({
                 title: 'Success',
                 description: t('organisations.join.acceptSuccess'),
                 color: 'success'
             })
-            refreshOrganisations()
         })
+        .then(refreshOrganisations)
+        .then(async () => await navigateTo('/user'))
         .catch((error) => {
             console.error(error)
             useToast().add({

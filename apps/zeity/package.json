@@ -31,7 +31,6 @@
     "drizzle-orm": "^0.39.1",
     "emailjs": "^4.0.3",
     "jose": "^5.9.6",
-    "reka-ui": "1.0.0-alpha.6",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -46,7 +45,7 @@
     "drizzle-kit": "^0.30.4",
     "happy-dom": "^16.8.1",
     "nuxt": "^3.15.4",
-    "nuxt-auth-utils": "^0.5.10",
+    "nuxt-auth-utils": "^0.5.11",
     "nuxt-security": "^2.1.5",
     "nuxt-time": "^1.0.3",
     "vue-i18n": "^11.1.0",

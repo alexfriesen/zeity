@@ -7,6 +7,8 @@ const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 const { clear } = useUserSession()
+const { currentOrganisationId } = storeToRefs(useOrganisationStore())
+const organisations = useOrganisationStore().getAllOrganisations()
 
 const { user, loading } = storeToRefs(userStore);
 
@@ -59,7 +61,7 @@ async function deleteUser() {
 </script>
 
 <template>
-    <UContainer class="my-3 space-y-6">
+    <UContainer class="my-3">
         <UCard class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">
@@ -67,27 +69,42 @@ async function deleteUser() {
                 </h3>
             </template>
 
-            <UAlert v-if="user && !user.emailVerified" icon="i-lucide-circle-alert" color="info"
-                title="Verify your email!" description="You need to verify your email to access all features."
-                class="mb-4" :actions="[
-                    { label: $t('user.resendVerification'), icon: 'i-lucide-send', onClick: resendVerificationEmail },
-                ]" />
+            <div class="space-y-4">
 
-            <UserForm v-model="user" :loading="loading" />
+                <UAlert v-if="user && !user.emailVerified" icon="i-lucide-circle-alert" color="primary" variant="subtle"
+                    title="Verify your email!" description="You need to verify your email to access all features."
+                    :actions="[
+                        { label: $t('user.resendVerification'), icon: 'i-lucide-send', onClick: resendVerificationEmail },
+                    ]" />
 
-            <USeparator class="my-4" />
+                <UAlert v-if="organisations.length < 1" icon="i-lucide-circle-alert" color="primary" variant="subtle"
+                    title="Create Organisation" description="Create an organisation to start using zeity." :actions="[
+                        { label: $t('organisations.create'), icon: 'i-lucide-plus', to: '/organisations/create' },
+                    ]" />
 
-            <div class="flex flex-col gap-2 justify-between">
-                <UButton color="warning" block @click="logout">
-                    {{ $t('auth.logout') }}
-                </UButton>
+                <UserForm v-model="user" :loading="loading" />
 
-                <UButton color="warning" block @click="deleteUser">
-                    {{ $t('user.delete') }}
-                </UButton>
+                <USeparator />
+
+                <UFormField :label="$t('user.organisation')" size="lg">
+                    <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id"
+                        label-key="name" />
+                </UFormField>
+
+                <USeparator />
+
+                <div class="flex flex-col gap-2 justify-between">
+                    <UButton color="neutral" block icon="i-lucide-arrow-left-from-line" @click="logout">
+                        {{ $t('auth.logout') }}
+                    </UButton>
+
+                    <UButton color="error" block icon="i-lucide-triangle-alert" @click="deleteUser">
+                        {{ $t('user.delete') }}
+                    </UButton>
+                </div>
             </div>
-        </UCard>
 
+        </UCard>
 
     </UContainer>
 

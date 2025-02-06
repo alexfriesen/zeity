@@ -9,6 +9,7 @@ definePageMeta({
 const toast = useToast()
 const { fetch } = useUserSession()
 const { register, authenticate } = useWebAuthn()
+const { refreshOrganisations } = useOrganisationStore()
 
 const registerSchema = z.object({
     email: z.string().email().min(1).toLowerCase().trim(),
@@ -32,9 +33,7 @@ async function signUp(event: FormSubmitEvent<RegisterSchema>) {
         displayName: event.data.name,
     })
         .then(fetch)
-        .then(async () => {
-            return useAuthRedirect().apply() ?? navigateTo('/user');
-        })
+        .then(handleRedirect)
         .catch((error) => {
             toast.add({
                 title: error.data?.message || error.message,
@@ -47,9 +46,7 @@ async function signUp(event: FormSubmitEvent<RegisterSchema>) {
 async function signIn(event: FormSubmitEvent<AuthSchema>) {
     await authenticate(event.data.email)
         .then(fetch)
-        .then(async () => {
-            return useAuthRedirect().apply() ?? navigateTo('/user');
-        })
+        .then(handleRedirect)
         .catch((error) => {
             toast.add({
                 title: error.data?.message || error.message,
@@ -57,6 +54,20 @@ async function signIn(event: FormSubmitEvent<AuthSchema>) {
                 color: 'error'
             })
         })
+}
+
+async function handleRedirect() {
+    if (useAuthRedirect().has()) {
+        return useAuthRedirect().redirect();
+    }
+
+    const orgs = await refreshOrganisations();
+    if ((orgs?.length ?? 0) < 1) {
+        console.log('No organisations found, redirecting to create organisation');
+        return navigateTo('/organisations/create');
+    }
+
+    return navigateTo('/user');
 }
 </script>
 

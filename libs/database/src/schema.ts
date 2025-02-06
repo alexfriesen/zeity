@@ -8,3 +8,4 @@ export { projects } from './project';
 
 export { organisations } from './organisation';
 export { organisationMembers } from './organisation-member';
+export { organisationInvites } from './organisation-invite';

@@ -36,6 +36,7 @@ const config = {
         },
     }
 }
+
 defineProps({
     preview: {
         type: String,

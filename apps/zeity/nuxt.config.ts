@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
   ],
   i18n: {
+    lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     locales: [
@@ -32,6 +33,9 @@ export default defineNuxtConfig({
       }
     ],
     defaultLocale: 'en',
+    experimental: {
+      generatedLocaleFilePathFormat: 'relative',
+    },
   },
   icon: {
     customCollections: [
@@ -80,6 +84,7 @@ export default defineNuxtConfig({
       tasks: true,
     },
     rollupConfig: {
+      // @ts-expect-error: this is fine
       plugins: [vue()],
     },
   },

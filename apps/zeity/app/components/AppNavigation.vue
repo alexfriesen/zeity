@@ -1,13 +1,14 @@
 <template>
     <div :class="$attrs.class">
-        <UNavigationMenu orientation="vertical" :items="verticalMenu" class="hidden md:block m-4 min-w-44" />
-        <UNavigationMenu orientation="horizontal" :items="horizontalMenu" class="md:hidden justify-evenly"
+        <UNavigationMenu :items="verticalMenu" orientation="vertical"
+            class="hidden md:flex justify-between p-4 w-44 xl:w-60 h-full" />
+        <UNavigationMenu :items="horizontalMenu" orientation="horizontal" class="md:hidden justify-evenly"
             :ui="{ linkLeadingIcon: 'size-8' }" />
 
         <USlideover v-model:open="openMoreMenu" title="Menu" side="right">
             <template #body>
                 <div class="flex flex-col justify-center h-full">
-                    <UNavigationMenu orientation="vertical" :items="verticalMenu" class="full-w" />
+                    <UNavigationMenu :items="verticalMenu" orientation="vertical" class="full-w" />
                 </div>
             </template>
         </USlideover>
@@ -24,6 +25,50 @@ watch(() => route.path, () => {
 
 const { t } = useI18n();
 const { loggedIn } = useUserSession();
+const store = useOrganisationStore();
+const { currentOrganisationId } = storeToRefs(store);
+const organisations = store.getAllOrganisations();
+
+const userMenu = computed(() => loggedIn.value ?
+    [
+        {
+            // TODO: Add user profile picture
+            label: t('navigation.user'),
+            icon: 'i-lucide-circle-user',
+            children: [
+                {
+                    label: t('navigation.profile'),
+                    icon: 'i-lucide-user',
+                    to: '/user',
+                },
+                ...organisations.value.map((organisation) => ({
+                    label: organisation.name,
+                    icon: currentOrganisationId.value === organisation.id ? 'i-lucide-circle-check-big' : 'i-lucide-circle',
+                    active: currentOrganisationId.value === organisation.id,
+                    onSelect: () => store.setCurrentOrganisationId(organisation.id),
+                })),
+                {
+                    label: t('organisations.title'),
+                    to: '/organisations',
+                    icon: 'i-lucide-list',
+                },
+                {
+                    label: t('organisations.create'),
+                    to: '/organisations/create',
+                    icon: 'i-lucide-plus',
+                },
+            ]
+        },
+    ] :
+    [
+        {
+            label: t('navigation.login'),
+            to: '/auth',
+            icon: 'i-lucide-user',
+        },
+    ]
+);
+
 const verticalMenu = computed(() => [
     [
         {
@@ -51,19 +96,9 @@ const verticalMenu = computed(() => [
             to: '/settings',
             icon: 'i-lucide-settings',
         },
+        ...userMenu.value,
     ],
     [
-        loggedIn.value ?
-            {
-                label: t('navigation.user'),
-                to: '/user',
-                icon: 'i-lucide-user',
-            } :
-            {
-                label: t('navigation.login'),
-                to: '/auth',
-                icon: 'i-lucide-user',
-            },
         {
             label: t('navigation.about'),
             to: '/about',

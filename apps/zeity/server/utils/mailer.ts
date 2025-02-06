@@ -16,7 +16,14 @@ type SendMailOptions = {
 } & MailContent;
 
 const logger = consola.create({}).withTag('mailer');
-let client: SMTPClient;
+let client: SMTPClient | undefined;
+
+function getClient() {
+  if (!client) {
+    throw new Error('Mailer not initialized');
+  }
+  return client;
+}
 
 function parseMailTo(to?: MailTo) {
   if (typeof to === 'string') {
@@ -39,7 +46,7 @@ async function sendMail(options: SendMailOptions) {
   }
 
   const from = useRuntimeConfig().mailer.from;
-  const info = await client
+  const info = await getClient()
     .sendAsync({
       from,
       to: to,

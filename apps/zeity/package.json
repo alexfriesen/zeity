@@ -28,7 +28,7 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:*",
     "date-fns": "^4.1.0",
-    "drizzle-orm": "^0.39.1",
+    "drizzle-orm": "^0.39.2",
     "emailjs": "^4.0.3",
     "jose": "^5.9.6",
     "zod": "^3.24.1"
@@ -45,7 +45,7 @@
     "drizzle-kit": "^0.30.4",
     "happy-dom": "^16.8.1",
     "nuxt": "^3.15.4",
-    "nuxt-auth-utils": "^0.5.11",
+    "nuxt-auth-utils": "^0.5.14",
     "nuxt-security": "^2.1.5",
     "nuxt-time": "^1.0.3",
     "vue-i18n": "^11.1.0",

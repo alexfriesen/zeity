@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
-    "drizzle-orm": "^0.39.1",
+    "drizzle-orm": "^0.39.2",
     "pg": "^8.13.1"
   },
   "devDependencies": {

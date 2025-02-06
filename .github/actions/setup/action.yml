@@ -4,9 +4,7 @@ description: "Checkout, Setup Node and install dependencies"
 runs:
   using: composite
   steps:
-    - name: Enable Corepack
-      run: corepack enable
-      shell: bash
+    - uses: pnpm/action-setup@v4
 
     - uses: actions/setup-node@v4
       with:

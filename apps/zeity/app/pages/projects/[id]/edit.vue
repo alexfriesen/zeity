@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Project } from '~/types/project';
+import type { Project } from '@zeity/types/project';
 
 const route = useRoute()
 const router = useRouter()

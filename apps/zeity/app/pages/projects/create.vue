@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
 
-import { PROJECT_STATUS_ACTIVE, type Project } from '~/types/project';
+import { PROJECT_STATUS_ACTIVE, type Project } from '@zeity/types/project';
 
 const router = useRouter();
 const store = useProjectStore();

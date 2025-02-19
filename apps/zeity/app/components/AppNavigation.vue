@@ -23,6 +23,7 @@ watch(() => route.path, () => {
 });
 
 const { t } = useI18n();
+const { loggedIn } = useUserSession();
 const verticalMenu = computed(() => [
     [
         {
@@ -52,6 +53,17 @@ const verticalMenu = computed(() => [
         },
     ],
     [
+        loggedIn.value ?
+            {
+                label: t('navigation.user'),
+                to: '/user',
+                icon: 'i-lucide-user',
+            } :
+            {
+                label: t('navigation.login'),
+                to: '/auth',
+                icon: 'i-lucide-user',
+            },
         {
             label: t('navigation.about'),
             to: '/about',

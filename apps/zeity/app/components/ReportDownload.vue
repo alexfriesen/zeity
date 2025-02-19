@@ -2,8 +2,8 @@
 import { pick } from '@zeity/utils/object';
 import { generateCSV, toCSVBlob } from '@zeity/utils/csv';
 
-import type { Project } from '~/types/project';
-import type { Time } from '~/types/time';
+import type { Project } from '@zeity/types/project';
+import type { Time } from '@zeity/types/time';
 
 const projectStore = useProjectStore();
 

@@ -1,4 +1,4 @@
-import type { DraftTime, Time } from '~/types/time';
+import type { DraftTime, Time } from '@zeity/types/time';
 
 export function useTimeDetail() {
   const currentTime = useState<Time | DraftTime | null>(

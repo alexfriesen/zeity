@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const link = await useUserVerification(event).generateLink(session.user.id);
-  await useMailer().sendMessageMail(
+  await useMailer(event).sendMessageMail(
     user.email,
     'Verify your email',
     ['Click the link below to verify your email'],

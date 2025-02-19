@@ -47,7 +47,11 @@ useHead({
 </template>
 
 <style>
-@import "tailwindcss";
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme" layer(theme) theme(static);
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/utilities" layer(utilities);
+
 @import "@nuxt/ui";
 
 html,

@@ -1,4 +1,5 @@
-import { SMTPClient } from 'emailjs';
+import type { H3Event } from 'h3';
+import { createTransport, type Transporter } from 'nodemailer';
 import consola from 'consola';
 
 import { useMailTemplate } from './mail-template';
@@ -16,7 +17,7 @@ type SendMailOptions = {
 } & MailContent;
 
 const logger = consola.create({}).withTag('mailer');
-let client: SMTPClient;
+let client: Transporter;
 
 function parseMailTo(to?: MailTo) {
   if (typeof to === 'string') {
@@ -40,17 +41,14 @@ async function sendMail(options: SendMailOptions) {
 
   const from = useRuntimeConfig().mailer.from;
   const info = await client
-    .sendAsync({
+    .sendMail({
       from,
       to: to,
       cc: parseMailTo(options.cc),
       bcc: parseMailTo(options.bcc),
       subject: options.subject,
       text: options.text || '',
-      attachment: {
-        data: options.html,
-        alternative: true,
-      },
+      html: options.html,
     })
     .catch((e) => {
       logger.error(e);
@@ -97,8 +95,8 @@ async function sendMessageMail(
   });
 }
 
-export function useMailer() {
-  client ??= new SMTPClient(useRuntimeConfig().mailer.smtp);
+export function useMailer(event: H3Event) {
+  client ??= createTransport(useRuntimeConfig(event).mailer.smtp);
 
   return {
     sendMail,

@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vue from '@vitejs/plugin-vue'
+import vuePlugin from '@vitejs/plugin-vue';
 
-import packageJson from '../../package.json' with { type: 'json' }
+import packageJson from '../../package.json' with { type: 'json' };
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
@@ -25,11 +25,12 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'de',
-        name: 'Deutsch'
-      }, {
+        name: 'Deutsch',
+      },
+      {
         code: 'en',
-        name: 'English'
-      }
+        name: 'English',
+      },
     ],
     defaultLocale: 'en',
   },
@@ -37,7 +38,7 @@ export default defineNuxtConfig({
     customCollections: [
       {
         prefix: 'zeity',
-        dir: './public/icons'
+        dir: './public/icons',
       },
     ],
     clientBundle: {
@@ -58,17 +59,17 @@ export default defineNuxtConfig({
           tokensPerInterval: 3,
           interval: 10000,
         },
-      }
+      },
     },
   },
   runtimeConfig: {
-    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity', 
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     mailer: {
       from: 'Zeity <noreply@localhost>',
       smtp: {
         host: 'localhost',
         port: 1025,
-      }
+      },
     },
     jwtSecret: 'supersecret',
     public: {
@@ -80,7 +81,7 @@ export default defineNuxtConfig({
       tasks: true,
     },
     rollupConfig: {
-      plugins: [vue()],
+      plugins: [vuePlugin()],
     },
   },
   devtools: { enabled: true },

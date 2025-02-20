@@ -19,16 +19,40 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
   ],
   pwa: {
+    strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
       id: 'zeity-pwa',
       start_url: '/',
       name: 'zeity Time Tracker',
       short_name: 'zeity',
-      description: 'A simple timer app',
-      theme_color: '#000000',
+      description: 'Time tracking app app with excellent user experience',
+      theme_color: '#00bbff',
       display: 'standalone',
       lang: 'en',
+      icons: [
+        {
+          src: 'favicon.svg',
+          sizes: 'any',
+          type: 'image/svg+xml',
+        },
+        {
+          src: 'icons/logo-192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: 'icons/logo-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: 'icons/logo-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable',
+        },
+      ],
     },
     devOptions: {
       enabled: true,

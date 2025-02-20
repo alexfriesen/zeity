@@ -25,7 +25,7 @@ useHead({
   htmlAttrs: {
     lang,
     dir
-  }
+  },
 })
 
 </script>
@@ -33,6 +33,7 @@ useHead({
 <template>
 
   <Head>
+    <NuxtPwaManifest />
     <Title>zeity</Title>
 
     <Link rel="icon" type="image/svg+xml" href="/favicon.svg" />

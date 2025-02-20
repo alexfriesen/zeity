@@ -35,7 +35,7 @@ const config = {
             },
         },
     }
-}
+} as never; // tailwind v3 & v4 mismatch
 defineProps({
     preview: {
         type: String,

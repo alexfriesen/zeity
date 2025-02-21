@@ -26,6 +26,7 @@ useHead({
     lang,
     dir
   },
+  title: 'zeity',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     { rel: 'apple-touch-icon', href: '/icons/apple-touch-icon.png' },
@@ -38,7 +39,6 @@ useHead({
 
   <Head>
     <NuxtPwaManifest />
-    <Title>zeity</Title>
   </Head>
 
   <UApp :locale="uiLocale">

@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   future: {
     compatibilityVersion: 4,
+    typescriptBundlerResolution: true,
   },
   modules: [
     '@nuxt/test-utils/module',
@@ -22,8 +23,6 @@ export default defineNuxtConfig({
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
-      id: 'zeity-pwa',
-      start_url: '/',
       name: 'zeity Time Tracker',
       short_name: 'zeity',
       description: 'Time tracking app app with excellent user experience',
@@ -55,10 +54,19 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      globPatterns: ["**/*.{js,css,html,jpg,png,svg,ico}"],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
+    },
+    client: {
+      installPrompt: true,
     },
     devOptions: {
       enabled: true,
+      suppressWarnings: true,
+      navigateFallback: '/',
+      navigateFallbackAllowlist: [/^\/$/],
     },
   },
   i18n: {
@@ -99,6 +107,13 @@ export default defineNuxtConfig({
     public: {
       version: packageJson.version || '0.0.0',
     }
+  },
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
+    },
   },
   devtools: { enabled: true },
 });

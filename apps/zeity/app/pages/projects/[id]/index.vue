@@ -25,6 +25,8 @@ if (!project) {
 }
 
 function updateStatus(status?: ProjectStatus) {
+    if (!status) return;
+
     projectStore.updateProject(projectId, { status: status })
 
     router.push(`/projects/${projectId}`);

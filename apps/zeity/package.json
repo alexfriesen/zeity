@@ -36,6 +36,6 @@
     "nuxt-security": "^2.1.5",
     "nuxt-time": "^1.0.3",
     "vue-i18n": "^11.1.1",
-    "vue-tsc": "^2.2.2"
+    "vue-tsc": "^2.2.4"
   }
 }

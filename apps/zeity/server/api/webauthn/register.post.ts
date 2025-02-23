@@ -73,7 +73,7 @@ export default defineWebAuthnRegisterEventHandler({
       dbUser.id
     );
 
-    await useMailer().sendWelcomeMail(
+    await useMailer(event).sendWelcomeMail(
       dbUser.email,
       dbUser.name,
       verificationLink

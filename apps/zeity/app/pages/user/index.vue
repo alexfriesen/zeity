@@ -61,7 +61,7 @@ async function deleteUser() {
 </script>
 
 <template>
-    <UContainer class="my-3">
+    <UContainer class="my-3"> 
         <UCard class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">

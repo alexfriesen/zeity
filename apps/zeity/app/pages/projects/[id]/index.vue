@@ -24,8 +24,10 @@ if (!project) {
     router.push('/projects')
 }
 
-function updateStatus(status: ProjectStatus | string) {
-    projectStore.updateProject(projectId, { status: status as ProjectStatus })
+function updateStatus(status?: ProjectStatus) {
+    if (!status) return;
+
+    projectStore.updateProject(projectId, { status: status })
 
     router.push(`/projects/${projectId}`);
 }

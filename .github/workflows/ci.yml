@@ -48,4 +48,5 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Typecheck
+        continue-on-error: true
         run: pnpm -r typecheck

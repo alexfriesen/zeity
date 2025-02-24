@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import type { FormSubmitEvent } from '@nuxt/ui';
 
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUSES } from '~/types/project';
+import { PROJECT_STATUS_ACTIVE, PROJECT_STATUSES } from '@zeity/types/project';
 
 const props = defineProps({
     data: {

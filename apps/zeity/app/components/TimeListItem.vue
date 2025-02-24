@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Time } from '~/types/time';
+import type { Time } from '@zeity/types/time';
 import { formatDuration, timeDiff } from '@zeity/utils/date';
 
 const props = defineProps({

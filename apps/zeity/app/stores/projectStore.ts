@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { useEntityStore } from './entityStore';
-import type { Project } from '../types/project';
+import type { Project } from '@zeity/types/project';
 import useLocalStorage from '~/utils/localstorage';
 
 export const useProjectStore = defineStore('project', () => {
@@ -38,7 +38,6 @@ export const useProjectStore = defineStore('project', () => {
     insertProject: projectsStore.insert,
     updateProject: projectsStore.update,
     removeProject: projectsStore.remove,
-
 
     loading,
     setLoading,

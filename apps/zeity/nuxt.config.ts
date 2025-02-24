@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@vite-pwa/nuxt',
   ],
+  css: ['~/assets/css/main.css'],
   pwa: {
     strategies: 'generateSW',
     registerType: 'autoUpdate',
@@ -56,7 +57,7 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ["**/*.{js,css,html,jpg,png,svg,ico}"],
+      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
@@ -135,8 +136,6 @@ export default defineNuxtConfig({
     rollupConfig: {
       plugins: [vuePlugin()],
     },
-  },
-  nitro: {
     esbuild: {
       options: {
         target: 'esnext',

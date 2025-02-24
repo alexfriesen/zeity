@@ -8,8 +8,8 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
     "target": "esnext",
-		"module": "esnext",
-    "types": ["node", "vitest"],
+    "module": "esnext",
+    "types": ["node", "vitest"]
   },
   "files": ["src/index.ts"],
   "include": []

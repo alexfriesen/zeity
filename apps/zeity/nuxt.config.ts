@@ -73,6 +73,7 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
+    lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     locales: [
@@ -86,6 +87,9 @@ export default defineNuxtConfig({
       },
     ],
     defaultLocale: 'en',
+    experimental: {
+      generatedLocaleFilePathFormat: 'relative',
+    },
   },
   icon: {
     customCollections: [

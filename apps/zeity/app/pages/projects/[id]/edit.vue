@@ -2,7 +2,6 @@
 import type { Project } from '@zeity/types/project';
 
 const route = useRoute()
-const router = useRouter()
 const projectStore = useProjectStore()
 
 definePageMeta({
@@ -19,7 +18,7 @@ const project = projectStore.findProjectById(projectId)
 function save(data: Project) {
     projectStore.updateProject(projectId, data)
 
-    router.push(`/projects/${projectId}`);
+    return navigateTo(`/projects/${projectId}`);
 }
 
 </script>

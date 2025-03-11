@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 
 import { PROJECT_STATUS_ACTIVE, type Project } from '@zeity/types/project';
 
-const router = useRouter();
 const store = useProjectStore();
 
 const data = ref<Project>({
@@ -16,7 +15,7 @@ const data = ref<Project>({
 function handleSubmit(data: Project) {
     store.insertProject(data);
 
-    router.push('/projects');
+    return navigateTo('/projects');
 }
 </script>
 

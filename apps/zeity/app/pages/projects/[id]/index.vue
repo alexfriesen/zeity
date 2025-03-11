@@ -3,7 +3,6 @@ import { calculateDiffSum, formatDuration } from '@zeity/utils/date';
 import type { ProjectStatus } from '@zeity/types/project';
 
 const route = useRoute()
-const router = useRouter()
 const projectStore = useProjectStore()
 const timeStore = useTimerStore()
 
@@ -21,7 +20,7 @@ const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 
 if (!project) {
-    router.push('/projects')
+    navigateTo('/projects')
 }
 
 function updateStatus(status?: ProjectStatus) {
@@ -29,7 +28,7 @@ function updateStatus(status?: ProjectStatus) {
 
     projectStore.updateProject(projectId, { status: status })
 
-    router.push(`/projects/${projectId}`);
+    return navigateTo(`/projects/${projectId}`);
 }
 
 </script>

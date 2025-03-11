@@ -5,7 +5,7 @@ definePageMeta({
 
 const route = useRoute();
 const { loggedIn } = useUserSession();
-const { status } = useLazyAsyncData(
+const { status } = await useLazyAsyncData(
     () => $fetch('/api/user/verify', { method: 'POST', query: { token: route.query.token } }),
     { server: false }
 );

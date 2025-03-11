@@ -7,7 +7,7 @@ const { t } = useI18n()
 const { refreshOrganisations } = useOrganisationStore()
 const token = useRoute().query.token as string
 
-const { status, data } = useLazyAsyncData('organisation/join',
+const { status, data } = await useLazyAsyncData('organisation/join',
     () => $fetch('/api/organisation/join', {
         query: {
             token

@@ -48,17 +48,3 @@ useHead({
   </UApp>
 
 </template>
-
-<style>
-@import "tailwindcss";
-@import "@nuxt/ui";
-
-html,
-body {
-  height: 100%;
-}
-
-#__nuxt {
-  display: contents;
-}
-</style>

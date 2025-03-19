@@ -1,0 +1,11 @@
+@import 'tailwindcss' theme(static);
+@import '@nuxt/ui';
+
+html,
+body {
+  height: 100%;
+}
+
+#__nuxt {
+  display: contents;
+}

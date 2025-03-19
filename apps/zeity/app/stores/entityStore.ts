@@ -23,6 +23,14 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       state.value = data;
     }
 
+    function setEntities(entities: T[]) {
+      state.value.entities = entities.reduce<EntitiesMap<T>>((acc, entity) => {
+        acc[entity.id] = entity;
+        return acc;
+      }, {});
+      state.value.ids = entities.map((e) => e.id);
+    }
+
     function upsertMany(entities: T[]) {
       for (const entity of entities) {
         const id = entity.id;
@@ -75,6 +83,13 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       state.value = updatedState;
     }
 
+    function clearAll() {
+      state.value = {
+        entities: {},
+        ids: [],
+      };
+    }
+
     function findById(id: string) {
       return computed(() => state.value.entities[id]);
     }
@@ -99,7 +114,9 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       getState,
       setState,
 
+      setEntities,
       upsertMany,
+      clearAll,
 
       insert,
       update,

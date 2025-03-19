@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
-    "drizzle-orm": "^0.40.0",
-    "pg": "^8.14.0"
+    "drizzle-orm": "^0.40.1",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

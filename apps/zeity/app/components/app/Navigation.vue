@@ -24,12 +24,12 @@ watch(() => route.path, () => {
 });
 
 const { t } = useI18n();
-const { loggedIn } = useUserSession();
+const { isLoggedIn, logout } = useAuth();
 const store = useOrganisationStore();
 const { currentOrganisationId } = storeToRefs(store);
 const organisations = store.getAllOrganisations();
 
-const userMenu = computed(() => loggedIn.value ?
+const userMenu = computed(() => isLoggedIn.value ?
     [
         {
             // TODO: Add user profile picture
@@ -41,6 +41,17 @@ const userMenu = computed(() => loggedIn.value ?
                     icon: 'i-lucide-user',
                     to: '/user',
                 },
+                {
+                    label: t('auth.logout'),
+                    icon: 'i-lucide-arrow-left-from-line',
+                    onSelect: () => logout(),
+                },
+            ]
+        },
+        {
+            label: t('organisations.title'),
+            icon: 'i-lucide-store',
+            children: [
                 ...organisations.value.map((organisation) => ({
                     label: organisation.name,
                     icon: currentOrganisationId.value === organisation.id ? 'i-lucide-circle-check-big' : 'i-lucide-circle',
@@ -99,17 +110,6 @@ const verticalMenu = computed(() => [
         ...userMenu.value,
     ],
     [
-        loggedIn.value ?
-            {
-                label: t('navigation.user'),
-                to: '/user',
-                icon: 'i-lucide-user',
-            } :
-            {
-                label: t('navigation.login'),
-                to: '/auth',
-                icon: 'i-lucide-user',
-            },
         {
             label: t('navigation.about'),
             to: '/about',

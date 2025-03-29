@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
+    // disable: true,
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
@@ -90,6 +91,9 @@ export default defineNuxtConfig({
     experimental: {
       generatedLocaleFilePathFormat: 'relative',
     },
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
   icon: {
     customCollections: [
@@ -110,13 +114,11 @@ export default defineNuxtConfig({
     webAuthn: true,
   },
   routeRules: {
-    '/user/verify': {
-      security: {
-        rateLimiter: {
-          tokensPerInterval: 3,
-          interval: 10000,
-        },
-      },
+    '/user/**': {
+      appMiddleware: ['auth'],
+    },
+    '/organisations/**': {
+      appMiddleware: ['auth'],
     },
   },
   runtimeConfig: {

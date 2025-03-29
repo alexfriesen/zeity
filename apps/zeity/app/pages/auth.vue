@@ -50,7 +50,7 @@ async function handleRedirect() {
             <div class="flex flex-col gap-2 justify-between">
                 <AuthRegister @submit="auth" />
 
-                <USeparator orientation="vertical" label="or" />
+                <USeparator orientation="horizontal" label="or" />
 
                 <AuthLogin @submit="auth" />
             </div>

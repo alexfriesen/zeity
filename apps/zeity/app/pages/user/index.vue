@@ -13,7 +13,7 @@ const organisations = useOrganisationStore().getAllOrganisations()
 const { user, loading } = storeToRefs(userStore);
 
 function logout() {
-    clear().finally(async () => navigateTo('/auth'))
+    useAuth().logout()
 }
 
 async function deleteUser() {

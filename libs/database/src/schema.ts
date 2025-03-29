@@ -1,4 +1,5 @@
 export { authChallenge } from './auth-challenge';
+export { authOTP } from './auth-otp';
 
 export { users } from './user';
 export { userCredentials } from './user-credential';

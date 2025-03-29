@@ -53,6 +53,7 @@ export default defineWebAuthnAuthenticateEventHandler({
         id: credential.user.id,
         name: credential.user.name,
         email: credential.user.email,
+        verified: Boolean(credential.user.emailVerified),
       },
     });
   },

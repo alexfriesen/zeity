@@ -16,23 +16,6 @@ function logout() {
     clear().finally(async () => navigateTo('/auth'))
 }
 
-async function resendVerificationEmail() {
-    await $fetch('/api/user/resend-verification', {
-        method: 'POST',
-    }).then(() => {
-        toast.add({
-            color: 'success',
-            title: t('user.verificationEmailSent'),
-        })
-    }).catch((error) => {
-        console.error(error)
-        toast.add({
-            color: 'error',
-            title: t('user.verificationEmailError'),
-        })
-    })
-}
-
 async function deleteUser() {
     // TODO: add fancy modal
     const result = window.confirm('Are you sure you want to delete your account?');
@@ -61,7 +44,7 @@ async function deleteUser() {
 </script>
 
 <template>
-    <UContainer class="my-3"> 
+    <UContainer class="my-3">
         <UCard class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">
@@ -70,12 +53,6 @@ async function deleteUser() {
             </template>
 
             <div class="space-y-4">
-
-                <UAlert v-if="user && !user.emailVerified" icon="i-lucide-circle-alert" color="primary" variant="subtle"
-                    title="Verify your email!" description="You need to verify your email to access all features."
-                    :actions="[
-                        { label: $t('user.resendVerification'), icon: 'i-lucide-send', onClick: resendVerificationEmail },
-                    ]" />
 
                 <UAlert v-if="organisations.length < 1" icon="i-lucide-circle-alert" color="primary" variant="subtle"
                     title="Create Organisation" description="Create an organisation to start using zeity." :actions="[

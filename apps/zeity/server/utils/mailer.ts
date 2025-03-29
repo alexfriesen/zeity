@@ -1,7 +1,8 @@
 import type { H3Event } from 'h3';
 import { createTransport, type Transporter } from 'nodemailer';
-import consola from 'consola';
+import { createConsola } from 'consola';
 
+import type { MailSection } from '~~/types/mail';
 import { useMailTemplate } from './mail-template';
 
 type MailTo = string | string[];
@@ -16,7 +17,7 @@ type SendMailOptions = {
   subject: string;
 } & MailContent;
 
-const logger = consola.create({}).withTag('mailer');
+const logger = createConsola({}).withTag('mailer');
 let client: Transporter;
 
 function parseMailTo(to?: MailTo) {
@@ -57,14 +58,10 @@ async function sendMail(options: SendMailOptions) {
   logger.debug('Message sent: %s', info);
 }
 
-async function sendWelcomeMail(
-  to: string,
-  name: string,
-  verificationLink?: string
-) {
+async function sendWelcomeMail(to: string, name: string, otp?: string) {
   const { html, text } = await useMailTemplate().renderWelcomeMail({
     name,
-    verificationLink,
+    otp,
   });
 
   return sendMail({
@@ -79,12 +76,12 @@ async function sendMessageMail(
   to: string,
   subject: string,
   messages: string[],
-  link?: { text: string; url: string }
+  sections: MailSection[] = []
 ) {
   const { html, text } = await useMailTemplate().renderMessageMail({
     subject,
     messages,
-    link,
+    sections,
   });
 
   return sendMail({

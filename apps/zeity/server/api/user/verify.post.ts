@@ -2,16 +2,18 @@ import { z } from 'zod';
 import { users } from '@zeity/database/user';
 import {
   isUserVerified,
-  useUserVerification,
+  deleteUsersOTPs,
+  verifyOTP,
 } from '~~/server/utils/user-verification';
+import { refreshUserSession } from '~~/server/utils/user-session';
 
 export default defineEventHandler(async (event) => {
-  const session = await requireUserSession(event);
+  const { user } = await requireUserSession(event);
 
-  const query = await getValidatedQuery(
+  const query = await readValidatedBody(
     event,
     z.object({
-      token: z.string(),
+      code: z.string().length(6),
     }).safeParse
   );
   if (!query.success) {
@@ -21,23 +23,24 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // verify token
-  const payload = await await useUserVerification(event)
-    .verifyToken(query.data.token)
-    .catch((e) => {
-      console.error(e);
-      return null;
-    });
+  // verify otp
+  const otp = await verifyOTP(user.id, query.data.code).catch((e) => {
+    console.error(e);
+    return null;
+  });
+
   // if token is invalid or userId in token does not match the session user id
-  if (!payload || payload.userId !== session.user.id) {
+  if (!otp) {
     throw createError({
       statusCode: 400,
-      message: 'Invalid token',
+      message: 'Invalid otp',
     });
   }
 
+  await deleteUsersOTPs(user.id);
+
   // check if email is already verified
-  const emailVerified = await isUserVerified(session.user.id);
+  const emailVerified = await isUserVerified(user.id);
 
   if (emailVerified) {
     throw createError({
@@ -52,7 +55,9 @@ export default defineEventHandler(async (event) => {
     .set({
       emailVerified: new Date(),
     })
-    .where(eq(users.id, session.user.id));
+    .where(eq(users.id, user.id));
+
+  await refreshUserSession(event);
 
   return sendNoContent(event, 202);
 });

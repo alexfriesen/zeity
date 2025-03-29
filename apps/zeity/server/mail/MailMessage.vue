@@ -2,12 +2,18 @@
 import type { PropType } from 'vue';
 import { Section, Button, Text, Heading } from '@vue-email/components';
 
+import type { MailSection } from '~~/types/mail';
 import MailLayout from './MailLayout.vue';
 
 defineProps({
     subject: {
         type: String,
         required: true
+    },
+    sections: {
+        type: Array as PropType<MailSection[]>,
+        required: false,
+        default: null
     },
     messages: {
         type: Array as PropType<string[]>,
@@ -29,6 +35,12 @@ defineProps({
         <Text v-for="message in messages" :key="message">
             {{ message }}
         </Text>
+
+        <Section v-for="(section, sectionIndex) in sections" :key="sectionIndex" :class="section.class">
+            <Text v-for="(text, textIndex) in section.children" :key="textIndex" :class="text.class">
+                {{ text.text }}
+            </Text>
+        </Section>
 
         <Section v-if="link" class="text-center">
             <Button v-if="link" :href="link.url" referrerpolicy="strict-origin"

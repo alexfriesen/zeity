@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { users } from '@zeity/database/user';
 import { userCredentials } from '@zeity/database/user-credential';
 import { getChallenge, storeChallenge } from '../../utils/webauthn';
+import { createOTP } from '../../utils/user-verification';
 
 export default defineWebAuthnRegisterEventHandler({
   storeChallenge(event, challenge, attemptId) {
@@ -34,6 +35,7 @@ export default defineWebAuthnRegisterEventHandler({
         id: users.id,
         name: users.name,
         email: users.email,
+        emailVerified: users.emailVerified,
       })
       .then((rows) => rows[0])
       .catch((e) => {
@@ -66,18 +68,13 @@ export default defineWebAuthnRegisterEventHandler({
         id: dbUser.id,
         name: dbUser.name,
         email: dbUser.email,
+        verified: Boolean(dbUser.emailVerified),
       },
     });
 
-    const verificationLink = await useUserVerification(event).generateLink(
-      dbUser.id
-    );
+    const otp = await createOTP(dbUser.id);
 
-    await useMailer(event).sendWelcomeMail(
-      dbUser.email,
-      dbUser.name,
-      verificationLink
-    );
+    await useMailer(event).sendWelcomeMail(dbUser.email, dbUser.name, otp);
   },
 
   async excludeCredentials(event, username) {

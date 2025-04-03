@@ -32,7 +32,7 @@ function timeNew() {
         </section>
 
         <footer class="sticky bottom-3">
-            <DraftTimer />
+            <TimeDraft />
         </footer>
 
     </UContainer>

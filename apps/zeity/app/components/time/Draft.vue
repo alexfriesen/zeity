@@ -53,7 +53,7 @@ watch(isStarted, (value) => {
         </div>
 
         <div class="absolute bottom-1 right-1">
-            <TimerToggleButton />
+            <TimeToggleButton />
         </div>
     </div>
 </template>

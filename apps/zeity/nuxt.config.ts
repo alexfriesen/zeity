@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
-    // disable: true,
+    disable: true,
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {

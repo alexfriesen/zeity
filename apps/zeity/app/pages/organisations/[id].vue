@@ -27,6 +27,7 @@ const state = ref({
 
 const saving = ref(false);
 const editing = ref(false);
+const deleteModalOpen = ref(false);
 
 function switchEditing() {
     editing.value = !editing.value
@@ -55,6 +56,24 @@ function changeName(event: FormSubmitEvent<Schema>) {
         })
     }).finally(() => {
         saving.value = false
+    })
+}
+
+async function deleteOrganisation() {
+    await $fetch(`/api/organisation/${organisationId}`, {
+        method: 'DELETE',
+    }).then(() => {
+        toast.add({
+            color: 'success',
+            title: t('organisations.delete.success'),
+        })
+        return navigateTo('/organisations')
+    }).catch((error) => {
+        console.error(error)
+        toast.add({
+            color: 'error',
+            title: t('organisations.delete.error'),
+        })
     })
 }
 </script>
@@ -88,6 +107,35 @@ function changeName(event: FormSubmitEvent<Schema>) {
         <USeparator class="my-4" />
 
         <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites" @refresh="refresh" />
+
+        <USeparator class="my-4" />
+
+        <section class="flex flex-wrap items-center justify-between gap-2">
+            <h3
+                class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                {{ $t('organisations.delete.title') }}
+            </h3>
+
+            <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
+                :description="$t('organisations.delete.description')">
+                <UButton size="lg" variant="subtle" color="error" icon="i-lucide-trash" @click="deleteModalOpen = true">
+                    {{ $t('common.delete') }}
+                </UButton>
+
+                <template #footer>
+                    <div class="flex justify-between w-full">
+                        <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
+                            {{ $t('common.cancel') }}
+                        </UButton>
+
+                        <UButton color="error" @click="deleteOrganisation">
+                            {{ $t('common.delete') }}
+                        </UButton>
+                    </div>
+                </template>
+
+            </UModal>
+        </section>
 
     </UContainer>
 </template>

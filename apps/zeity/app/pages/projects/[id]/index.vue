@@ -34,7 +34,7 @@ function updateStatus(status?: ProjectStatus) {
 </script>
 
 <template>
-    <UContainer v-if="project" class="my-4">
+    <div v-if="project" class="my-4">
         <UBreadcrumb :items="[{ label: $t('projects.title'), to: '/projects' }]" />
         <h2
             class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
@@ -67,5 +67,5 @@ function updateStatus(status?: ProjectStatus) {
                 <TimeList :times="projectTimes" />
             </div>
         </div>
-    </UContainer>
+    </div>
 </template>

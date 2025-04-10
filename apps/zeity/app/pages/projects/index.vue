@@ -21,7 +21,7 @@ const filteredProjects = computed(() => {
 </script>
 
 <template>
-    <UContainer class="page my-3">
+    <div class="page my-3">
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
             {{ $t('projects.title') }}
@@ -57,5 +57,5 @@ const filteredProjects = computed(() => {
                     { label: $t('common.add'), icon: 'i-lucide-plus', to: '/projects/create' }
                 ]" />
         </section>
-    </UContainer>
+    </div>
 </template>

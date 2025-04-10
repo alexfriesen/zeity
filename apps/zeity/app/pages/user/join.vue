@@ -48,7 +48,7 @@ async function acceptInvite() {
 
 <template>
 
-    <UContainer class="my-4">
+    <div class="my-4">
         <h2 class="text-2xl font-bold mb-4">{{ $t('organisations.join.title') }}</h2>
 
         <div v-if="isLoading" class="space-y-4">
@@ -74,6 +74,6 @@ async function acceptInvite() {
                 color: 'neutral'
             }]" />
         </div>
-    </UContainer>
+    </div>
 
 </template>

@@ -3,7 +3,7 @@ const config = useRuntimeConfig();
 </script>
 
 <template>
-    <UContainer class="my-3 space-y-6">
+    <div class="my-3 space-y-6">
 
         <div>
             <div class="text-center">
@@ -35,5 +35,5 @@ const config = useRuntimeConfig();
         </div>
 
 
-    </UContainer>
+    </div>
 </template>

@@ -12,7 +12,7 @@ onMounted(() => {
 
 <template>
 
-    <UContainer class="page my-3">
+    <div class="page my-3">
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
             {{ $t('organisations.title') }}
@@ -45,5 +45,5 @@ onMounted(() => {
                     { label: $t('common.add'), icon: 'i-lucide-plus', to: '/organisations/create' }
                 ]" />
         </section>
-    </UContainer>
+    </div>
 </template>

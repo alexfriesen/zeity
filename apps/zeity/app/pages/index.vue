@@ -16,12 +16,12 @@ function timeNew() {
 </script>
 
 <template>
-    <UContainer class="flex flex-col h-full">
+    <div class="flex flex-col h-full">
 
         <TimeDrawer />
 
-        <section class="grow p-3 my-3">
-            <TimeList default-open class="mb-4" :times="sortedTimes" />
+        <section class="grow py-3 my-3">
+            <TimeList default-open :times="sortedTimes" />
 
             <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
                 description="It looks like you haven't tracked any time yet. Start tracking time by clicking the button below."
@@ -31,9 +31,9 @@ function timeNew() {
                 ]" />
         </section>
 
-        <footer class="sticky bottom-3">
+        <footer class="sticky bottom-16 md:bottom-3">
             <TimeDraft />
         </footer>
 
-    </UContainer>
+    </div>
 </template>

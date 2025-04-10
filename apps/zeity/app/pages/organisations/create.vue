@@ -43,7 +43,7 @@ async function handleSubmit(data: Organisation | NewOrganisation) {
 </script>
 
 <template>
-    <UContainer as="section" class="page my-3">
+    <div as="section" class="page my-3">
         <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
@@ -51,5 +51,5 @@ async function handleSubmit(data: Organisation | NewOrganisation) {
         </h2>
 
         <OrganisationForm :loading="loading" :data="data" class="mt-4" @submit="handleSubmit" />
-    </UContainer>
+    </div>
 </template>

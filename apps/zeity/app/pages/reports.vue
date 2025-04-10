@@ -36,8 +36,7 @@ const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
 </script>
 
 <template>
-
-    <UContainer class="my-3 space-y-6">
+    <div class="my-3 space-y-6">
         <section>
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
@@ -58,6 +57,5 @@ const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
 
             <ReportDownload :times="filteredTimes" />
         </UCard>
-    </UContainer>
-
+    </div>
 </template>

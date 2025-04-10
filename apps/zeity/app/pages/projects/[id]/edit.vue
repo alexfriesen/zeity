@@ -24,12 +24,12 @@ function save(data: Project) {
 </script>
 
 <template>
-    <UContainer class="my-4">
+    <div class="my-4">
         <UBreadcrumb :items="[{ label: $t('projects.title'), to: '/projects' }]" />
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
             {{ $t('projects.edit.title') }}
         </h2>
         <ProjectForm v-if="project" :data="project" class="mt-4" @submit="save" />
-    </UContainer>
+    </div>
 </template>

@@ -79,7 +79,7 @@ async function deleteOrganisation() {
 </script>
 
 <template>
-    <UContainer v-if="status === 'success'" class="my-4">
+    <div v-if="status === 'success'" class="my-4">
         <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
         <div>
             <UForm v-if="editing" :schema="schema" :state="state"
@@ -137,5 +137,5 @@ async function deleteOrganisation() {
             </UModal>
         </section>
 
-    </UContainer>
+    </div>
 </template>

@@ -1,60 +1,23 @@
 <template>
-    <div class="layout isolate">
-        <AppHeader class="header" />
+    <div class="isolate">
+        <AppHeader />
 
-        <main class="main">
-            <slot />
-        </main>
+        <UContainer>
+            <div class="grid md:flex md:gap-4 min-h-[calc(100vh-var(--ui-header-height))]">
+                <AppAsideNavigation class="hidden md:block" />
 
-        <AppNavigation class="nav" />
+                <main class="flex-grow flex-shrink min-w-0 pb-14 md:pb-0">
+                    <slot />
+                </main>
+            </div>
+
+        </UContainer>
+        <AppBottomNavigation class="md:hidden" />
     </div>
 </template>
 
-<style scoped>
-.layout {
-    height: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr auto;
-    grid-template-areas:
-        'header'
-        'notifications'
-        'main'
-        'nav';
-}
-
-.header {
-    grid-area: header;
-}
-
-.main {
-    grid-area: main;
-    overflow: auto;
-}
-
-.notifications {
-    display: flex;
-    flex-direction: column;
-
-    grid-area: notifications;
-
-    margin: auto;
-    width: 100%;
-}
-
-.nav {
-    grid-area: nav;
-}
-
-@media screen and (min-width: 768px) {
-    .layout {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto 1fr;
-        grid-template-areas:
-            'header header'
-            'nav notifications'
-            'nav main';
-    }
+<style>
+:root {
+    --ui-header-height: calc(var(--spacing)* 16);
 }
 </style>

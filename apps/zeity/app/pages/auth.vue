@@ -39,7 +39,7 @@ async function handleRedirect() {
 </script>
 
 <template>
-    <UContainer class="my-3 space-y-6">
+    <div class="my-3 space-y-6">
         <UCard v-if="!user" class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">
@@ -67,5 +67,5 @@ async function handleRedirect() {
                 <AuthVerify @submit="auth" />
             </div>
         </UCard>
-    </UContainer>
+    </div>
 </template>

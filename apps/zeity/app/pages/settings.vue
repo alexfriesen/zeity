@@ -117,7 +117,7 @@ async function handleImport(event: Event) {
 </script>
 
 <template>
-    <UContainer class="my-3 space-y-4">
+    <div class="my-3 space-y-4">
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
             {{ $t('settings.title') }}
@@ -165,5 +165,5 @@ async function handleImport(event: Event) {
                     icon="i-lucide-hard-drive-upload" @click="handleExport()" />
             </div>
         </FieldSet>
-    </UContainer>
+    </div>
 </template>

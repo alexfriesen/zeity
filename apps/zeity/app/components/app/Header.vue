@@ -7,26 +7,25 @@ function timeNew() {
 </script>
 
 <template>
-    <header :class="$attrs.class">
-        <nav
-            class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50 border-neutral-200 dark:border-neutral-800 min-h-12">
-            <div class="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-16">
-                <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">
-                    <UButton to="/" icon="i-zeity-logo" variant="ghost">
-                        <span class="font-bold text-xl text-neutral-900 dark:text-white min-w-0">
-                            {{ $t('about.title') }}
-                        </span>
-                    </UButton>
-                </div>
-                <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-                    <UButton v-if="$route.path === '/'" square class="rounded-full" icon="i-lucide-plus"
-                        variant="outline" @click="timeNew">
-                        <span class="sr-only">
-                            {{ $t('common.add') }}
-                        </span>
-                    </UButton>
-                </div>
+    <header class="bg-(--ui-bg)/75 backdrop-blur border-b border-(--ui-border) h-(--ui-header-height) sticky top-0 z-50"
+        :class="$attrs.class">
+        <div
+            class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-full">
+            <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">
+                <UButton to="/" icon="i-zeity-logo" variant="ghost">
+                    <span class="font-bold text-xl text-neutral-900 dark:text-white min-w-0">
+                        {{ $t('about.title') }}
+                    </span>
+                </UButton>
             </div>
-        </nav>
+            <div class="flex items-center justify-end lg:flex-1 gap-1.5">
+                <UButton v-if="$route.path === '/'" square class="rounded-full" icon="i-lucide-plus" variant="outline"
+                    @click="timeNew">
+                    <span class="sr-only">
+                        {{ $t('common.add') }}
+                    </span>
+                </UButton>
+            </div>
+        </div>
     </header>
 </template>

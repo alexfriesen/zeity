@@ -17,9 +17,12 @@ const filteredTimes = computed(() => {
 
     if (dFilter && dFilter.start && dFilter.end) {
         times = times.filter(
-            (item) =>
-                isAfter(parseDate(item.start), parseDate(dFilter.start)) &&
-                isBefore(parseDate(item.end), parseDate(dFilter.end)),
+            (item) => {
+                const timeStart = parseDate(item.start);
+
+                return isAfter(timeStart, parseDate(dFilter.start)) &&
+                    isBefore(timeStart, parseDate(dFilter.end));
+            }
         );
     }
 

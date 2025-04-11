@@ -57,9 +57,8 @@ export const useTimerStore = defineStore('timer', () => {
 
     const time = {
       id: nanoid(),
-      end: end.toISOString(),
-      duration,
       ...draftValue,
+      duration,
     };
 
     insertTime(time);
@@ -78,30 +77,14 @@ export const useTimerStore = defineStore('timer', () => {
   }
 
   function upsertTimes(times: Time[]) {
-    const enhancedTimes = times.map((time) => {
-      const duration =
-        time.duration ?? timeDiff(time.end || new Date(), time.start);
-      return { ...time, duration };
-    });
-
-    return timesStore.upsertMany(enhancedTimes);
+    return timesStore.upsertMany(times);
   }
 
   function insertTime(time: Time) {
-    const duration =
-      time.duration ?? timeDiff(time.end || new Date(), time.start);
-    return timesStore.insert({ ...time, duration });
+    return timesStore.insert(time);
   }
 
   function updateTime(id: string, time: Partial<Time>) {
-    // update duration if start or end is changed
-    if ((time.start || time.end) && !time.duration) {
-      const originalTime = timesStore.findById(id);
-      const start = time.start ?? originalTime.value?.start ?? new Date();
-      const end = time.end ?? originalTime.value?.end ?? new Date();
-      time.duration = time.duration ?? timeDiff(end, start);
-    }
-
     return timesStore.update(id, time);
   }
 

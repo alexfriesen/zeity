@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { FormSubmitEvent } from '@nuxt/ui';
 import { useIntervalFn } from '@vueuse/core'
+import { addMilliseconds } from 'date-fns';
 import { nanoid } from 'nanoid';
 import z from 'zod';
-import type { FormSubmitEvent } from '@nuxt/ui';
 
 import { timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '@zeity/types/time';
@@ -46,8 +47,23 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     if (isOpen && currentTime.value) {
         const clone = structuredClone(toRaw(currentTime.value));
 
-        state.value = clone;
-    }
+        if (isTimeValue(clone)) {
+            const start = new Date(clone.start);
+            const end = addMilliseconds(start, clone.duration);
+
+            state.value = {
+                id: clone.id,
+                start: clone.start,
+                end: end.toISOString(),
+                notes: clone.notes || '',
+                projectId: clone.projectId || undefined,
+            } satisfies Schema;
+        } else if (isDraftValue(clone)) {
+            state.value = {
+                ...clone,
+            } satisfies Schema;
+        }
+    };
 
     if (isDraft && isOpen) {
         resume();
@@ -64,7 +80,7 @@ const diff = computed(() => {
     }
 
     const start = time?.start;
-    const end = isTimeValue(time) ? time.end : now.value;
+    const end = 'end' in time ? time.end as string : now.value;
 
     if (start && end) {
         return timeDiff(end, start);
@@ -84,7 +100,7 @@ const timeSchema = z.object({
 const draftSchema = timeSchema.pick({ start: true, notes: true, projectId: true });
 const schema = z.union([timeSchema, draftSchema]);
 
-type Schema = z.output<typeof schema>
+type Schema = z.infer<typeof schema>
 const state = ref<Schema>();
 
 function handleTimeDetailOpenUpdate(state: boolean) {
@@ -93,14 +109,39 @@ function handleTimeDetailOpenUpdate(state: boolean) {
     }
 }
 
+function parseFormData(event: FormSubmitEvent<Schema>) {
+    let duration: number | undefined;
+    if ('end' in event.data) {
+        duration = timeDiff(event.data.end, event.data.start);
+    }
+
+    let id: string | undefined;
+    if ('id' in event.data) {
+        id = event.data.id;
+    }
+
+    // Time contain id and duration
+    if (id && duration) {
+        return {
+            ...event.data,
+            duration,
+            id,
+        } satisfies Time;
+    }
+
+    // otherwise, it's a draft
+    return {
+        ...event.data,
+    } satisfies DraftTime;
+}
+
 function handleSave(event: FormSubmitEvent<Schema>) {
-    const time = event.data
+    const time = parseFormData(event);
 
     if (isDraftValue(time)) {
         timeStore.updateDraft(time);
     }
     if (isTimeValue(time)) {
-        time.duration = timeDiff(time.end, time.start);
         if (time.id === 'new') {
             timeStore.insertTime({ ...time, id: nanoid() });
         } else {
@@ -129,10 +170,10 @@ function handleRemove() {
 }
 
 function isDraftValue(value: Time | DraftTime | Schema | undefined | null): value is DraftTime {
-    return !!value && !('end' in value);
+    return !!value && !('duration' in value) && !('end' in value);
 }
 function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): value is Time {
-    return !!value && ('end' in value || 'duration' in value);
+    return !!value && (('duration' in value) || ('end' in value));
 }
 </script>
 
@@ -149,7 +190,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                     <DateTimeField v-model="state.start" />
                 </UFormField>
 
-                <UFormField v-if="isTimeValue(state) && state.end" :label="$t('times.form.end')" name="end">
+                <UFormField v-if="'end' in state" :label="$t('times.form.end')" name="end">
                     <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 

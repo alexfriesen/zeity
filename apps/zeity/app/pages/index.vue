@@ -11,7 +11,7 @@ const isEmpty = computed(() => allTimes.value.length < 1);
 
 function timeNew() {
     const now = new Date().toISOString();
-    timeDetail.open({ id: 'new', start: now, end: now, notes: '' });
+    timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
 }
 </script>
 

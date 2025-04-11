@@ -21,10 +21,6 @@ export const times = pgTable(
       withTimezone: true,
       mode: 'date',
     }).notNull(),
-    end: timestamp('end', {
-      withTimezone: true,
-      mode: 'date',
-    }).notNull(),
     duration: integer('duration').notNull(),
     notes: text('notes').notNull().default(''),
 
@@ -41,7 +37,7 @@ export const times = pgTable(
 
     ...timestampColumns(),
   },
-  (table) => [index().on(table.start), index().on(table.end)]
+  (table) => [index().on(table.start), index().on(table.duration)]
 );
 
 export type Time = typeof times.$inferSelect; // return type when queried

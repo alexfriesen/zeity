@@ -6,19 +6,19 @@ describe('generateCSV', () => {
   it('should generate a CSV string', () => {
     expect(
       generateCSV(
-        ['id', 'notes', 'start', 'end', 'tags'],
+        ['id', 'notes', 'start', 'duration', 'tags'],
         [
           {
             id: '1',
             notes: 'test',
             start: new Date('2024-10-02T17:01:53.862Z').toISOString(),
-            end: new Date('2024-10-02T17:01:53.862Z').toISOString(),
+            duration: 600,
             tags: ['tag1', 'tag2'],
           },
         ],
       ),
     ).toBe(
-      'id;notes;start;end;tags\n1;"test";2024-10-02T17:01:53.862Z;2024-10-02T17:01:53.862Z;"tag1,tag2"',
+      'id;notes;start;duration;tags\n1;"test";2024-10-02T17:01:53.862Z;600;"tag1,tag2"',
     );
   });
 });

@@ -154,11 +154,11 @@ describe('DateUtils', function () {
         calculateDiffSum([
           {
             start: '2023-04-14T10:00:00.500Z',
-            end: '2023-04-14T10:01:00.500Z',
+            duration: 60_000,
           },
           {
             start: '2023-04-15T10:00:00.500Z',
-            end: '2023-04-15T10:01:00.500Z',
+            duration: 60_000,
           },
         ])
       ).toEqual(120_000);
@@ -173,7 +173,7 @@ describe('DateUtils', function () {
           },
           {
             start: '2023-04-15T10:00:00.500Z',
-            end: '2023-04-15T10:01:00.500Z',
+            duration: 60_000,
           },
         ])
       ).toEqual(120_000);

@@ -25,7 +25,7 @@ const formatOptions = [
 ];
 
 type EnhancedTime = Time & { project: string | null };
-const exportedFields: (keyof EnhancedTime)[] = ['id', 'start', 'end', 'project', 'notes'] as const;
+const exportedFields: (keyof EnhancedTime)[] = ['id', 'start', 'duration', 'project', 'notes'] as const;
 
 function downloadReport(type = 'json') {
     const times = props.times;

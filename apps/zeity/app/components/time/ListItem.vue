@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Time } from '@zeity/types/time';
-import { formatDuration, timeDiff } from '@zeity/utils/date';
+import { formatDuration } from '@zeity/utils/date';
 
 const props = defineProps({
 	class: {
@@ -62,7 +62,7 @@ function handleToggle() {
 
 			<div class="font-sans text-md text-[var(--ui-text-toned)]">
 				<span class="tabular-nums">
-					{{ formatDuration(timeDiff(time.end, time.start)) }}
+					{{ formatDuration(time.duration) }}
 				</span>
 			</div>
 		</UButton>

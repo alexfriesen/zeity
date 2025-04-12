@@ -57,12 +57,12 @@ export function dayDiff(a: DateLike, b: DateLike) {
 }
 
 export function calculateDiffSum(
-  items: { start: DateLike; end: DateLike, duration?: number }[]
+  items: { start: DateLike; duration: number }[]
 ): number {
   let sum = 0;
 
   for (const item of items) {
-    sum += item.duration ?? timeDiff(item.end, item.start);
+    sum += item.duration;
   }
 
   return sum;
@@ -115,10 +115,7 @@ export function formatRelativeDate(
   return formatRelativeDateDiff(diff, locale);
 }
 
-export function formatRelativeDateDiff(
-  value: number,
-  locale?: string
-) {
+export function formatRelativeDateDiff(value: number, locale?: string) {
   return getRelativeDateFormatter(locale).format(value, 'day');
 }
 

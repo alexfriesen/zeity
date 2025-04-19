@@ -9,7 +9,9 @@ interface EntityStoreState<T> {
   ids: (string | number)[];
 }
 
-export function useEntityStore<T extends { id: string }>(name: string) {
+export function useEntityStore<T extends { id: string | number }>(
+  name: string
+) {
   return defineStore(name, function () {
     const state = ref<EntityStoreState<T>>({
       entities: {},

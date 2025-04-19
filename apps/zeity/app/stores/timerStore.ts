@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
-import { nanoid } from 'nanoid';
 
-import { timeDiff } from '@zeity/utils/date';
 import { useEntityStore } from './entityStore';
 import type { DraftTime, Time } from '@zeity/types/time';
 import useLocalStorage from '~/utils/localstorage';

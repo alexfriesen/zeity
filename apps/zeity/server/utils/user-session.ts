@@ -20,6 +20,10 @@ export async function refreshUserSession(event: H3Event) {
     .where(eq(users.id, session?.user?.id))
     .then((rows) => rows[0]);
 
+  if (!user) {
+    return;
+  }
+
   await setUserSession(event, {
     ...session,
     user: {

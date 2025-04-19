@@ -5,6 +5,9 @@ import type { ProjectStatus } from '@zeity/types/project';
 const route = useRoute()
 const projectStore = useProjectStore()
 const timeStore = useTimerStore()
+const { loadProject, updateProject } = useProject();
+const { loadTimes } = useTime();
+
 
 definePageMeta({
     validate: async (route) => {
@@ -19,6 +22,31 @@ const project = projectStore.findProjectById(projectId)
 const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 
+onMounted(() => {
+    loadProject(projectId);
+    loadMoreTimes()
+})
+
+const isLoading = ref(false);
+const timeOffset = ref(0);
+const timeLimit = ref(1);
+const timeEndReached = ref(true);
+
+function loadMoreTimes() {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    loadTimes({ offset: timeOffset.value, limit: timeLimit.value, projectId })
+        .then((data) => {
+            timeOffset.value += data?.length || 0;
+            timeEndReached.value = (data?.length ?? 0) < timeLimit.value;
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
+
+}
+
 if (!project) {
     navigateTo('/projects')
 }
@@ -26,7 +54,7 @@ if (!project) {
 function updateStatus(status?: ProjectStatus) {
     if (!status) return;
 
-    projectStore.updateProject(projectId, { status: status })
+    updateProject(projectId, { status: status })
 
     return navigateTo(`/projects/${projectId}`);
 }
@@ -65,6 +93,10 @@ function updateStatus(status?: ProjectStatus) {
             </div>
             <div>
                 <TimeList :times="projectTimes" />
+                <UButton v-if="!timeEndReached" block class="mt-2" variant="subtle" :loading="isLoading"
+                    :disabled="isLoading" @click="loadMoreTimes">
+                    {{ $t('common.loadMore') }}
+                </UButton>
             </div>
         </div>
     </div>

@@ -2,17 +2,15 @@
 import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay, type DateLike, } from '@zeity/utils/date';
 import type { Time } from '@zeity/types/time';
 
-const props = defineProps({
+const { times } = defineProps({
 	class: { type: String, default: '' },
 	times: { type: Array as PropType<Time[]>, required: true },
 	defaultOpen: { type: Boolean, default: false },
 });
-const times = toRef(props, 'times');
-
 const { locale } = storeToRefs(useSettingsStore());
 
 const groups = computed(() => {
-	const all = times.value || [];
+	const all = times || [];
 
 	const groups: Record<string, { label: string, data: Time[] }> = {};
 	for (let i = 0; i < all.length; i++) {

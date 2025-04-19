@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED, PROJECT_STATUSES } from '@zeity/types/project';
 import { useProjectStore } from '~/stores/projectStore';
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED } from '@zeity/types/project';
 
 const showClosed = ref(false);
 
@@ -11,12 +11,51 @@ const projectStatusFilter = computed(() => {
     return [PROJECT_STATUS_ACTIVE];
 });
 
+const { loadProjects } = useProject();
 const store = useProjectStore();
 const projects = store.getAllProjects();
 const isEmpty = computed(() => projects.value.length === 0);
 
 const filteredProjects = computed(() => {
     return projects.value.filter((project) => projectStatusFilter.value.includes(project.status));
+});
+
+const offset = ref(0);
+const limit = ref(20);
+const isLoading = ref(false);
+const endReached = ref(false);
+
+function loadMore() {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    loadProjects({
+        offset: offset.value,
+        limit: limit.value,
+        status: (showClosed.value ? PROJECT_STATUSES : [PROJECT_STATUS_ACTIVE]) as string[],
+    })
+        .then((data) => {
+            offset.value += data?.length || 0;
+            if (!data?.length) {
+                endReached.value = true;
+            }
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
+}
+function resetOffset() {
+    offset.value = 0;
+    endReached.value = false;
+}
+
+watch(showClosed, () => {
+    resetOffset();
+    loadMore();
+});
+
+onMounted(() => {
+    loadMore();
 });
 </script>
 

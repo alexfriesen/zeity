@@ -30,6 +30,7 @@ export default defineI18nConfig(() => ({
         save: 'Save',
         start: 'Start',
         stop: 'Stop',
+        loadMore: 'Load more',
       },
       navigation: {
         timer: 'Timer',
@@ -186,6 +187,7 @@ export default defineI18nConfig(() => ({
         save: 'Speichern',
         start: 'Start',
         stop: 'Stop',
+        loadMore: 'Mehr laden',
       },
       navigation: {
         timer: 'Timer',

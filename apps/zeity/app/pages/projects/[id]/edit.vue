@@ -3,6 +3,7 @@ import type { Project } from '@zeity/types/project';
 
 const route = useRoute()
 const projectStore = useProjectStore()
+const { loadProject, updateProject } = useProject();
 
 definePageMeta({
     validate: async (route) => {
@@ -12,11 +13,14 @@ definePageMeta({
 })
 
 const projectId = route.params.id as string;
-
 const project = projectStore.findProjectById(projectId)
 
+onMounted(() => {
+    loadProject(projectId);
+})
+
 function save(data: Project) {
-    projectStore.updateProject(projectId, data)
+    updateProject(projectId, data)
 
     return navigateTo(`/projects/${projectId}`);
 }

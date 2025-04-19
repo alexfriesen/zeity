@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 
 interface EntitiesMap<T> {
-  [id: string]: T;
+  [id: string | number]: T;
 }
 
 interface EntityStoreState<T> {
   entities: EntitiesMap<T>;
-  ids: string[];
+  ids: (string | number)[];
 }
 
 export function useEntityStore<T extends { id: string }>(name: string) {
@@ -59,14 +59,14 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       state.value.ids.push(id);
     }
 
-    function update(id: string, data: Partial<T>) {
+    function update(id: string | number, data: Partial<T>) {
       const current = state.value.entities[id];
       if (current) {
         state.value.entities[id] = { ...current, ...data };
       }
     }
 
-    function remove(id: string) {
+    function remove(id: string | number) {
       const updatedState = {
         ids: state.value.ids.filter((i) => i !== id),
         entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>(
@@ -90,7 +90,7 @@ export function useEntityStore<T extends { id: string }>(name: string) {
       };
     }
 
-    function findById(id: string) {
+    function findById(id: string | number) {
       return computed(() => state.value.entities[id]);
     }
     function getAll() {

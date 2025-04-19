@@ -24,11 +24,17 @@ export const useProjectStore = defineStore('project', () => {
     loadFromLocalStorage();
   });
 
-  watch(projectsStore.getAll(), (value) => {
+  const offlineProjects = computed(() => {
+    const projects = projectsStore.getAll();
+    return projects.value.filter((time) => !time.userId);
+  });
+
+  watch(offlineProjects, (value) => {
     useLocalStorage().setItem('projects', value);
   });
 
   return {
+    offlineProjects,
     upsertProjects: projectsStore.upsertMany,
 
     getAllProjects: projectsStore.getAll,

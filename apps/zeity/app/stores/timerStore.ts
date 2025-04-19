@@ -37,41 +37,6 @@ export const useTimerStore = defineStore('timer', () => {
 
     return draft;
   }
-  function startDraft(time?: Partial<DraftTime>): DraftTime {
-    const newDraft = {
-      start: new Date().toISOString(),
-      notes: '',
-      ...time,
-    };
-    setDraft(newDraft);
-
-    return newDraft;
-  }
-  function stopDraft() {
-    const draftValue = draft.value;
-    if (!draftValue) return;
-
-    const start = draftValue.start;
-    const end = new Date();
-    const duration = timeDiff(end, start);
-
-    const time = {
-      id: nanoid(),
-      ...draftValue,
-      duration,
-    };
-
-    insertTime(time);
-    resetDraft();
-
-    return time;
-  }
-  function toggleDraft(): DraftTime | Time | undefined {
-    if (!draft.value) {
-      return startDraft();
-    }
-    return stopDraft();
-  }
   function resetDraft() {
     draft.value = null;
   }
@@ -111,14 +76,20 @@ export const useTimerStore = defineStore('timer', () => {
     loadFromLocalStorage();
   });
 
+  const offlineTimes = computed(() => {
+    const times = timesStore.getAll();
+    return times.value.filter((time) => !time.userId);
+  });
+
   watch(draft, (value) => {
     useLocalStorage().setItem('draft', value);
   });
-  watch(timesStore.getAll(), (value) => {
+  watch(offlineTimes, (value) => {
     useLocalStorage().setItem('times', value);
   });
 
   return {
+    offlineTimes,
     getAllTimes: timesStore.getAll,
     findTimeById: timesStore.findById,
     findTime: timesStore.find,
@@ -131,10 +102,8 @@ export const useTimerStore = defineStore('timer', () => {
     draft,
     isStarted,
     updateDraft,
-    startDraft,
-    stopDraft,
+    setDraft,
     resetDraft,
-    toggleDraft,
 
     loading,
     setLoading,

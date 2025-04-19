@@ -12,6 +12,7 @@ export {
   gt,
   lt,
   eq,
+  ilike,
   inArray,
   and,
   or,

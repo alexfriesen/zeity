@@ -24,6 +24,7 @@ const projectItems = computed(() => {
     ];
 })
 
+const { createTime, updateTime, removeTime, stopDraft } = useTime();
 const timeStore = useTimerStore();
 
 const {
@@ -61,7 +62,7 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
         } else if (isDraftValue(clone)) {
             state.value = {
                 ...clone,
-            } satisfies Schema;
+            } as Schema;
         }
     };
 
@@ -90,7 +91,7 @@ const diff = computed(() => {
 });
 
 const timeSchema = z.object({
-    id: z.string().default(nanoid()),
+    id: z.any().default(nanoid()),
     start: z.coerce.string().date(),
     end: z.coerce.string().date(),
     notes: z.string().default(''),
@@ -143,9 +144,9 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            timeStore.insertTime({ ...time, id: nanoid() });
+            createTime({ ...time, id: nanoid() });
         } else {
-            timeStore.updateTime(time.id, time);
+            updateTime(time.id, time);
         }
     }
 
@@ -153,7 +154,7 @@ function handleSave(event: FormSubmitEvent<Schema>) {
 }
 
 function stop() {
-    timeStore.stopDraft();
+    stopDraft();
     close();
 }
 
@@ -163,7 +164,7 @@ function handleRemove() {
     }
 
     if (isTimeValue(currentTime?.value)) {
-        timeStore.removeTime(currentTime.value.id);
+        removeTime(currentTime.value.id);
     }
 
     close();
@@ -190,7 +191,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                     <DateTimeField v-model="state.start" />
                 </UFormField>
 
-                <UFormField v-if="'end' in state" :label="$t('times.form.end')" name="end">
+                <UFormField v-if="state && 'end' in state" :label="$t('times.form.end')" name="end">
                     <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 

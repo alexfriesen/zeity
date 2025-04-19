@@ -3,13 +3,14 @@ import NumberFlow, { NumberFlowGroup } from '@number-flow/vue'
 
 const model = defineModel<number>({ default: 0 });
 
-const seconds = computed(() => Math.trunc(model.value / 1000));
+// + 0 will prevent showing negative zero
+const seconds = computed(() => Math.round(model.value / 1000) + 0);
 
 const hh = computed(() => Math.floor(seconds.value / 3600))
 const mm = computed(() => Math.floor((seconds.value % 3600) / 60))
-const ss = computed(() => seconds.value % 60)
+const ss = computed(() => Math.trunc(seconds.value % 60) + 0)
 
-const trend = +1;
+const trend = 0;
 const format = { minimumIntegerDigits: 2 };
 const digits = { 1: { max: 5 } };
 </script>

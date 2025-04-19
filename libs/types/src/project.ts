@@ -13,6 +13,12 @@ export interface Project {
   name: string;
   status: ProjectStatus;
   notes: string;
+
+  userId?: string;
+  organisationId?: string;
+
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type NewProject = Omit<Project, 'id'>;

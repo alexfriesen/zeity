@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
     await tx.insert(organisationMembers).values({
       userId: session.user.id,
-      organisationId: org.id,
+      organisationId: org!.id,
       role: ORGANISATION_MEMBER_ROLE_OWNER,
     });
 

@@ -14,16 +14,16 @@
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
-    "drizzle-orm": "^0.42.0",
-    "pg": "^8.14.1"
+    "drizzle-orm": "^0.43.1",
+    "pg": "^8.15.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "@types/node": "^22.14.1",
-    "@types/pg": "^8.11.13",
+    "@eslint/js": "^9.25.1",
+    "@types/node": "^22.15.2",
+    "@types/pg": "^8.11.14",
     "drizzle-kit": "^0.31.0",
-    "eslint": "^9.25.0",
+    "eslint": "^9.25.1",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.30.1"
+    "typescript-eslint": "^8.31.0"
   }
 }

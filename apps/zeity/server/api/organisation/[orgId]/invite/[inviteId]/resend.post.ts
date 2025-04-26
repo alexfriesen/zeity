@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
   if (!organisation || !organisation_invite) {
     throw createError({
       statusCode: 404,
-      message: 'Organisation invite not found',
+      message: 'organisation invite not found',
     });
   }
 

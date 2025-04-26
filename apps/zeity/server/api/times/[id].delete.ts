@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'time entry not found',
+      message: 'time not found',
     });
   }
 

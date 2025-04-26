@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'project entry not found',
+      message: 'project not found',
     });
   }
 

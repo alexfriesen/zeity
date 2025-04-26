@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
   if (!result) {
     throw createError({
       statusCode: 404,
-      message: 'Organisation not found',
+      message: 'time not found',
     });
   }
 

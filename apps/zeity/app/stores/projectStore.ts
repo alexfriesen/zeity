@@ -26,7 +26,7 @@ export const useProjectStore = defineStore('project', () => {
 
   const offlineProjects = computed(() => {
     const projects = projectsStore.getAll();
-    return projects.value.filter((time) => !time.userId);
+    return projects.value.filter((project) => !project.userId);
   });
 
   watch(offlineProjects, (value) => {

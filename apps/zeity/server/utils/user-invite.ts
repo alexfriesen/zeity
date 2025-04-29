@@ -54,13 +54,20 @@ export async function sendInviteMail(
 ) {
   const link = await useUserInvite(event).generateLink(invite.id);
 
-  await useMailer().sendMessageMail(
-    invite.email,
+  await useMailer(event).sendMessageMail(
+    { email: invite.email },
     `Invitation to join ${organisation.name}`,
     [`You have been invited to join ${organisation.name}.`],
-    {
-      url: link,
-      text: 'Accept Invitation',
-    }
+    [
+      {
+        class: 'text-center',
+        children: [
+          {
+            url: link,
+            text: 'Accept Invitation',
+          },
+        ],
+      },
+    ]
   );
 }

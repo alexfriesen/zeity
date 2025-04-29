@@ -69,9 +69,9 @@ importers:
       jose:
         specifier: ^6.0.10
         version: 6.0.10
-      nodemailer:
-        specifier: ^6.10.1
-        version: 6.10.1
+      unemail:
+        specifier: ^0.1.0
+        version: 0.1.0
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -5496,10 +5496,6 @@ packages:
     resolution: {integrity: sha512-jn9vOIK/nfqoFCcpK89/VCVaLg1IHE6UVfDOzvqmANaJ/rWCTEdH8RZ1V278nv2jr36BJdyQXIAavBLXpzdlag==}
     engines: {node: '>=14'}
 
-  nodemailer@6.10.1:
-    resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
-    engines: {node: '>=6.0.0'}
-
   nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
     engines: {node: '>=6'}
@@ -5575,6 +5571,7 @@ packages:
 
   nuxt-time@1.0.3:
     resolution: {integrity: sha512-aD5Yv18IIKX08ED9B+Hd2rSDewcV40qNxUursdtJFaKFhLLZWPQF8TR2d/P523erPlqht2OvxSN3iyGhUJJy/g==}
+    deprecated: This module is no longer necessary as `<NuxtTime>` is built into Nuxt from v3.17 onwards.
     peerDependencies:
       nuxt: '>=3.12.0'
 
@@ -6926,6 +6923,11 @@ packages:
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  unemail@0.1.0:
+    resolution: {integrity: sha512-pJunGTIDWXJ/lVLyJrOhD5N+LdRnOxXKLWOSFiGBqDM9kQZ2bPQ8h/Iii4nDKFpomzVLlc4cv0xybkEyAlYdhw==}
+    engines: {node: '>=20.11.1'}
+    hasBin: true
 
   unenv@2.0.0-rc.15:
     resolution: {integrity: sha512-J/rEIZU8w6FOfLNz/hNKsnY+fFHWnu9MH4yRbSZF3xbbGHovcetXPs7sD+9p8L6CeNC//I9bhRYAOsBt2u7/OA==}
@@ -13649,8 +13651,6 @@ snapshots:
     dependencies:
       '@babel/parser': 7.27.0
 
-  nodemailer@6.10.1: {}
-
   nopt@5.0.0:
     dependencies:
       abbrev: 1.1.1
@@ -15342,6 +15342,8 @@ snapshots:
       unplugin: 2.3.2
 
   undici-types@6.21.0: {}
+
+  unemail@0.1.0: {}
 
   unenv@2.0.0-rc.15:
     dependencies:

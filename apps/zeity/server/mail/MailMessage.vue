@@ -37,8 +37,20 @@ defineProps({
         </Text>
 
         <Section v-for="(section, sectionIndex) in sections" :key="sectionIndex" :class="section.class">
-            <Text v-for="(text, textIndex) in section.children" :key="textIndex" :class="text.class">
-                {{ text.text }}
+
+            <Text v-for="(child, childIndex) in section.children" :key="childIndex" :class="child.class">
+                <template v-if="'url' in child">
+                    <Button :href="child.url" referrerpolicy="strict-origin"
+                        class="rounded-md font-medium inline-flex items-center focus:outline-hidden transition-colors px-2.5 py-1.5 m-auto text-sm gap-1.5 justify-center text-text bg-primary-400 hover:bg-primary/75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                        :class="child.class">
+                        {{ child.text }}
+                    </Button>
+                </template>
+                <template v-else>
+                    <Text :class="child.class">
+                        {{ child.text }}
+                    </Text>
+                </template>
             </Text>
         </Section>
 

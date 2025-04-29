@@ -124,7 +124,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     mailer: {
-      from: 'Zeity <noreply@localhost>',
+      from: { email: 'noreply@zeity.dev', name: 'Zeity' },
       smtp: {
         host: 'localhost',
         port: 1025,

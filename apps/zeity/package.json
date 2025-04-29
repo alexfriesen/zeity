@@ -30,7 +30,7 @@
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.43.1",
     "jose": "^6.0.10",
-    "nodemailer": "^6.10.1",
+    "unemail": "^0.1.0",
     "zod": "^3.24.3"
   },
   "devDependencies": {

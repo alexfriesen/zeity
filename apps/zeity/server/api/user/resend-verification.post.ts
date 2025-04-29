@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
   const otp = await createOTP(session.user.id);
   await useMailer(event).sendMessageMail(
-    user.email,
+    { email: user.email, name: user.name },
     'Verify your email',
     ['Please verify your email address by entering the code below:'],
     [{ children: [{ text: otp, class: 'font-bold text-2xl' }] }]

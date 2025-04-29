@@ -1,11 +1,13 @@
 import type { H3Event } from 'h3';
-import { createTransport, type Transporter } from 'nodemailer';
 import { createConsola } from 'consola';
+import { createEmailService, type EmailService } from 'unemail';
+import type { EmailAddress } from 'unemail/types';
+import smtpProvider from 'unemail/providers/smtp';
 
 import type { MailSection } from '~~/types/mail';
 import { useMailTemplate } from './mail-template';
 
-type MailTo = string | string[];
+type MailTo = EmailAddress | EmailAddress[];
 type MailContent =
   | { html?: string; text: string }
   | { html: string; text?: string };
@@ -18,54 +20,44 @@ type SendMailOptions = {
 } & MailContent;
 
 const logger = createConsola({}).withTag('mailer');
-let client: Transporter;
-
-function parseMailTo(to?: MailTo) {
-  if (typeof to === 'string') {
-    return to;
-  }
-
-  if (Array.isArray(to) && to.length > 0) {
-    return to.join(', ');
-  }
-
-  return undefined;
-}
+let client: EmailService | undefined;
 
 async function sendMail(options: SendMailOptions) {
-  const to = parseMailTo(options.to);
-
-  if (!to) {
-    logger.warn('Could not wend mail: No recipient specified', options.subject);
+  if (!options.to) {
+    logger.warn('Could not send mail: No recipient specified', options.subject);
     throw new Error('No recipient specified');
   }
 
   const from = useRuntimeConfig().mailer.from;
   const info = await client
-    .sendMail({
+    ?.sendEmail({
       from,
-      to: to,
-      cc: parseMailTo(options.cc),
-      bcc: parseMailTo(options.bcc),
+      to: options.to,
+      cc: options.cc,
+      bcc: options.bcc,
       subject: options.subject,
       text: options.text || '',
       html: options.html,
     })
     .catch((e) => {
-      logger.error(e);
+      logger.error('Sending mail failed', e);
     });
+
+  if (info?.error) {
+    logger.error('Sending mail failed', info.error);
+  }
 
   logger.debug('Message sent: %s', info);
 }
 
-async function sendWelcomeMail(to: string, name: string, otp?: string) {
+async function sendWelcomeMail(to: EmailAddress, otp?: string) {
   const { html, text } = await useMailTemplate().renderWelcomeMail({
-    name,
+    name: to.name ?? to.email,
     otp,
   });
 
   return sendMail({
-    to: `${name} <${to}>`,
+    to,
     subject: 'Welcome to zeity',
     html,
     text,
@@ -73,7 +65,7 @@ async function sendWelcomeMail(to: string, name: string, otp?: string) {
 }
 
 async function sendMessageMail(
-  to: string,
+  to: MailTo,
   subject: string,
   messages: string[],
   sections: MailSection[] = []
@@ -93,7 +85,14 @@ async function sendMessageMail(
 }
 
 export function useMailer(event: H3Event) {
-  client ??= createTransport(useRuntimeConfig(event).mailer.smtp);
+  try {
+    const smtp = useRuntimeConfig(event).mailer.smtp;
+    client ??= createEmailService({
+      provider: smtpProvider(smtp),
+    });
+  } catch (e) {
+    logger.error('Failed to create mailer client', e);
+  }
 
   return {
     sendMail,

@@ -74,7 +74,10 @@ export default defineWebAuthnRegisterEventHandler({
 
     const otp = await createOTP(dbUser.id);
 
-    await useMailer(event).sendWelcomeMail(dbUser.email, dbUser.name, otp);
+    await useMailer(event).sendWelcomeMail(
+      { email: dbUser.email, name: dbUser.name },
+      otp
+    );
   },
 
   async excludeCredentials(event, username) {

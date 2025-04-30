@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-import { eq, asc } from '@zeity/database';
+import { eq, asc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
+import { coerceArray } from '~~/server/utils/zod';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -12,7 +13,10 @@ export default defineEventHandler(async (event) => {
     z.object({
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
-      projectId: z.string().uuid().optional(),
+
+      projectId: coerceArray(z.string().uuid()).optional(),
+      rangeStart: z.coerce.date().optional(),
+      rangeEnd: z.coerce.date().optional(),
     }).safeParse
   );
 
@@ -29,7 +33,15 @@ export default defineEventHandler(async (event) => {
   ];
 
   if (query.data.projectId) {
-    whereStatements.push(eq(times.projectId, query.data.projectId));
+    whereStatements.push(inArray(times.projectId, query.data.projectId));
+  }
+
+  // date range
+  if (query.data.rangeStart) {
+    whereStatements.push(gte(times.start, query.data.rangeStart));
+  }
+  if (query.data.rangeEnd) {
+    whereStatements.push(lte(times.start, query.data.rangeEnd));
   }
 
   const result = await useDrizzle()

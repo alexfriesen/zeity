@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { PROJECT_STATUSES } from '@zeity/types';
 import { eq, desc, ilike, inArray } from '@zeity/database';
 import { projects } from '@zeity/database/project';
+import { coerceArray } from '~~/server/utils/zod';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -14,10 +15,7 @@ export default defineEventHandler(async (event) => {
       limit: z.coerce.number().int().positive().lte(500).default(40),
       sort: z.enum(['name', 'createdAt']).default('name'),
       search: z.string().optional(),
-      status: z
-        .union([z.enum(PROJECT_STATUSES), z.array(z.enum(PROJECT_STATUSES))])
-        .transform((rel) => (Array.isArray(rel) ? rel : [rel]))
-        .optional(),
+      status: coerceArray(z.enum(PROJECT_STATUSES)).optional(),
     }).safeParse
   );
 

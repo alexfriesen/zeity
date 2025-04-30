@@ -6,7 +6,10 @@ import { useTimerStore } from '~/stores/timerStore';
 interface FetchTimesOptions {
   offset?: number;
   limit?: number;
-  projectId?: string;
+
+  projectId?: string | string[];
+  rangeStart?: string;
+  rangeEnd?: string;
 }
 
 function fetchTimes(options?: FetchTimesOptions): Promise<Time[]> {

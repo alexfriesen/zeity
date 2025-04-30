@@ -12,6 +12,8 @@ import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 const { t } = useI18n();
 
 const { loggedIn } = useUserSession();
+const { loadProjects } = useProject();
+
 const projectStore = useProjectStore();
 const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
@@ -25,7 +27,7 @@ const projectItems = computed(() => {
     ];
 })
 
-const { createTime, updateTime, removeTime, stopDraft } = useTime();
+const { createTime, updateTime, removeTime, stopDraft, syncOfflineTime, isOnlineTime } = useTime();
 const timeStore = useTimerStore();
 
 const {
@@ -36,10 +38,9 @@ const {
 
 const isDraft = computed(() => isDraftValue(currentTime?.value));
 const isOffline = computed(() => {
-    if (isDraft.value) return false;
-    if (loggedIn.value) return false;
-    if (!currentTime.value) return false;
-    return !currentTime.value.userId;
+    if (!loggedIn.value) return false;
+    const time = currentTime?.value;
+    return isTimeValue(time) && !isOnlineTime(time);
 });
 
 const now = ref(new Date());
@@ -53,6 +54,8 @@ onUnmounted(() => {
 
 watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     if (isOpen && currentTime.value) {
+        loadProjects({ status: [PROJECT_STATUS_ACTIVE] });
+
         const clone = structuredClone(toRaw(currentTime.value));
 
         if (isTimeValue(clone)) {
@@ -179,14 +182,10 @@ async function handleRemove() {
 
 async function handleSync() {
     if (!currentTime.value) return;
-    if (currentTime.value.userId) return;
 
     const offlineTime = currentTime.value as Time;
-
-    const newTime = await createTime(offlineTime);
+    const newTime = await syncOfflineTime(offlineTime.id);
     if (!newTime) return;
-
-    await removeTime(offlineTime.id);
 
     currentTime.value = newTime;
 }
@@ -236,7 +235,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
 
                     <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
                         icon="i-lucide-cloud-upload" @click="handleSync">
-                        {{ $t('times.sync') }}
+                        {{ $t('common.sync') }}
                     </UButton>
 
                     <UButton type="submit" variant="subtle" icon="i-lucide-save">

@@ -47,11 +47,6 @@ export function useProject() {
 
   const store = useProjectStore();
 
-  function isOnlineProject(id: string) {
-    const project = store.findProjectById(id).value;
-    return !!project?.userId;
-  }
-
   async function loadProjects(options?: FetchProjectsOptions) {
     if (!loggedIn.value) return;
     const projects = await fetchProjects(options);
@@ -110,6 +105,26 @@ export function useProject() {
     return store.removeProject(id);
   }
 
+  function isOnlineProject(idOrProject: string | Project) {
+    const project =
+      typeof idOrProject === 'object'
+        ? idOrProject
+        : store.findProjectById(idOrProject).value;
+    return !!project?.userId;
+  }
+
+  async function syncOfflineProject(id: string | number) {
+    const offlineProject = store.findProjectById(id).value;
+    if (!offlineProject || isOnlineProject(offlineProject)) return;
+
+    const newProject = await createProject(offlineProject);
+    if (!newProject || !isOnlineProject(newProject)) return;
+
+    await removeProject(offlineProject.id);
+
+    return newProject;
+  }
+
   return {
     loadProjects,
     loadProject,
@@ -117,5 +132,8 @@ export function useProject() {
     createProject,
     updateProject,
     removeProject,
+
+    isOnlineProject,
+    syncOfflineProject,
   };
 }

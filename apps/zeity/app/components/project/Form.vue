@@ -16,7 +16,7 @@ const emits = defineEmits(['submit']);
 const schema = z.object({
     id: z.string().default(nanoid()),
     status: z.enum(PROJECT_STATUSES).default(PROJECT_STATUS_ACTIVE),
-    name: z.string().min(3).default(''),
+    name: z.string().min(3).max(150).default(''),
     notes: z.string().default(''),
 });
 type Schema = z.output<typeof schema>

@@ -47,11 +47,6 @@ export function useTime() {
 
   const store = useTimerStore();
 
-  function isOnlineTime(id: string | number) {
-    const time = store.findTimeById(id).value;
-    return !!time?.userId;
-  }
-
   async function loadTimes(options?: FetchTimesOptions) {
     if (!loggedIn.value) return;
     const times = await fetchTimes(options);
@@ -146,6 +141,27 @@ export function useTime() {
     return time;
   }
 
+  function isOnlineTime(idOrTime: string | number | Time) {
+    const time =
+      typeof idOrTime === 'object'
+        ? idOrTime
+        : store.findTimeById(idOrTime).value;
+    return !!time?.userId;
+  }
+
+  async function syncOfflineTime(id: string | number) {
+    const offlineTime = store.findTimeById(id).value;
+    if (!offlineTime) return;
+    if (isOnlineTime(offlineTime)) return;
+
+    const newTime = await createTime(offlineTime);
+    if (!newTime || !isOnlineTime(newTime)) return;
+
+    await removeTime(offlineTime.id);
+
+    return newTime;
+  }
+
   return {
     loadTimes,
     loadTime,
@@ -153,6 +169,9 @@ export function useTime() {
     createTime,
     updateTime,
     removeTime,
+
+    isOnlineTime,
+    syncOfflineTime,
 
     toggleDraft,
     startDraft,

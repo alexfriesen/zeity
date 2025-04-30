@@ -11,7 +11,8 @@ const projectStatusFilter = computed(() => {
     return [PROJECT_STATUS_ACTIVE];
 });
 
-const { loadProjects } = useProject();
+const { loggedIn } = useUserSession();
+const { loadProjects, isOnlineProject } = useProject();
 const store = useProjectStore();
 const projects = store.getAllProjects();
 const isEmpty = computed(() => projects.value.length === 0);
@@ -81,9 +82,14 @@ onMounted(() => {
                             {{ project.name }}
                         </UButton>
 
-                        <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">
-                            {{ $t(`projects.status.${project.status}`) }}
-                        </UBadge>
+                        <div class="flex items-center gap-2">
+                            <UTooltip v-if="loggedIn && !isOnlineProject(project)" :label="$t('projects.offline')">
+                                <UIcon name="i-lucide-cloud-off" />
+                            </UTooltip>
+                            <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">
+                                {{ $t(`projects.status.${project.status}`) }}
+                            </UBadge>
+                        </div>
                     </div>
                 </template>
 

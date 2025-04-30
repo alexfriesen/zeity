@@ -31,6 +31,7 @@ export default defineI18nConfig(() => ({
         start: 'Start',
         stop: 'Stop',
         loadMore: 'Load more',
+        sync: 'Sync',
       },
       navigation: {
         timer: 'Timer',
@@ -55,7 +56,6 @@ export default defineI18nConfig(() => ({
         addNotes: 'Add notes',
         noProject: 'No project',
         offline: 'Time is not synced',
-        sync: 'Sync',
       },
       projects: {
         title: 'Projects',
@@ -75,6 +75,7 @@ export default defineI18nConfig(() => ({
           active: 'Active',
           closed: 'Closed',
         },
+        offline: 'Project is not synced',
       },
       reports: {
         summary: 'Summary',
@@ -190,6 +191,7 @@ export default defineI18nConfig(() => ({
         start: 'Start',
         stop: 'Stop',
         loadMore: 'Mehr laden',
+        sync: 'Synchronisieren',
       },
       navigation: {
         timer: 'Timer',
@@ -214,7 +216,6 @@ export default defineI18nConfig(() => ({
         addNotes: 'Notizen hinzufügen',
         noProject: 'Kein Projekt',
         offline: 'Zeit is nicht synchronisiert',
-        sync: 'Synchronisieren',
       },
       projects: {
         title: 'Projekte',
@@ -234,6 +235,7 @@ export default defineI18nConfig(() => ({
           active: 'Aktiv',
           closed: 'Geschlossen',
         },
+        offline: 'Projekt ist nicht synchronisiert',
       },
       reports: {
         summary: 'Zusammenfassung',

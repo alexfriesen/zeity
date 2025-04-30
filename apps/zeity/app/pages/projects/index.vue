@@ -83,7 +83,7 @@ onMounted(() => {
                         </UButton>
 
                         <div class="flex items-center gap-2">
-                            <UTooltip v-if="loggedIn && !isOnlineProject(project)" :label="$t('projects.offline')">
+                            <UTooltip v-if="loggedIn && !isOnlineProject(project)" :text="$t('projects.offline')">
                                 <UIcon name="i-lucide-cloud-off" />
                             </UTooltip>
                             <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">

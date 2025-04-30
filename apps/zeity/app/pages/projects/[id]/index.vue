@@ -82,17 +82,18 @@ async function handleSync() {
 <template>
     <div v-if="project" class="my-4">
         <UBreadcrumb :items="[{ label: $t('projects.title'), to: '/projects' }]" />
-        <h2
-            class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200 mb-2">
-            <span class="flex-grow">{{ project.name }}</span>
-            <UTooltip v-if="isProjectOffline" :label="$t('projects.offline')">
-                <UIcon name="i-lucide-cloud-off" />
-            </UTooltip>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200 mb-2">
+            {{ project.name }}
         </h2>
 
         <div class="my-4 flex justify-between gap-2">
-            <ProjectStatusSelect v-model="project.status" class="min-w-40" @update:model-value="updateStatus" />
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
+                <ProjectStatusSelect v-model="project.status" class="min-w-40" @update:model-value="updateStatus" />
+                <UTooltip v-if="isProjectOffline" :text="$t('projects.offline')">
+                    <UIcon name="i-lucide-cloud-off" class="align-middle" />
+                </UTooltip>
+            </div>
+            <div class="flex items-center gap-2">
                 <UButton v-if="isProjectOffline" icon="i-lucide-cloud-upload" @click="handleSync">
                     {{ $t('common.sync') }}
                 </UButton>

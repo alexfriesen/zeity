@@ -11,6 +11,7 @@ import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
 const { t } = useI18n();
 
+const { loggedIn } = useUserSession();
 const projectStore = useProjectStore();
 const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
@@ -34,6 +35,12 @@ const {
 } = useTimeDetail();
 
 const isDraft = computed(() => isDraftValue(currentTime?.value));
+const isOffline = computed(() => {
+    if (isDraft.value) return false;
+    if (loggedIn.value) return false;
+    if (!currentTime.value) return false;
+    return !currentTime.value.userId;
+});
 
 const now = ref(new Date());
 const { pause, resume } = useIntervalFn(() => {
@@ -136,7 +143,7 @@ function parseFormData(event: FormSubmitEvent<Schema>) {
     } satisfies DraftTime;
 }
 
-function handleSave(event: FormSubmitEvent<Schema>) {
+async function handleSave(event: FormSubmitEvent<Schema>) {
     const time = parseFormData(event);
 
     if (isDraftValue(time)) {
@@ -144,30 +151,44 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            createTime({ ...time, id: nanoid() });
+            await createTime({ ...time, id: nanoid() });
         } else {
-            updateTime(time.id, time);
+            await updateTime(time.id, time);
         }
     }
 
     close();
 }
 
-function stop() {
-    stopDraft();
+async function handleStop() {
+    await stopDraft();
     close();
 }
 
-function handleRemove() {
+async function handleRemove() {
     if (isDraft.value) {
         timeStore.resetDraft();
     }
 
     if (isTimeValue(currentTime?.value)) {
-        removeTime(currentTime.value.id);
+        await removeTime(currentTime.value.id);
     }
 
     close();
+}
+
+async function handleSync() {
+    if (!currentTime.value) return;
+    if (currentTime.value.userId) return;
+
+    const offlineTime = currentTime.value as Time;
+
+    const newTime = await createTime(offlineTime);
+    if (!newTime) return;
+
+    await removeTime(offlineTime.id);
+
+    currentTime.value = newTime;
 }
 
 function isDraftValue(value: Time | DraftTime | Schema | undefined | null): value is DraftTime {
@@ -204,15 +225,21 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                 </UFormField>
 
                 <div class="flex justify-evenly">
-                    <UButton type="button" color="error" variant="subtle" @click="handleRemove">
+                    <UButton type="button" color="error" variant="subtle" icon="i-lucide-trash" @click="handleRemove">
                         {{ $t('common.delete') }}
                     </UButton>
 
-                    <UButton v-if="isDraft" type="button" color="neutral" variant="subtle" @click="stop">
+                    <UButton v-if="isDraft" type="button" color="neutral" variant="subtle" icon="i-lucide-square"
+                        @click="handleStop">
                         {{ $t('common.stop') }}
                     </UButton>
 
-                    <UButton type="submit" variant="subtle">
+                    <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
+                        icon="i-lucide-cloud-upload" @click="handleSync">
+                        {{ $t('times.sync') }}
+                    </UButton>
+
+                    <UButton type="submit" variant="subtle" icon="i-lucide-save">
                         {{ $t('common.save') }}
                     </UButton>
                 </div>

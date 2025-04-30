@@ -110,7 +110,7 @@ export function useTime() {
     return store.removeTime(id);
   }
 
-  function toggleDraft(): DraftTime | Time | undefined {
+  async function toggleDraft(): Promise<DraftTime | Time | undefined> {
     if (!toRef(store.draft).value) {
       return startDraft();
     }
@@ -126,7 +126,7 @@ export function useTime() {
 
     return newDraft;
   }
-  function stopDraft() {
+  async function stopDraft() {
     const draftValue = toRef(store.draft).value;
     if (!draftValue) return;
 
@@ -140,7 +140,7 @@ export function useTime() {
       duration,
     };
 
-    createTime(time);
+    await createTime(time);
     store.resetDraft();
 
     return time;

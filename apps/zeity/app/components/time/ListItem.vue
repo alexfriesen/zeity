@@ -2,6 +2,8 @@
 import type { Time } from '@zeity/types/time';
 import { formatDuration } from '@zeity/utils/date';
 
+const { loggedIn } = useUserSession();
+
 const props = defineProps({
 	class: {
 		type: String,
@@ -60,7 +62,11 @@ function handleToggle() {
 				</span>
 			</div>
 
-			<div class="font-sans text-md text-[var(--ui-text-toned)]">
+			<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
+				<UTooltip v-if="loggedIn && !time.userId" :text="$t('times.offline')">
+					<UIcon name="i-lucide-cloud-off" />
+				</UTooltip>
+
 				<span class="tabular-nums">
 					{{ formatDuration(time.duration) }}
 				</span>

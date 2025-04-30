@@ -59,13 +59,18 @@ export function useEntityStore<T extends { id: string | number }>(
       const id = entity.id;
       state.value.entities[id] = entity;
       state.value.ids.push(id);
+
+      return entity;
     }
 
     function update(id: string | number, data: Partial<T>) {
       const current = state.value.entities[id];
       if (current) {
-        state.value.entities[id] = { ...current, ...data };
+        const entity = { ...current, ...data };
+        state.value.entities[id] = entity;
       }
+
+      return state.value.entities[id];
     }
 
     function remove(id: string | number) {

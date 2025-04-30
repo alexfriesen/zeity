@@ -54,6 +54,8 @@ export default defineI18nConfig(() => ({
         },
         addNotes: 'Add notes',
         noProject: 'No project',
+        offline: 'Time is not synced',
+        sync: 'Sync',
       },
       projects: {
         title: 'Projects',
@@ -211,6 +213,8 @@ export default defineI18nConfig(() => ({
         },
         addNotes: 'Notizen hinzufügen',
         noProject: 'Kein Projekt',
+        offline: 'Zeit is nicht synchronisiert',
+        sync: 'Synchronisieren',
       },
       projects: {
         title: 'Projekte',

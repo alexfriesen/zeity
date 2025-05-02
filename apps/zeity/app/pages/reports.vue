@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isAfter, isBefore } from 'date-fns';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
-import { calculateDiffSum, parseDate, toISOString, type DateLike } from '@zeity/utils/date';
+import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
 
 import type { DateRange } from '~/types/date-filter';
 

@@ -57,7 +57,7 @@ async function acceptInvite() {
         </div>
         <div v-else-if="status === 'success'" class="space-y-4">
             <i18n-t keypath="organisations.join.description" tag="p">
-                <template v-slot:organisation>
+                <template #organisation>
                     <b>{{ data?.organisation?.name }}</b>
                 </template>
             </i18n-t>

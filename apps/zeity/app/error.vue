@@ -1,6 +1,9 @@
 <script setup>
 const props = defineProps({
-  error: Object,
+  error: {
+    type: Object,
+    default: () => ({})
+  }
 })
 
 const isDev = import.meta.dev

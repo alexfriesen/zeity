@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     throw createError({
       statusCode: 400,
-      message: 'User not found',
+      message: 'user not found',
     });
   }
 

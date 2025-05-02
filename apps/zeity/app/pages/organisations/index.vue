@@ -20,7 +20,7 @@ onMounted(() => {
 
         <section class="flex flex-col my-3 space-y-4">
             <div class="flex items-center justify-between gap-4">
-                <div></div>
+                <div />
                 <UButton to="/organisations/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
             </div>
 

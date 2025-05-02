@@ -11,6 +11,9 @@ import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
 const { t } = useI18n();
 
+const { loggedIn } = useUserSession();
+const { loadProjects } = useProject();
+
 const projectStore = useProjectStore();
 const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
 const projectItems = computed(() => {
@@ -24,6 +27,7 @@ const projectItems = computed(() => {
     ];
 })
 
+const { createTime, updateTime, removeTime, stopDraft, syncOfflineTime, isOnlineTime } = useTime();
 const timeStore = useTimerStore();
 
 const {
@@ -33,6 +37,11 @@ const {
 } = useTimeDetail();
 
 const isDraft = computed(() => isDraftValue(currentTime?.value));
+const isOffline = computed(() => {
+    if (!loggedIn.value) return false;
+    const time = currentTime?.value;
+    return isTimeValue(time) && !isOnlineTime(time);
+});
 
 const now = ref(new Date());
 const { pause, resume } = useIntervalFn(() => {
@@ -45,6 +54,8 @@ onUnmounted(() => {
 
 watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     if (isOpen && currentTime.value) {
+        loadProjects({ status: [PROJECT_STATUS_ACTIVE] });
+
         const clone = structuredClone(toRaw(currentTime.value));
 
         if (isTimeValue(clone)) {
@@ -61,7 +72,7 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
         } else if (isDraftValue(clone)) {
             state.value = {
                 ...clone,
-            } satisfies Schema;
+            } as Schema;
         }
     };
 
@@ -90,7 +101,7 @@ const diff = computed(() => {
 });
 
 const timeSchema = z.object({
-    id: z.string().default(nanoid()),
+    id: z.any().default(nanoid()),
     start: z.coerce.string().date(),
     end: z.coerce.string().date(),
     notes: z.string().default(''),
@@ -135,7 +146,7 @@ function parseFormData(event: FormSubmitEvent<Schema>) {
     } satisfies DraftTime;
 }
 
-function handleSave(event: FormSubmitEvent<Schema>) {
+async function handleSave(event: FormSubmitEvent<Schema>) {
     const time = parseFormData(event);
 
     if (isDraftValue(time)) {
@@ -143,30 +154,40 @@ function handleSave(event: FormSubmitEvent<Schema>) {
     }
     if (isTimeValue(time)) {
         if (time.id === 'new') {
-            timeStore.insertTime({ ...time, id: nanoid() });
+            await createTime({ ...time, id: nanoid() });
         } else {
-            timeStore.updateTime(time.id, time);
+            await updateTime(time.id, time);
         }
     }
 
     close();
 }
 
-function stop() {
-    timeStore.stopDraft();
+async function handleStop() {
+    await stopDraft();
     close();
 }
 
-function handleRemove() {
+async function handleRemove() {
     if (isDraft.value) {
         timeStore.resetDraft();
     }
 
     if (isTimeValue(currentTime?.value)) {
-        timeStore.removeTime(currentTime.value.id);
+        await removeTime(currentTime.value.id);
     }
 
     close();
+}
+
+async function handleSync() {
+    if (!currentTime.value) return;
+
+    const offlineTime = currentTime.value as Time;
+    const newTime = await syncOfflineTime(offlineTime.id);
+    if (!newTime) return;
+
+    currentTime.value = newTime;
 }
 
 function isDraftValue(value: Time | DraftTime | Schema | undefined | null): value is DraftTime {
@@ -190,7 +211,7 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                     <DateTimeField v-model="state.start" />
                 </UFormField>
 
-                <UFormField v-if="'end' in state" :label="$t('times.form.end')" name="end">
+                <UFormField v-if="state && 'end' in state" :label="$t('times.form.end')" name="end">
                     <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
                 </UFormField>
 
@@ -203,15 +224,21 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                 </UFormField>
 
                 <div class="flex justify-evenly">
-                    <UButton type="button" color="error" variant="subtle" @click="handleRemove">
+                    <UButton type="button" color="error" variant="subtle" icon="i-lucide-trash" @click="handleRemove">
                         {{ $t('common.delete') }}
                     </UButton>
 
-                    <UButton v-if="isDraft" type="button" color="neutral" variant="subtle" @click="stop">
+                    <UButton v-if="isDraft" type="button" color="neutral" variant="subtle" icon="i-lucide-square"
+                        @click="handleStop">
                         {{ $t('common.stop') }}
                     </UButton>
 
-                    <UButton type="submit" variant="subtle">
+                    <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
+                        icon="i-lucide-cloud-upload" @click="handleSync">
+                        {{ $t('common.sync') }}
+                    </UButton>
+
+                    <UButton type="submit" variant="subtle" icon="i-lucide-save">
                         {{ $t('common.save') }}
                     </UButton>
                 </div>

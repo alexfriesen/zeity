@@ -4,7 +4,7 @@
 
         <UContainer>
             <div class="grid md:flex md:gap-4 min-h-[calc(100vh-var(--ui-header-height))]">
-                <AppAsideNavigation class="hidden md:block" />
+                <AppAsideNavigation class="hidden md:block flex-shrink-0" />
 
                 <main class="flex-grow flex-shrink min-w-0 pb-14 md:pb-0">
                     <slot />

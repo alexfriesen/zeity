@@ -2,12 +2,16 @@
 import { DateFieldInput, DateFieldRoot } from 'reka-ui';
 import { type ZonedDateTime, parseAbsolute, now, getLocalTimeZone } from '@internationalized/date';
 
+
 export interface DateTimeProps {
+    // eslint-disable-next-line vue/require-default-prop
     id?: string
+    // eslint-disable-next-line vue/require-default-prop
     name?: string
+    // eslint-disable-next-line vue/require-default-prop
+    class?: unknown
     required?: boolean
     disabled?: boolean
-    class?: unknown
     granularity?: 'second' | 'minute' | 'hour' | 'day'
 }
 </script>

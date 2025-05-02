@@ -1,20 +1,17 @@
 import { z } from 'zod';
 
-import { eq } from '~~/server/utils/drizzle';
-import { hasUserOrganisationMemberRole } from '~~/server/utils/organisation';
-import { organisations } from '@zeity/database/organisation';
-import {
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
-} from '@zeity/types/organisation';
+import { eq } from '@zeity/database';
+import { projects } from '@zeity/database/project';
+import { PROJECT_STATUSES } from '@zeity/types';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
+  const organisation = await requireOrganisationSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      orgId: z.string().uuid(),
+      id: z.string().uuid(),
     }).safeParse
   );
 
@@ -29,7 +26,9 @@ export default defineEventHandler(async (event) => {
     event,
     z
       .object({
-        name: z.string().trim().min(3).max(150),
+        name: z.string().max(150),
+        status: z.enum(PROJECT_STATUSES),
+        notes: z.string().optional(),
       })
       .partial().safeParse
   );
@@ -43,22 +42,22 @@ export default defineEventHandler(async (event) => {
 
   const existing = await useDrizzle()
     .select()
-    .from(organisations)
-    .where(eq(organisations.id, params.data.orgId))
+    .from(projects)
+    .where(eq(projects.id, params.data.id))
     .then((res) => res[0]);
 
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'organisation not found',
+      message: 'project not found',
     });
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-      ORGANISATION_MEMBER_ROLE_ADMIN,
-    ]))
+    !(
+      existing.userId === session.user.id ||
+      existing.organisationId === organisation.value
+    )
   ) {
     throw createError({
       statusCode: 403,
@@ -67,9 +66,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const result = await useDrizzle()
-    .update(organisations)
+    .update(projects)
     .set(body.data)
-    .where(eq(organisations.id, params.data.orgId))
+    .where(eq(projects.id, params.data.id))
     .returning()
     .then((res) => res[0]);
 

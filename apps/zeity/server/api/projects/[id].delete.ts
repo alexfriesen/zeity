@@ -1,17 +1,16 @@
 import { z } from 'zod';
 
-import { organisations } from '@zeity/database/organisation';
-import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
-import { eq } from '~~/server/utils/drizzle';
-import { hasUserOrganisationMemberRole } from '~~/server/utils/organisation';
+import { eq } from '@zeity/database';
+import { projects } from '@zeity/database/project';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
+  const organisation = await requireOrganisationSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      orgId: z.string().uuid(),
+      id: z.string().uuid(),
     }).safeParse
   );
 
@@ -24,21 +23,22 @@ export default defineEventHandler(async (event) => {
 
   const existing = await useDrizzle()
     .select()
-    .from(organisations)
-    .where(eq(organisations.id, params.data.orgId))
+    .from(projects)
+    .where(eq(projects.id, params.data.id))
     .then((res) => res[0]);
 
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'organisation not found',
+      message: 'project not found',
     });
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-    ]))
+    !(
+      existing.userId === session.user.id ||
+      existing.organisationId === organisation.value
+    )
   ) {
     throw createError({
       statusCode: 403,
@@ -47,8 +47,8 @@ export default defineEventHandler(async (event) => {
   }
 
   await useDrizzle()
-    .delete(organisations)
-    .where(eq(organisations.id, params.data.orgId))
+    .delete(projects)
+    .where(eq(projects.id, params.data.id))
     .returning();
 
   return sendNoContent(event);

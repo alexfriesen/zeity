@@ -5,6 +5,10 @@ import type { ProjectStatus } from '@zeity/types/project';
 const route = useRoute()
 const projectStore = useProjectStore()
 const timeStore = useTimerStore()
+const { loadProject, updateProject, syncOfflineProject, isOnlineProject } = useProject();
+const { loadTimes } = useTime();
+const { loggedIn } = useUserSession();
+
 
 definePageMeta({
     validate: async (route) => {
@@ -18,6 +22,32 @@ const projectId = route.params.id as string;
 const project = projectStore.findProjectById(projectId)
 const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
+const isProjectOffline = computed(() => loggedIn.value && project.value && !isOnlineProject(project.value));
+
+onMounted(() => {
+    loadProject(projectId);
+    loadMoreTimes()
+})
+
+const isLoading = ref(false);
+const timeOffset = ref(0);
+const timeLimit = ref(40);
+const timeEndReached = ref(true);
+
+function loadMoreTimes() {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    loadTimes({ offset: timeOffset.value, limit: timeLimit.value, projectId })
+        .then((data) => {
+            timeOffset.value += data?.length || 0;
+            timeEndReached.value = (data?.length ?? 0) < timeLimit.value;
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
+
+}
 
 if (!project) {
     navigateTo('/projects')
@@ -26,9 +56,25 @@ if (!project) {
 function updateStatus(status?: ProjectStatus) {
     if (!status) return;
 
-    projectStore.updateProject(projectId, { status: status })
+    updateProject(projectId, { status: status })
 
     return navigateTo(`/projects/${projectId}`);
+}
+
+async function handleSync() {
+    if (!project.value) return;
+
+    const offlineProject = project.value;
+    const newProject = await syncOfflineProject(offlineProject.id);
+    if (!newProject) return;
+
+    // offline project are only linked to offline times therefore it is safe to update store items
+    const times = timeStore.findTime((time) => time.projectId === offlineProject.id).value;
+    for (const time of times) {
+        timeStore.updateTime(time.id, { projectId: newProject.id });
+    }
+
+    navigateTo('/projects/' + newProject.id);
 }
 
 </script>
@@ -36,16 +82,25 @@ function updateStatus(status?: ProjectStatus) {
 <template>
     <div v-if="project" class="my-4">
         <UBreadcrumb :items="[{ label: $t('projects.title'), to: '/projects' }]" />
-        <h2
-            class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200 mb-2">
             {{ project.name }}
         </h2>
 
         <div class="my-4 flex justify-between gap-2">
-            <ProjectStatusSelect v-model="project.status" class="min-w-40" @update:model-value="updateStatus" />
-            <UButton :to="`/projects/${encodeURIComponent(projectId)}/edit`">
-                {{ $t('common.edit') }}
-            </UButton>
+            <div class="flex items-center gap-2">
+                <ProjectStatusSelect v-model="project.status" class="min-w-40" @update:model-value="updateStatus" />
+                <UTooltip v-if="isProjectOffline" :text="$t('projects.offline')">
+                    <UIcon name="i-lucide-cloud-off" class="align-middle" />
+                </UTooltip>
+            </div>
+            <div class="flex items-center gap-2">
+                <UButton v-if="isProjectOffline" icon="i-lucide-cloud-upload" @click="handleSync">
+                    {{ $t('common.sync') }}
+                </UButton>
+                <UButton icon="i-lucide-edit" :to="`/projects/${encodeURIComponent(projectId)}/edit`">
+                    {{ $t('common.edit') }}
+                </UButton>
+            </div>
         </div>
 
         <p>{{ project.notes }}</p>
@@ -65,6 +120,10 @@ function updateStatus(status?: ProjectStatus) {
             </div>
             <div>
                 <TimeList :times="projectTimes" />
+                <UButton v-if="!timeEndReached" block class="mt-2" variant="subtle" :loading="isLoading"
+                    :disabled="isLoading" @click="loadMoreTimes">
+                    {{ $t('common.loadMore') }}
+                </UButton>
             </div>
         </div>
     </div>

@@ -17,10 +17,15 @@
     "nanoid": "^5.1.5"
   },
   "devDependencies": {
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.3",
     "@vitest/coverage-v8": "^3.1.2",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
   },
-  "packageManager": "pnpm@10.9.0"
+  "pnpm": {
+    "overrides": {
+      "eslint>@modelcontextprotocol/sdk": "-"
+    }
+  },
+  "packageManager": "pnpm@10.10.0"
 }

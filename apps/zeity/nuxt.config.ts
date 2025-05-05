@@ -16,7 +16,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/ui',
     '@nuxt/image',
-    'nuxt-time',
     'nuxt-security',
     'nuxt-auth-utils',
     '@vite-pwa/nuxt',

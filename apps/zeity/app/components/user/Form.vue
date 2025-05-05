@@ -11,8 +11,9 @@ const props = defineProps({
 });
 const user = defineModel<User | null>()
 
-const toast = useToast()
 const { t } = useI18n()
+const toast = useToast()
+const { updateUser } = useUser()
 
 const saveLoading = ref(false);
 const isLoading = computed(() => props.loading || saveLoading.value);
@@ -31,23 +32,23 @@ watch(user, (value) => {
     }
 });
 
-function updateUser(event: FormSubmitEvent<UserSchema>) {
-    $fetch('/api/user/current', {
-        method: 'PATCH',
-        body: event.data,
-    }).then((data) => {
-        user.value = data.user!
-        toast.add({
-            color: 'success',
-            title: t('user.saveSuccess'),
+function handleUpdateUser(event: FormSubmitEvent<UserSchema>) {
+    return updateUser(event.data)
+        .then((data) => {
+            user.value = data.user!
+            toast.add({
+                color: 'success',
+                title: t('user.saveSuccess'),
+            });
         })
-    }).catch((error) => {
-        console.error(error)
-        toast.add({
-            color: 'error',
-            title: t('user.saveError'),
-        })
-    })
+        .catch((error) => {
+            console.error(error)
+            toast.add({
+                color: 'error',
+                title: t('user.saveError'),
+            })
+        });
+
 }
 </script>
 
@@ -58,7 +59,8 @@ function updateUser(event: FormSubmitEvent<UserSchema>) {
             <USkeleton class="h-8 w-full" />
             <USkeleton class="h-8 w-full" />
         </div>
-        <UForm v-else class="flex flex-col gap-2" :schema="userSchema" :state="userState" @submit.prevent="updateUser">
+        <UForm v-else class="flex flex-col gap-2" :schema="userSchema" :state="userState"
+            @submit.prevent="handleUpdateUser">
             <UFormField :label="$t('user.email')" required loading>
                 <UInput :value="user?.email" disabled readonly class="w-full" />
             </UFormField>

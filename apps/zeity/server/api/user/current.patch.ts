@@ -33,6 +33,8 @@ export default defineEventHandler(async (event) => {
     })
     .then((rows) => rows[0]);
 
+  await refreshUserSession(event, user);
+
   return {
     user,
   };

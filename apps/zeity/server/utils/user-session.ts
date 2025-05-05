@@ -1,24 +1,20 @@
 import type { H3Event } from 'h3';
 
-import { users } from '@zeity/database/user';
+import { type User, users } from '@zeity/database/user';
 
-export async function refreshUserSession(event: H3Event) {
+export async function refreshUserSession(
+  event: H3Event,
+  user?: Pick<User, 'id' | 'email' | 'name' | 'emailVerified'> | null
+) {
   const session = await getUserSession(event);
 
   if (!session?.user?.id) {
     return;
   }
 
-  const user = await useDrizzle()
-    .select({
-      id: users.id,
-      email: users.email,
-      name: users.name,
-      emailVerified: users.emailVerified,
-    })
-    .from(users)
-    .where(eq(users.id, session?.user?.id))
-    .then((rows) => rows[0]);
+  if (!user) {
+    user = await getUser(session.user.id);
+  }
 
   if (!user) {
     return;
@@ -33,4 +29,17 @@ export async function refreshUserSession(event: H3Event) {
       verified: Boolean(user.emailVerified),
     },
   });
+}
+
+function getUser(userId: string) {
+  return useDrizzle()
+    .select({
+      id: users.id,
+      email: users.email,
+      name: users.name,
+      emailVerified: users.emailVerified,
+    })
+    .from(users)
+    .where(eq(users.id, userId))
+    .then((rows) => rows[0]);
 }

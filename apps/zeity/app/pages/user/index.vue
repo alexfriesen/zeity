@@ -3,20 +3,17 @@ definePageMeta({
     middleware: 'auth'
 })
 
-const { t } = useI18n()
-const toast = useToast()
-const userStore = useUserStore()
-const { clear } = useUserSession()
-const { currentOrganisationId } = storeToRefs(useOrganisationStore())
-const organisations = useOrganisationStore().getAllOrganisations()
-
-const { user, loading } = storeToRefs(userStore);
+const { t } = useI18n();
+const toast = useToast();
+const { user, loading, deleteUser } = useUser();
+const { currentOrganisationId } = useOrganisation();
+const organisations = useOrganisationStore().getAllOrganisations();
 
 function logout() {
     useAuth().logout()
 }
 
-async function deleteUser() {
+async function handleDeleteUser() {
     // TODO: add fancy modal
     const result = window.confirm('Are you sure you want to delete your account?');
 
@@ -24,14 +21,11 @@ async function deleteUser() {
         return
     }
 
-    await $fetch('/api/user/current', {
-        method: 'delete',
-    }).then(async () => {
+    await deleteUser().then(async () => {
         toast.add({
             color: 'success',
             title: t('user.deleteSuccess'),
         })
-        await clear()
         await navigateTo('/auth')
     }).catch((error) => {
         console.error(error)
@@ -64,8 +58,8 @@ async function deleteUser() {
                 <USeparator />
 
                 <UFormField :label="$t('user.organisation')" size="lg">
-                    <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id"
-                        label-key="name" />
+                    <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id" label-key="name"
+                        variant="card" />
                 </UFormField>
 
                 <USeparator />
@@ -75,7 +69,7 @@ async function deleteUser() {
                         {{ $t('auth.logout') }}
                     </UButton>
 
-                    <UButton color="error" block icon="i-lucide-triangle-alert" @click="deleteUser">
+                    <UButton color="error" block icon="i-lucide-triangle-alert" @click="handleDeleteUser">
                         {{ $t('user.delete') }}
                     </UButton>
                 </div>

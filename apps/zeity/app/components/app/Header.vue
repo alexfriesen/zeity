@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { loggedIn } = useUserSession();
 const timeDetail = useTimeDetail();
 function timeNew() {
     const now = new Date().toISOString();
@@ -25,6 +26,8 @@ function timeNew() {
                         {{ $t('common.add') }}
                     </span>
                 </UButton>
+
+                <UserMenu v-if="loggedIn" />
             </div>
         </div>
     </header>

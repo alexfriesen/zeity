@@ -3,8 +3,9 @@ import { PROJECT_STATUS_ACTIVE, type Project } from '@zeity/types/project';
 
 const model = defineModel<string[]>();
 
-const store = useProjectStore();
-const projects = store.getAllProjects();
+const { getOrganisationProjects } = useProject();
+
+const projects = getOrganisationProjects();
 const activeProjects = computed(() => projects.value.filter((project) => project.status === PROJECT_STATUS_ACTIVE));
 
 function toggleSelected(item: Project) {

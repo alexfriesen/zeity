@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED, PROJECT_STATUSES } from '@zeity/types/project';
-import { useProjectStore } from '~/stores/projectStore';
 
 const showClosed = ref(false);
 
@@ -12,9 +11,10 @@ const projectStatusFilter = computed(() => {
 });
 
 const { loggedIn } = useUserSession();
-const { loadProjects, isOnlineProject } = useProject();
-const store = useProjectStore();
-const projects = store.getAllProjects();
+const { currentOrganisationId } = useOrganisation();
+const { loadProjects, isOnlineProject, getOrganisationProjects } = useProject();
+
+const projects = getOrganisationProjects();
 const isEmpty = computed(() => projects.value.length === 0);
 
 const filteredProjects = computed(() => {
@@ -25,6 +25,12 @@ const offset = ref(0);
 const limit = ref(20);
 const isLoading = ref(false);
 const endReached = ref(false);
+
+function reloadAll() {
+    offset.value = 0;
+    endReached.value = false;
+    loadMore();
+}
 
 function loadMore() {
     if (isLoading.value) return;
@@ -45,14 +51,13 @@ function loadMore() {
             isLoading.value = false;
         });
 }
-function resetOffset() {
-    offset.value = 0;
-    endReached.value = false;
-}
 
 watch(showClosed, () => {
-    resetOffset();
-    loadMore();
+    reloadAll();
+});
+
+watch(currentOrganisationId, () => {
+    reloadAll();
 });
 
 onMounted(() => {

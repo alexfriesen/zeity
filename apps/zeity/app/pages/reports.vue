@@ -8,15 +8,15 @@ import type { DateRange } from '~/types/date-filter';
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
 
-const { loadTimes } = useTime();
+const { currentOrganisationId } = useOrganisation();
+const { loadTimes, getOrganisationTimes } = useTime();
 const { loadProjects } = useProject();
-const timeStore = useTimerStore();
 
-const allTimes = timeStore.getAllTimes();
+const orgTimes = getOrganisationTimes();
 const filteredTimes = computed(() => {
     const dFilter = dateFilter.value;
     const pFilters = projectFilters.value;
-    let times = [...allTimes.value];
+    let times = [...orgTimes.value];
 
     if (dFilter && dFilter.start && dFilter.end) {
         times = times.filter(
@@ -76,8 +76,19 @@ async function loadAllActiveProjects(status = [PROJECT_STATUS_ACTIVE], limit = 1
     }
 }
 
-onMounted(async () => {
+async function reloadAll() {
     await loadAllActiveProjects();
+    if (dateFilter.value) {
+        await loadAllTimes(dateFilter.value, projectFilters.value);
+    }
+}
+
+onMounted(async () => {
+    await reloadAll();
+});
+
+watch(currentOrganisationId, async () => {
+    await reloadAll();
 });
 
 watch([dateFilter, projectFilters], async ([dateRange, projects]) => {

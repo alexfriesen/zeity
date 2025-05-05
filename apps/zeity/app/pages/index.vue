@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { sortDatesDescending } from '@zeity/utils/date';
 
-const { loadTimes, toggleDraft } = useTime();
 const timeDetail = useTimeDetail();
 const timerStore = useTimerStore();
-const allTimes = timerStore.getAllTimes();
-const sortedTimes = computed(() => allTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
-const isEmpty = computed(() => allTimes.value.length < 1);
+const { currentOrganisationId } = useOrganisation();
+const { loadTimes, toggleDraft, getOrganisationTimes } = useTime();
+
+const orgTimes = getOrganisationTimes();
+const sortedTimes = computed(() => orgTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
+const isEmpty = computed(() => orgTimes.value.length < 1);
 
 function timeNew() {
     const now = new Date().toISOString();
@@ -18,6 +20,12 @@ const limit = ref(40);
 const isLoading = ref(false);
 const endReached = ref(true);
 
+function reloadAll() {
+    offset.value = 0;
+    endReached.value = false;
+    loadMore();
+}
+
 function loadMore() {
     if (isLoading.value) return;
     isLoading.value = true;
@@ -25,7 +33,7 @@ function loadMore() {
     loadTimes({ offset: offset.value, limit: limit.value })
         .then((data) => {
             offset.value += data?.length || 0;
-            if (!data?.length) {
+            if ((data?.length ?? 0) < limit.value) {
                 endReached.value = true;
             }
         })
@@ -36,7 +44,11 @@ function loadMore() {
 }
 
 onMounted(() => {
-    loadMore();
+    reloadAll();
+});
+
+watch(toRef(currentOrganisationId), () => {
+    reloadAll();
 });
 </script>
 

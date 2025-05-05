@@ -44,6 +44,8 @@ function deleteProject(id: string) {
 
 export function useProject() {
   const { loggedIn } = useUserSession();
+  const orgStore = useOrganisationStore();
+  const { currentOrganisationId } = storeToRefs(orgStore);
 
   const store = useProjectStore();
 
@@ -58,6 +60,15 @@ export function useProject() {
     const project = await fetchProject(id);
     store.upsertProjects([project]);
     return project;
+  }
+
+  function getOrganisationProjects() {
+    const ref = store.findProjects(
+      (project) =>
+        !project.userId ||
+        project.organisationId === currentOrganisationId.value
+    );
+    return computed(() => ref.value);
   }
 
   async function createProject(data: Project) {
@@ -128,6 +139,8 @@ export function useProject() {
   return {
     loadProjects,
     loadProject,
+
+    getOrganisationProjects,
 
     createProject,
     updateProject,

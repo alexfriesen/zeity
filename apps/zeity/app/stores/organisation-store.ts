@@ -16,17 +16,28 @@ export const useOrganisationStore = defineStore('organisation', () => {
   // Organisations
   const organisationsStore = useEntityStore<Organisation>('organisations');
 
-  const currentOrganisationId = useCookie(ORGANISATION_COOKIE_NAME, {
+  const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
+  });
+
+  function setCurrentOrganisationId(id: string | null | undefined) {
+    currentOrganisationCookie.value = id;
+  }
+  const currentOrganisationId = computed({
+    get() {
+      if (loggedIn.value) {
+        return currentOrganisationCookie.value;
+      }
+      return undefined;
+    },
+    set(value) {
+      setCurrentOrganisationId(value);
+    },
   });
   const currentOrganisation = computed(() => {
     const id = currentOrganisationId.value;
     return id ? organisationsStore.findById(id).value : undefined;
   });
-
-  function setCurrentOrganisationId(id: string | null) {
-    currentOrganisationId.value = id;
-  }
 
   function fetchOrganisations() {
     loading.value = true;

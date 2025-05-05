@@ -47,6 +47,8 @@ function deleteTime(id: string | number) {
 
 export function useTime() {
   const { loggedIn } = useUserSession();
+  const orgStore = useOrganisationStore();
+  const { currentOrganisationId } = storeToRefs(orgStore);
 
   const store = useTimerStore();
 
@@ -61,6 +63,12 @@ export function useTime() {
     const time = await fetchTime(id);
     store.upsertTimes([time]);
     return time;
+  }
+
+  function getOrganisationTimes() {
+    const ref = store.findTimes((time) => !time.userId || time.organisationId === currentOrganisationId.value);
+
+    return computed(() => ref.value);
   }
 
   async function createTime(data: Time) {
@@ -168,6 +176,8 @@ export function useTime() {
   return {
     loadTimes,
     loadTime,
+
+    getOrganisationTimes,
 
     createTime,
     updateTime,

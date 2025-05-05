@@ -89,6 +89,7 @@ export const useTimerStore = defineStore('timer', () => {
   return {
     offlineTimes,
     getAllTimes: timesStore.getAll,
+    findTimes: timesStore.find,
     findTimeById: timesStore.findById,
     findTime: timesStore.find,
 

@@ -38,6 +38,7 @@ export const useProjectStore = defineStore('project', () => {
     upsertProjects: projectsStore.upsertMany,
 
     getAllProjects: projectsStore.getAll,
+    findProjects: projectsStore.find,
     findProjectById: projectsStore.findById,
     findProject: projectsStore.find,
 

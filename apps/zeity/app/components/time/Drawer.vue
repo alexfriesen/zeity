@@ -14,8 +14,9 @@ const { t } = useI18n();
 const { loggedIn } = useUserSession();
 const { loadProjects } = useProject();
 
-const projectStore = useProjectStore();
-const activeProjects = projectStore.findProject((project) => project.status === PROJECT_STATUS_ACTIVE);
+const { getOrganisationProjects } = useProject();
+const orgProjects = getOrganisationProjects();
+const activeProjects = computed(() => orgProjects.value.filter((project) => project.status === PROJECT_STATUS_ACTIVE));
 const projectItems = computed(() => {
     const projectOptions = activeProjects.value.map((project) => ({
         label: project.name,

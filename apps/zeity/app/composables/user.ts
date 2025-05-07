@@ -1,8 +1,26 @@
 import type { User } from '@zeity/types';
 
 export function useUser() {
+  const { clear } = useUserSession();
   const userStore = useUserStore();
   const { user, loading } = storeToRefs(userStore);
+
+  function fetchUser() {
+    loading.value = true;
+    return useRequestFetch()('/api/user/current', {
+      retry: false,
+    })
+      .then(({ user }) => {
+        userStore.setUser(user || null);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch user:', error);
+        clear();
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
 
   async function deleteUser() {
     return $fetch('/api/user/current', {
@@ -23,10 +41,12 @@ export function useUser() {
   }
 
   return {
-    user,
     loading,
+    user,
+    setUser: userStore.setUser,
 
-    deleteUser,
+    fetchUser,
     updateUser,
+    deleteUser,
   };
 }

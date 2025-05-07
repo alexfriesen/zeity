@@ -5,9 +5,8 @@ const { t } = useI18n();
 const { logout } = useAuth();
 const { user } = useUserSession();
 
-const store = useOrganisationStore();
-const { currentOrganisationId } = storeToRefs(store);
-const organisations = store.getAllOrganisations();
+const { currentOrganisationId, setCurrentOrganisationId, getAllOrganisations } = useOrganisation();
+const organisations = getAllOrganisations();
 
 const userMenu = computed(() => [
     [
@@ -34,7 +33,7 @@ const userMenu = computed(() => [
                 alt: organisation.name,
             },
             slot: currentOrganisationId.value === organisation.id ? 'selectedOrg' as const : undefined,
-            onSelect: () => store.setCurrentOrganisationId(organisation.id),
+            onSelect: () => setCurrentOrganisationId(organisation.id),
         })),
         {
             label: t('organisations.create'),

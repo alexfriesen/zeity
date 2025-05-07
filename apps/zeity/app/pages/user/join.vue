@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { refreshOrganisations } = useOrganisationStore()
+const { refreshOrganisations } = useOrganisation()
 const token = useRoute().query.token as string
 
 const { status, data } = await useLazyAsyncData('organisation/join',

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-const organisationStore = useOrganisationStore()
-const { currentOrganisationId } = storeToRefs(organisationStore);
-const organisations = organisationStore.getAllOrganisations();
+const { currentOrganisationId, setCurrentOrganisationId, refreshOrganisations, getAllOrganisations } = useOrganisation();
 
+const organisations = getAllOrganisations();
 const isEmpty = computed(() => organisations.value.length === 0);
 
 onMounted(() => {
-    organisationStore.refreshOrganisations();
+    refreshOrganisations();
 });
 </script>
 
@@ -29,7 +28,7 @@ onMounted(() => {
                     <div class="flex items-center gap-4 flex-shrink">
                         <UButton :color="currentOrganisationId === organisation.id ? 'primary' : 'neutral'"
                             icon="i-lucide-check" size="lg" square class="rounded-full"
-                            @click="organisationStore.setCurrentOrganisationId(organisation.id)" />
+                            @click="setCurrentOrganisationId(organisation.id)" />
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
                             class="block -mx-3 truncate">
                             {{ organisation.name }}

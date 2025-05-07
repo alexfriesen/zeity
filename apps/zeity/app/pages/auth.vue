@@ -5,7 +5,7 @@ definePageMeta({
 
 const toast = useToast()
 const { fetch, user } = useUserSession()
-const { refreshOrganisations } = useOrganisationStore()
+const { refreshOrganisations } = useOrganisation()
 
 async function auth() {
     await fetch()

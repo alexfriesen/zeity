@@ -3,8 +3,7 @@ import type { NewOrganisation, Organisation } from '@zeity/types/organisation';
 
 const { t } = useI18n();
 const toast = useToast();
-
-const store = useOrganisationStore();
+const { createOrganisation, setCurrentOrganisationId } = useOrganisation();
 
 const loading = ref(false);
 const data = ref<NewOrganisation>({
@@ -13,30 +12,27 @@ const data = ref<NewOrganisation>({
 
 async function handleSubmit(data: Organisation | NewOrganisation) {
     loading.value = true;
-    const organisation = await $fetch('/api/organisation', {
-        method: 'POST',
-        body: data,
-    }).then((data) => {
-        toast.add({
-            color: 'success',
-            title: t('organisations.createSuccess'),
+    const organisation = await createOrganisation(data)
+        .then((data) => {
+            toast.add({
+                color: 'success',
+                title: t('organisations.createSuccess'),
+            });
+            if (data?.id) {
+                setCurrentOrganisationId(data.id);
+            }
+            return data;
+        }).catch((error) => {
+            console.error(error);
+            toast.add({
+                color: 'error',
+                title: t('organisations.createError'),
+            });
+        }).finally(() => {
+            loading.value = false;
         });
-        if (data?.id) {
-            store.setCurrentOrganisationId(data.id);
-        }
-        return data;
-    }).catch((error) => {
-        console.error(error);
-        toast.add({
-            color: 'error',
-            title: t('organisations.createError'),
-        });
-    }).finally(() => {
-        loading.value = false;
-    });
 
     if (organisation) {
-        store.insertOrganisation(organisation);
         await navigateTo('/organisations/' + organisation.id);
     }
 }

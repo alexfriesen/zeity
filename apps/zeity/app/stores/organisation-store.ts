@@ -39,61 +39,11 @@ export const useOrganisationStore = defineStore('organisation', () => {
     return id ? organisationsStore.findById(id).value : undefined;
   });
 
-  function fetchOrganisations() {
-    loading.value = true;
-    return useRequestFetch()('/api/organisation', {
-      retry: false,
-    })
-      .then((orgs) => {
-        organisationsStore.setEntities(orgs);
-        return orgs;
-      })
-      .catch((error) => {
-        console.error('Failed to fetch user:', error);
-        return [];
-      })
-      .finally(() => {
-        loading.value = false;
-      });
-  }
-
-  async function refreshOrganisations() {
-    const orgs = await fetchOrganisations();
-
-    const orgId = currentOrganisationId.value;
-    if (!orgId || !orgs?.map((org) => org.id).includes(orgId)) {
-      setCurrentOrganisationId(orgs[0]?.id ?? null);
-    }
-
-    return orgs;
-  }
-
-  if (import.meta.client) {
-    watch(
-      loggedIn,
-      async (value) => {
-        if (value) {
-          await fetchOrganisations();
-          const orgId = currentOrganisationId.value;
-          if (orgId && organisationsStore.findById(orgId).value) {
-            setCurrentOrganisationId(orgId);
-          } else {
-            setCurrentOrganisationId(
-              organisationsStore.getAll().value[0]?.id ?? null
-            );
-          }
-        } else {
-          organisationsStore.clearAll();
-        }
-      },
-      { immediate: true }
-    );
-  }
-
   return {
     currentOrganisation,
     currentOrganisationId,
     setCurrentOrganisationId,
+    setOrganisations: organisationsStore.setEntities,
 
     upsertOrganisations: organisationsStore.upsertMany,
 
@@ -105,10 +55,9 @@ export const useOrganisationStore = defineStore('organisation', () => {
     updateOrganisation: organisationsStore.update,
     removeOrganisation: organisationsStore.remove,
 
+    clearAllOrganisations: organisationsStore.clearAll,
+
     loading,
     setLoading,
-
-    fetchOrganisations,
-    refreshOrganisations,
   };
 });

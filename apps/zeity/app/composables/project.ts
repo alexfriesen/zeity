@@ -44,8 +44,7 @@ function deleteProject(id: string) {
 
 export function useProject() {
   const { loggedIn } = useUserSession();
-  const orgStore = useOrganisationStore();
-  const { currentOrganisationId } = storeToRefs(orgStore);
+  const { currentOrganisationId } = useOrganisation();
 
   const store = useProjectStore();
 

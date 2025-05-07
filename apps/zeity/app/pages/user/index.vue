@@ -6,8 +6,8 @@ definePageMeta({
 const { t } = useI18n();
 const toast = useToast();
 const { user, loading, deleteUser } = useUser();
-const { currentOrganisationId } = useOrganisation();
-const organisations = useOrganisationStore().getAllOrganisations();
+const { currentOrganisationId, getAllOrganisations } = useOrganisation();
+const organisations = getAllOrganisations();
 
 function logout() {
     useAuth().logout()

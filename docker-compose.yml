@@ -28,6 +28,18 @@ services:
       - 1080:1080
       - 1025:1025
 
+  zeity:
+    build:
+      context: .
+      dockerfile: ./apps/zeity/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      NUXT_DATABASE_URL: postgresql://postgres:postgres@postgres/zeity
+      NUXT_MAILER_SMTP_HOST: maildev
+      NUXT_MAILER_SMTP_PORT: 1025
+      NODE_ENV: development
+
 volumes:
   pg-data:
   minio-data:

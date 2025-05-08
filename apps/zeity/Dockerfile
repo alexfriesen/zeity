@@ -12,7 +12,7 @@ FROM node-alpine AS builder
 WORKDIR /home/node/
 COPY --chown=node:node ./ /home/node/
 
-RUN corepack enable pnpm
+RUN corepack enable
 
 USER node
 
@@ -27,10 +27,9 @@ FROM node-alpine AS prod
 USER node
 WORKDIR /home/node/
 
-RUN mkdir -p /home/node/apps/zeity/dist
-RUN mkdir -p /home/node/apps/zeity/dist/migrations
+RUN mkdir -p /home/node/app
 
-COPY --from=builder --chown=node:node /home/node/apps/zeity/.output ./apps/zeity/dist
+COPY --from=builder --chown=node:node /home/node/apps/zeity/.output ./app
 
 EXPOSE 3000
-CMD [ "node", "/home/node/apps/zeity/dist/server/index.mjs" ]
+CMD [ "node", "/home/node/app/server/index.mjs" ]

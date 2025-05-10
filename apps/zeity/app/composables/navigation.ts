@@ -8,7 +8,6 @@ export function useNavigation() {
     isLoggedIn.value
       ? [
           {
-            // TODO: Add user profile picture
             label: t('navigation.user'),
             icon: 'i-lucide-circle-user',
             children: [

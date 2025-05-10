@@ -13,7 +13,7 @@ const user = defineModel<User | null>()
 
 const { t } = useI18n()
 const toast = useToast()
-const { updateUser } = useUser()
+const { updateUser, uploadImage, fetchUser } = useUser()
 
 const saveLoading = ref(false);
 const isLoading = computed(() => props.loading || saveLoading.value);
@@ -50,17 +50,60 @@ function handleUpdateUser(event: FormSubmitEvent<UserSchema>) {
         });
 
 }
+
+function handleUserImageUpload() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.click();
+
+    input.onchange = async (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+
+        saveLoading.value = true;
+        await uploadImage(file)
+            .then(fetchUser)
+            .then(() => {
+                toast.add({
+                    color: 'success',
+                    title: t('user.saveSuccess'),
+                });
+                // TODO: find a better way to update the user image
+                reloadNuxtApp();
+            })
+            .catch((error) => {
+                console.error(error)
+                toast.add({
+                    color: 'error',
+                    title: t('user.saveError'),
+                })
+            })
+            .finally(() => {
+                saveLoading.value = false;
+            });
+    };
+}
 </script>
 
 <template>
     <div>
         <div v-if="loading" class="flex flex-col gap-2">
+            <USkeleton class="h-14 w-14 rounded-full" />
             <USkeleton class="h-4 w-full" />
             <USkeleton class="h-8 w-full" />
             <USkeleton class="h-8 w-full" />
         </div>
         <UForm v-else class="flex flex-col gap-2" :schema="userSchema" :state="userState"
             @submit.prevent="handleUpdateUser">
+
+            <div class="flex flex-col items-center gap-2">
+                <UAvatar :src="user?.image || undefined" :alt="user?.name" size="3xl" />
+
+                <UButton :disabled="isLoading" :label="$t('common.upload')" icon="i-lucide-camera" variant="subtle"
+                    @click="handleUserImageUpload" />
+            </div>
+
             <UFormField :label="$t('user.email')" required loading>
                 <UInput :value="user?.email" disabled readonly class="w-full" />
             </UFormField>

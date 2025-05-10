@@ -23,14 +23,22 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const baseUrl = getRequestURL(event).origin;
   const result = await useDrizzle()
     .select({
       id: organisations.id,
       name: organisations.name,
+      image: organisations.image,
     })
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
-    .then((res) => res[0]);
+    .limit(1)
+    .then((res) => ({
+      ...res[0],
+      image: res[0].image
+        ? baseUrl + '/organisation/' + res[0].id + '/image'
+        : null,
+    }));
 
   if (!result) {
     throw createError({

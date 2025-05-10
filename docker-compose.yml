@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:17
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -10,11 +10,24 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
 
+  minio:
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+
   maildev:
     image: maildev/maildev
     ports:
-      - "1080:1080"
-      - "1025:1025"
+      - 1080:1080
+      - 1025:1025
 
 volumes:
   pg-data:
+  minio-data:

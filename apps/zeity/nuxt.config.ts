@@ -3,6 +3,8 @@ import vuePlugin from '@vitejs/plugin-vue';
 
 import packageJson from '../../package.json' with { type: 'json' };
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   future: {
@@ -22,7 +24,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
-    disable: true,
+    disable: !isProd,
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
@@ -66,7 +68,7 @@ export default defineNuxtConfig({
       installPrompt: true,
     },
     devOptions: {
-      enabled: true,
+      enabled: !isProd,
       suppressWarnings: true,
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\/$/],
@@ -112,6 +114,9 @@ export default defineNuxtConfig({
   auth: {
     webAuthn: true,
   },
+  security: {
+    enabled: isProd,
+  },
   routeRules: {
     '/user/**': {
       appMiddleware: ['auth'],
@@ -122,6 +127,13 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
+    s3: {
+      accessKey: 'minio',
+      secretKey: 'minio123',
+      endPoint: 'http://localhost:9000',
+      bucket: 'zeity',
+      region: 'auto',
+    },
     mailer: {
       from: { email: 'noreply@zeity.dev', name: 'Zeity' },
       smtp: {

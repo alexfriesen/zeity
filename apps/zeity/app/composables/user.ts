@@ -7,7 +7,7 @@ export function useUser() {
 
   function fetchUser() {
     loading.value = true;
-    return useRequestFetch()('/api/user/current', {
+    return $fetch('/api/user/current', {
       retry: false,
     })
       .then(({ user }) => {
@@ -40,6 +40,15 @@ export function useUser() {
     });
   }
 
+  function uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return $fetch('/api/user/image', {
+      method: 'POST',
+      body: formData,
+    });
+  }
+
   return {
     loading,
     user,
@@ -47,6 +56,7 @@ export function useUser() {
 
     fetchUser,
     updateUser,
+    uploadImage,
     deleteUser,
   };
 }

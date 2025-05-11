@@ -12,17 +12,15 @@ function getStorage() {
   return storage;
 }
 
-export async function readStorageFile(
-  key: string
-): Promise<{ data: Blob; type: string } | null> {
+export async function readStorageFile(key: string) {
   const storage = getStorage();
-  const raw = await storage.getObject(key);
+  const object = await storage.getObject(key);
 
-  if (!raw) {
+  if (!object) {
     return null;
   }
 
-  return { data: await raw.blob(), type: raw.type };
+  return object;
 }
 
 export function saveStorageFile(

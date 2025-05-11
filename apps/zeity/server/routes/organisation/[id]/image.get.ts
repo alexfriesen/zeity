@@ -43,15 +43,14 @@ export default defineEventHandler(async (event) => {
   }
 
   const file = await readStorageFile(organisation.image);
-
-  if (!file) {
+  if (!file || !file.ok) {
     throw createError({
       statusCode: 404,
       message: 'File not found',
     });
   }
 
-  const buffer = Buffer.from(await file.data.arrayBuffer());
+  const buffer = Buffer.from(await file.arrayBuffer());
   const etag = getEtag(buffer);
   setResponseHeader(event, 'etag', etag);
 
@@ -64,5 +63,5 @@ export default defineEventHandler(async (event) => {
   // Content-Type header
   setResponseHeader(event, 'content-type', file.type);
 
-  return file.data;
+  return file.blob();
 });

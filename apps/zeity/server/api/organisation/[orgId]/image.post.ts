@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'organisation not found',
+      message: 'Organisation not found',
     });
   }
 

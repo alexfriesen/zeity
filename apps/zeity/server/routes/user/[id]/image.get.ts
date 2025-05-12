@@ -51,7 +51,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+  // file data should only be read once
+  const blob = await file.blob();
+
+  const buffer = Buffer.from(await blob.arrayBuffer());
   const etag = getEtag(buffer);
   setResponseHeader(event, 'etag', etag);
 
@@ -64,5 +67,5 @@ export default defineEventHandler(async (event) => {
   // Content-Type header
   setResponseHeader(event, 'content-type', file.type);
 
-  return file.blob();
+  return blob;
 });

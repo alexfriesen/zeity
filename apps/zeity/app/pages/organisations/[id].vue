@@ -15,7 +15,8 @@ definePageMeta({
 
 const organisationId = route.params.id as string;
 
-const { status, data, refresh } = await useLazyAsyncData(`organisation/${organisationId}`, () => $fetch(`/api/organisation/${organisationId}`), { server: false })
+const { fetchOrganisation, uploadOrganisationImage } = useOrganisation();
+const { status, data, refresh } = await useLazyAsyncData(`organisation/${organisationId}`, () => fetchOrganisation(organisationId), { server: false })
 
 const schema = z.object({
     name: z.string().min(3).max(150).default(''),
@@ -36,17 +37,17 @@ function switchEditing() {
 
 function changeName(event: FormSubmitEvent<Schema>) {
     saving.value = true
-    $fetch(`/api/organisation/${organisationId}`, {
+    return $fetch(`/api/organisation/${organisationId}`, {
         method: 'PATCH',
         body: {
             name: event.data.name
         }
-    }).then(() => {
+    }).then(async () => {
         toast.add({
             color: 'success',
             title: t('organisations.updateSuccess'),
         })
-        refresh()
+        await refresh()
         editing.value = false
     }).catch((error) => {
         console.error(error)
@@ -59,8 +60,42 @@ function changeName(event: FormSubmitEvent<Schema>) {
     })
 }
 
-async function deleteOrganisation() {
-    await $fetch(`/api/organisation/${organisationId}`, {
+
+function changeImage() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.click();
+
+    input.onchange = async (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+
+        saving.value = true;
+        await uploadOrganisationImage(organisationId, file)
+            .then(async () => {
+                toast.add({
+                    color: 'success',
+                    title: t('user.saveSuccess'),
+                });
+                await refresh();
+                reloadNuxtApp();
+            })
+            .catch((error) => {
+                console.error(error)
+                toast.add({
+                    color: 'error',
+                    title: t('user.saveError'),
+                })
+            })
+            .finally(() => {
+                saving.value = false;
+            });
+    };
+}
+
+function deleteOrganisation() {
+    return $fetch(`/api/organisation/${organisationId}`, {
         method: 'DELETE',
     }).then(() => {
         toast.add({
@@ -81,6 +116,14 @@ async function deleteOrganisation() {
 <template>
     <div v-if="status === 'success'" class="my-4">
         <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
+
+        <div class="flex flex-col items-center justify-center">
+            <UAvatar :src="data?.image || undefined" :alt="data?.name" size="3xl" class="mb-4" />
+            <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
+                {{ $t('common.upload') }}
+            </UButton>
+        </div>
+
         <div>
             <UForm v-if="editing" :schema="schema" :state="state"
                 class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
@@ -102,11 +145,11 @@ async function deleteOrganisation() {
 
         <USeparator class="my-4" />
 
-        <OrganisationMembers :organisation-id="organisationId" :members="data?.members ?? []" @refresh="refresh" />
+        <OrganisationMembers :organisation-id="organisationId" :members="data?.members || []" @refresh="refresh" />
 
         <USeparator class="my-4" />
 
-        <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites" @refresh="refresh" />
+        <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites || []" @refresh="refresh" />
 
         <USeparator class="my-4" />
 

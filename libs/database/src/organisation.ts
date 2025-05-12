@@ -1,4 +1,4 @@
-import { index, pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
+import { index, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 
 export const organisations = pgTable(
@@ -6,6 +6,7 @@ export const organisations = pgTable(
   {
     id: uuid('id').defaultRandom().notNull().primaryKey(),
     name: varchar('name', { length: 150 }).notNull(),
+    image: text('image'),
 
     ...timestampColumns(),
   },

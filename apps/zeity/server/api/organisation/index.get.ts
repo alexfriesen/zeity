@@ -22,10 +22,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const baseUrl = getRequestURL(event).origin;
   const result = await useDrizzle()
     .select({
       id: organisations.id,
       name: organisations.name,
+      image: organisations.image,
     })
     .from(organisations)
     .leftJoin(
@@ -33,7 +35,15 @@ export default defineEventHandler(async (event) => {
       eq(organisationMembers.organisationId, organisations.id)
     )
     .where(eq(organisationMembers.userId, session.user.id))
-    .orderBy(asc(organisations.name));
+    .orderBy(asc(organisations.name))
+    .then((rows) => {
+      return rows.map((row) => ({
+        ...row,
+        image: row.image
+          ? baseUrl + '/organisation/' + row.id + '/image'
+          : null,
+      }));
+    });
 
   return result;
 });

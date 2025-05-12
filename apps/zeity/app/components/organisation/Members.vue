@@ -25,10 +25,12 @@ const emit = defineEmits(['refresh'])
 
 const membersColumns: TableColumn<OrganisationMember>[] = [
     {
+        id: 'name',
         accessorKey: 'user.name',
         header: 'Name',
     },
     {
+        id: 'role',
         accessorKey: 'role',
         header: 'Role',
         cell: ({ row }) => {
@@ -157,6 +159,15 @@ function setMemberRole(userId: string, role: OrganisationMemberRole) {
         <h3 class="text-lg font-semibold leading-6">
             {{ $t('organisations.members.title') }}
         </h3>
-        <UTable :data="members" :columns="membersColumns" />
+        <UTable :data="members" :columns="membersColumns">
+            <template #name-cell="{ row }">
+                <div class="flex items-center gap-3">
+                    <UAvatar :src="row.original.user?.image || undefined" :alt="`${row.original.user?.name}`" />
+                    <p class="font-medium text-highlighted">
+                        {{ row.original.user?.name }}
+                    </p>
+                </div>
+            </template>
+        </UTable>
     </div>
 </template>

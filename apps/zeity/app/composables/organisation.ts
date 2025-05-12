@@ -22,6 +22,10 @@ export function useOrganisation() {
       });
   }
 
+  function fetchOrganisation(id: string) {
+    return $fetch(`/api/organisation/${id}`);
+  }
+
   async function refreshOrganisations() {
     const orgs = await fetchOrganisations();
 
@@ -50,6 +54,15 @@ export function useOrganisation() {
       });
   }
 
+  function uploadOrganisationImage(id: string, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return $fetch(`/api/organisation/${id}/image`, {
+      method: 'POST',
+      body: formData,
+    });
+  }
+
   function getAllOrganisations() {
     return store.getAllOrganisations();
   }
@@ -58,10 +71,12 @@ export function useOrganisation() {
     currentOrganisationId,
     setCurrentOrganisationId: store.setCurrentOrganisationId,
 
+    fetchOrganisation,
     fetchOrganisations,
     refreshOrganisations,
 
     createOrganisation,
+    uploadOrganisationImage,
 
     getAllOrganisations,
     findOrganisationById: store.findOrganisationById,

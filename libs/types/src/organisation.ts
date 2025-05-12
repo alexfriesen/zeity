@@ -41,6 +41,7 @@ export type NewOrganisationInvite = Omit<
 export interface Organisation {
   id: string;
   name: string;
+  image?: string | null;
 
   createdAt?: string | Date;
   updatedAt?: string | Date;

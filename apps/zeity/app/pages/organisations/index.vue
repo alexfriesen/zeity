@@ -25,17 +25,19 @@ onMounted(() => {
 
             <UCard v-for="organisation in organisations" :key="organisation.id">
                 <template #header>
-                    <div class="flex items-center gap-4 flex-shrink">
-                        <UButton :color="currentOrganisationId === organisation.id ? 'primary' : 'neutral'"
-                            icon="i-lucide-check" size="lg" square class="rounded-full"
-                            @click="setCurrentOrganisationId(organisation.id)" />
+                    <div class="flex items-center justify-between gap-4 flex-shrink">
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
                             class="block -mx-3 truncate">
+                            <UAvatar :src="organisation.image || undefined" :alt="organisation.name" size="lg"
+                                class="mr-2" />
                             {{ organisation.name }}
                         </UButton>
+                        <UButton variant="ghost" size="lg" square class="rounded-full"
+                            :color="currentOrganisationId === organisation.id ? 'primary' : 'neutral'"
+                            :icon="currentOrganisationId === organisation.id ? 'i-lucide-circle-check' : 'i-lucide-circle'"
+                            @click="setCurrentOrganisationId(organisation.id)" />
                     </div>
                 </template>
-
             </UCard>
 
             <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"

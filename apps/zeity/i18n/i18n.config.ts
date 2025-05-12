@@ -32,6 +32,7 @@ export default defineI18nConfig(() => ({
         stop: 'Stop',
         loadMore: 'Load more',
         sync: 'Sync',
+        upload: 'Upload',
       },
       navigation: {
         timer: 'Timer',
@@ -192,6 +193,7 @@ export default defineI18nConfig(() => ({
         stop: 'Stop',
         loadMore: 'Mehr laden',
         sync: 'Synchronisieren',
+        upload: 'Hochladen',
       },
       navigation: {
         timer: 'Timer',

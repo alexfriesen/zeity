@@ -58,7 +58,18 @@ export default defineEventHandler(async (event) => {
     .from(organisationMembers)
     .leftJoin(users, eq(users.id, organisationMembers.userId))
     .where(eq(organisationMembers.organisationId, params.data.orgId))
-    .orderBy(asc(organisationMembers.createdAt));
+    .orderBy(asc(organisationMembers.createdAt))
+    .then((res) =>
+      res.map((member) => ({
+        ...member,
+        user: {
+          ...member.user,
+          image: member.user?.image
+            ? baseUrl + '/user/' + member.user.id + '/image'
+            : undefined,
+        },
+      }))
+    );
 
   if (!members.some((member) => member.userId === session.user.id)) {
     throw createError({

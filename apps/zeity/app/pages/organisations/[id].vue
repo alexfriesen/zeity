@@ -145,11 +145,11 @@ function deleteOrganisation() {
 
         <USeparator class="my-4" />
 
-        <OrganisationMembers :organisation-id="organisationId" :members="data?.members ?? []" @refresh="refresh" />
+        <OrganisationMembers :organisation-id="organisationId" :members="data?.members || []" @refresh="refresh" />
 
         <USeparator class="my-4" />
 
-        <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites" @refresh="refresh" />
+        <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites || []" @refresh="refresh" />
 
         <USeparator class="my-4" />
 

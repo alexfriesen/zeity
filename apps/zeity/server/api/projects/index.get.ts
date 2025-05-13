@@ -6,7 +6,8 @@ import { projects } from '@zeity/database/project';
 import { coerceArray } from '~~/server/utils/zod';
 
 export default defineEventHandler(async (event) => {
-  const session = await requireUserSession(event);
+  await requireUserSession(event);
+  const organisation = await requireOrganisationSession(event);
 
   const query = await getValidatedQuery(
     event,
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const whereStatements = [eq(projects.userId, session.user.id)];
+  const whereStatements = [eq(projects.organisationId, organisation.value)];
 
   if (query.data.status) {
     whereStatements.push(inArray(projects.status, query.data.status));

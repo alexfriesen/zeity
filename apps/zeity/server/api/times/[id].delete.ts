@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
+import { findTimeById } from '~~/server/utils/time';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -21,12 +22,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const existing = await useDrizzle()
-    .select()
-    .from(times)
-    .where(eq(times.id, params.data.id))
-    .then((res) => res[0]);
-
+  const existing = await findTimeById(params.data.id);
   if (!existing) {
     throw createError({
       statusCode: 404,

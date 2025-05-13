@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
+import { findTimeById } from '~~/server/utils/time';
+import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -41,12 +43,20 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const existing = await useDrizzle()
-    .select()
-    .from(times)
-    .where(eq(times.id, params.data.id))
-    .then((res) => res[0]);
+  if (body.data.projectId) {
+    const isOrganisationProject = await doesProjectsBelongsToOrganisation(
+      body.data.projectId,
+      organisation.value
+    );
+    if (!isOrganisationProject) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+  }
 
+  const existing = await findTimeById(params.data.id);
   if (!existing) {
     throw createError({
       statusCode: 404,

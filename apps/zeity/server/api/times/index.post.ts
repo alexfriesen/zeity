@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { times } from '@zeity/database/time';
+import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -22,6 +23,19 @@ export default defineEventHandler(async (event) => {
       statusCode: 400,
       message: 'Invalid request body',
     });
+  }
+
+  if (body.data.projectId) {
+    const isOrganisationProject = await doesProjectsBelongsToOrganisation(
+      body.data.projectId,
+      organisation.value
+    );
+    if (!isOrganisationProject) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
   }
 
   const result = await useDrizzle()

@@ -1,13 +1,10 @@
 import { z } from 'zod';
 
-import {
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
-} from '@zeity/types/organisation';
 import { organisations } from '@zeity/database/organisation';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 
 import { sendInviteMail } from '~~/server/utils/user-invite';
+import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -41,10 +38,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-      ORGANISATION_MEMBER_ROLE_ADMIN,
-    ]))
+    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
   ) {
     throw createError({
       statusCode: 403,
@@ -56,6 +50,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
+    .limit(1)
     .then((res) => res[0]);
 
   const result = await useDrizzle()

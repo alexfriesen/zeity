@@ -1,11 +1,8 @@
 import { z } from 'zod';
 
-import {
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
-} from '@zeity/types/organisation';
 import { organisations } from '@zeity/database/organisation';
 import { organisationInvites } from '@zeity/database/organisation-invite';
+import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { sendInviteMail } from '~~/server/utils/user-invite';
 
 export default defineEventHandler(async (event) => {
@@ -26,10 +23,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-      ORGANISATION_MEMBER_ROLE_ADMIN,
-    ]))
+    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
   ) {
     throw createError({
       statusCode: 403,
@@ -45,6 +39,7 @@ export default defineEventHandler(async (event) => {
       eq(organisations.id, organisationInvites.organisationId)
     )
     .where(eq(organisationInvites.id, params.data.inviteId))
+    .limit(1)
     .then((res) => res[0]);
 
   if (!organisation || !organisation_invite) {

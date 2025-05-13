@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { eq, asc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
+import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -33,6 +34,18 @@ export default defineEventHandler(async (event) => {
   ];
 
   if (query.data.projectId) {
+    // check if the project belongs to the organisation
+    const isOrganisationProject = await doesProjectsBelongsToOrganisation(
+      query.data.projectId,
+      organisation.value
+    );
+    if (!isOrganisationProject) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+
     whereStatements.push(inArray(times.projectId, query.data.projectId));
   }
 

@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(organisationInvites)
     .where(eq(organisationInvites.id, jwt.inviteId))
+    .limit(1)
     .then((res) => res[0]);
 
   if (!invite || invite?.email !== session.user.email) {
@@ -52,6 +53,13 @@ export default defineEventHandler(async (event) => {
         role: ORGANISATION_MEMBER_ROLE_MEMBER,
       })
       .returning();
+
+    if (!result) {
+      throw createError({
+        statusCode: 500,
+        message: 'Failed to accept organisation invite',
+      });
+    }
 
     await tx
       .delete(organisationInvites)

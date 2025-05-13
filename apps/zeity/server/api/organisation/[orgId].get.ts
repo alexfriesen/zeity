@@ -23,14 +23,22 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const baseUrl = getRequestURL(event).origin;
   const result = await useDrizzle()
     .select({
       id: organisations.id,
       name: organisations.name,
+      image: organisations.image,
     })
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
-    .then((res) => res[0]);
+    .limit(1)
+    .then((res) => ({
+      ...res[0],
+      image: res[0].image
+        ? baseUrl + '/organisation/' + res[0].id + '/image'
+        : null,
+    }));
 
   if (!result) {
     throw createError({
@@ -50,7 +58,18 @@ export default defineEventHandler(async (event) => {
     .from(organisationMembers)
     .leftJoin(users, eq(users.id, organisationMembers.userId))
     .where(eq(organisationMembers.organisationId, params.data.orgId))
-    .orderBy(asc(organisationMembers.createdAt));
+    .orderBy(asc(organisationMembers.createdAt))
+    .then((res) =>
+      res.map((member) => ({
+        ...member,
+        user: {
+          ...member.user,
+          image: member.user?.image
+            ? baseUrl + '/user/' + member.user.id + '/image'
+            : undefined,
+        },
+      }))
+    );
 
   if (!members.some((member) => member.userId === session.user.id)) {
     throw createError({

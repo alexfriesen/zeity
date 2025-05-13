@@ -28,9 +28,16 @@ export default defineEventHandler(async (event) => {
       .returning()
       .then((res) => res[0]);
 
+    if (!org) {
+      throw createError({
+        statusCode: 500,
+        message: 'Failed to create organisation',
+      });
+    }
+
     await tx.insert(organisationMembers).values({
       userId: session.user.id,
-      organisationId: org!.id,
+      organisationId: org.id,
       role: ORGANISATION_MEMBER_ROLE_OWNER,
     });
 

@@ -18,6 +18,7 @@ export const users = pgTable(
       mode: 'date',
       withTimezone: true,
     }),
+    image: text('image'),
 
     ...timestampColumns(),
   },

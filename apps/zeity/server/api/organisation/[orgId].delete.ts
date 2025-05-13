@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
+import { eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
-import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
-import { eq } from '~~/server/utils/drizzle';
-import { hasUserOrganisationMemberRole } from '~~/server/utils/organisation';
+import { canUserDeleteOrganisationByOrgId } from '~~/server/utils/organisation-permission';
+import { doesOrganisationExist } from '~~/server/utils/organisation';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -22,12 +22,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const existing = await useDrizzle()
-    .select()
-    .from(organisations)
-    .where(eq(organisations.id, params.data.orgId))
-    .then((res) => res[0]);
-
+  const existing = await doesOrganisationExist(params.data.orgId);
   if (!existing) {
     throw createError({
       statusCode: 404,
@@ -36,9 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-    ]))
+    !(await canUserDeleteOrganisationByOrgId(session.user, params.data.orgId))
   ) {
     throw createError({
       statusCode: 403,

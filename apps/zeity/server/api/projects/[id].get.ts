@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { eq } from '@zeity/database';
-import { projects } from '@zeity/database/project';
+import { findProjectById } from '~~/server/utils/project';
+import { isUserOrganisationMemberByOrgId } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -21,12 +21,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const result = await useDrizzle()
-    .select()
-    .from(projects)
-    .where(eq(projects.id, params.data.id))
-    .then((res) => res[0]);
-
+  const result = await findProjectById(params.data.id);
   if (!result) {
     throw createError({
       statusCode: 404,
@@ -35,10 +30,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(
-      result.userId === session.user.id ||
-      result.organisationId === organisation.value
-    )
+    !(await isUserOrganisationMemberByOrgId(session.user, organisation.value))
   ) {
     throw createError({
       statusCode: 403,

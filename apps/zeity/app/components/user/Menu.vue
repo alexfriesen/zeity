@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from '@nuxt/ui';
 
 const { t } = useI18n();
 const { logout } = useAuth();
-const { user } = useUserSession();
+const { user } = useUser();
 
 const { currentOrganisationId, setCurrentOrganisationId, getAllOrganisations } = useOrganisation();
 const organisations = getAllOrganisations();
@@ -30,6 +30,7 @@ const userMenu = computed(() => [
         ...organisations.value.map((organisation) => ({
             label: organisation.name,
             avatar: {
+                src: organisation.image || undefined,
                 alt: organisation.name,
             },
             slot: currentOrganisationId.value === organisation.id ? 'selectedOrg' as const : undefined,
@@ -46,7 +47,7 @@ const userMenu = computed(() => [
 
 <template>
     <UDropdownMenu :items="userMenu" size="xl">
-        <UAvatar :alt="user?.name" as="button"
+        <UAvatar :src="user?.image || undefined" :alt="user?.name" as="button"
             class="ring ring-inset ring-primary/50 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:bg-primary/10" />
         <template #selectedOrg-trailing>
             <UIcon name="i-lucide-circle-check" class="shrink-0 size-5 text-primary" />

@@ -1,11 +1,8 @@
 import { z } from 'zod';
 
-import {
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
-} from '@zeity/types/organisation';
 import { eq, asc } from '@zeity/database';
 import { organisationInvites } from '@zeity/database/organisation-invite';
+import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -39,10 +36,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await hasUserOrganisationMemberRole(session.user.id, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-      ORGANISATION_MEMBER_ROLE_ADMIN,
-    ]))
+    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
   ) {
     throw createError({
       statusCode: 403,
@@ -54,6 +48,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(organisationInvites)
     .where(eq(organisationInvites.organisationId, params.data.orgId))
+    .limit(1)
     .orderBy(asc(organisationInvites.createdAt));
 
   return result;

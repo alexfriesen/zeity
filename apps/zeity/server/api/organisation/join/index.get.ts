@@ -44,6 +44,7 @@ export default defineEventHandler(async (event) => {
       eq(organisations.id, organisationInvites.organisationId)
     )
     .where(eq(organisationInvites.id, jwt.inviteId))
+    .limit(1)
     .then((res) => res[0]);
 
   if (!result || result?.email !== session.user.email) {

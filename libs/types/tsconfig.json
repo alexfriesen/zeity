@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
     "target": "esnext",
     "module": "esnext",
-    "types": ["node", "vitest"]
+    "types": ["node"]
   },
   "files": ["src/index.ts"],
   "include": []

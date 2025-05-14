@@ -25,12 +25,12 @@ function isSelected(item: Project) {
 </script>
 
 <template>
-    <section class="flex flex-col gap-4 my-3">
-        <div class="scrollable flex gap-2 py-2">
+    <section class="flex flex-col">
+        <div class="scrollable flex gap-2 pb-3">
             <UButton v-for="value of activeProjects" :key=value.id :label="value.name"
                 :icon="isSelected(value) ? 'i-lucide-check' : undefined"
-                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle"
-                class="rounded-full truncate max-w-48" @click="toggleSelected(value)" />
+                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
+                @click="toggleSelected(value)" />
         </div>
     </section>
 </template>

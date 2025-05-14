@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { findProjectById } from '~~/server/utils/project';
-import { isUserOrganisationMemberByOrgId } from '~~/server/utils/organisation-permission';
+import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -30,7 +30,9 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await isUserOrganisationMemberByOrgId(session.user, organisation.value))
+    !(await userIdBelongsToOrganisation(session.user.id, {
+      id: organisation.value,
+    }))
   ) {
     throw createError({
       statusCode: 403,

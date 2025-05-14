@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { eq } from '@zeity/database';
 import { projects } from '@zeity/database/project';
 import { PROJECT_STATUSES } from '@zeity/types';
-import { isUserOrganisationMemberByOrgId } from '~~/server/utils/organisation-permission';
+import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 import { doesProjectExist } from '~~/server/utils/project';
 
 export default defineEventHandler(async (event) => {
@@ -51,7 +51,9 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    !(await isUserOrganisationMemberByOrgId(session.user, organisation.value))
+    !(await userIdBelongsToOrganisation(session.user.id, {
+      id: organisation.value,
+    }))
   ) {
     throw createError({
       statusCode: 403,

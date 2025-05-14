@@ -41,7 +41,7 @@ function downloadReport(type = 'json') {
     }
 }
 
-function getProjectName(projectId: string | undefined) {
+function getProjectName(projectId: string | undefined | null): string | null {
     if (!projectId) {
         return null;
     }

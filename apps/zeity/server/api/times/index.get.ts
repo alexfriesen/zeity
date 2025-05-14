@@ -34,11 +34,11 @@ export default defineEventHandler(async (event) => {
 
   if (query.data.userId) {
     // check if the u belongs to the organisation
-    const usersBelongsToOrg = await userIdsBelongsToOrganisation(
+    const usersBelongToOrg = await userIdsBelongsToOrganisation(
       { id: organisation.value },
       query.data.userId
     );
-    if (!usersBelongsToOrg) {
+    if (!usersBelongToOrg) {
       throw createError({
         statusCode: 403,
         message: 'Forbidden',

@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
       id: organisations.id,
       name: organisations.name,
       image: organisations.image,
+      role: organisationMembers.role,
     })
     .from(organisations)
     .leftJoin(

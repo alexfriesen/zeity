@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     .from(organisationMembers)
     .leftJoin(users, eq(users.id, organisationMembers.userId))
     .where(eq(organisationMembers.organisationId, params.data.orgId))
-    .orderBy(asc(organisationMembers.createdAt))
+    .orderBy(asc(users.name))
     .then((res) =>
       res.map((member) => ({
         ...member,

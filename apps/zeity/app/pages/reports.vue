@@ -22,6 +22,7 @@ const filteredUserIds = computed(() => {
     }
     // if no filters are set, return the current user id
     if (!memberFilters.value.length) {
+        // TODO: should the default be the current user or all users?
         return [user.value.id];
     }
     // if filters are set, return the filtered user ids
@@ -30,12 +31,16 @@ const filteredUserIds = computed(() => {
 const filteredTimes = computed(() => {
     const dFilter = dateFilter.value;
     const pFilters = projectFilters.value;
-
     const userIds = filteredUserIds.value;
-    let times = orgTimes.value.filter((item) => {
-        return userIds?.some((userId) => item.userId === userId);
-    });
 
+    let times = orgTimes.value;
+
+    // filter times by user ids
+    if (userIds.length) {
+        times = times.filter((item) => userIds?.includes(item.userId));
+    }
+
+    // filter times by date range
     if (dFilter && dFilter.start && dFilter.end) {
         times = times.filter(
             (item) => {
@@ -47,7 +52,8 @@ const filteredTimes = computed(() => {
         );
     }
 
-    if (projectFilters.value.length) {
+    // filter times by project ids
+    if (pFilters.length) {
         times = times.filter((item) =>
             pFilters?.some((project) => item.projectId?.includes(project)),
         );

@@ -1,9 +1,14 @@
 import type { User } from '@zeity/database/user';
+import type { Organisation } from '@zeity/database/organisation';
 import type { OrganisationMember } from '@zeity/database/organisation-member';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types';
+import {
+  getOrganisationMembersByUserIds,
+  getOrganisationMemberByUserId,
+} from './organisation';
 
 const privilegedRoles = [
   ORGANISATION_MEMBER_ROLE_OWNER,
@@ -19,12 +24,21 @@ export function isUserOrganisationMember(
   );
 }
 
-export function isUserOrganisationMemberByOrgId(
-  user: Pick<User, 'id'>,
-  orgId: string
+export function userIdBelongsToOrganisation(
+  userId: string,
+  org: Pick<Organisation, 'id'>
 ) {
-  return getUserOrganisationMember(user.id, orgId).then((res) => {
+  return getOrganisationMemberByUserId(org.id, userId).then((res) => {
     return res.length > 0;
+  });
+}
+
+export function userIdsBelongsToOrganisation(
+  org: Pick<Organisation, 'id'>,
+  userIds: string[]
+) {
+  return getOrganisationMembersByUserIds(org.id, userIds).then((res) => {
+    return res.length === userIds.length;
   });
 }
 

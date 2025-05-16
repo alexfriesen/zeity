@@ -2,7 +2,7 @@ import type { NewOrganisation, Organisation } from '@zeity/types/organisation';
 
 export function useOrganisation() {
   const store = useOrganisationStore();
-  const { currentOrganisationId } = storeToRefs(store);
+  const { currentOrganisation, currentOrganisationId } = storeToRefs(store);
 
   function fetchOrganisations() {
     store.setLoading(true);
@@ -24,6 +24,10 @@ export function useOrganisation() {
 
   function fetchOrganisation(id: string) {
     return $fetch(`/api/organisation/${id}`);
+  }
+
+  function fetchOrganisationMembers(orgId: string) {
+    return $fetch(`/api/organisation/${orgId}/member`);
   }
 
   async function refreshOrganisations() {
@@ -68,12 +72,14 @@ export function useOrganisation() {
   }
 
   return {
+    currentOrganisation,
     currentOrganisationId,
     setCurrentOrganisationId: store.setCurrentOrganisationId,
 
     fetchOrganisation,
     fetchOrganisations,
     refreshOrganisations,
+    fetchOrganisationMembers,
 
     createOrganisation,
     uploadOrganisationImage,

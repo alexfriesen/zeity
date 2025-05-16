@@ -7,12 +7,12 @@ import {
 } from '@zeity/types/organisation';
 
 export function doesOrganisationExist(organisationId: string) {
-    return useDrizzle()
-      .select({ id: organisations.id })
-      .from(organisations)
-      .where(eq(organisations.id, organisationId))
-      .limit(1)
-      .then((res) => res[0]?.id === organisationId);
+  return useDrizzle()
+    .select({ id: organisations.id })
+    .from(organisations)
+    .where(eq(organisations.id, organisationId))
+    .limit(1)
+    .then((res) => res[0]?.id === organisationId);
 }
 
 export function hasUserOrganisationMemberRole(
@@ -33,9 +33,9 @@ export function hasUserOrganisationMemberRole(
     .then((res) => res.length > 0);
 }
 
-export function getUserOrganisationMember(
-  userId: string,
-  organisationId: string
+export function getOrganisationMemberByUserId(
+  organisationId: string,
+  userId: string
 ) {
   return useDrizzle()
     .select()
@@ -45,14 +45,23 @@ export function getUserOrganisationMember(
         eq(organisationMembers.userId, userId),
         eq(organisationMembers.organisationId, organisationId)
       )
-    );
+    )
+    .limit(1);
 }
 
-export function getOrganisationMembers(organisationId: string) {
+export function getOrganisationMembersByUserIds(
+  organisationId: string,
+  userIds: string[]
+) {
   return useDrizzle()
     .select()
     .from(organisationMembers)
-    .where(eq(organisationMembers.organisationId, organisationId));
+    .where(
+      and(
+        inArray(organisationMembers.userId, userIds),
+        eq(organisationMembers.organisationId, organisationId)
+      )
+    );
 }
 
 export function countOrganisationMemberOwner(

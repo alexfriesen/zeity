@@ -3,12 +3,13 @@ import { calculateDiffSum, formatDuration } from '@zeity/utils/date';
 import type { ProjectStatus } from '@zeity/types/project';
 
 const route = useRoute()
-const projectStore = useProjectStore()
-const timeStore = useTimerStore()
-const { loadProject, updateProject, syncOfflineProject, isOnlineProject } = useProject();
-const { loadTimes } = useTime();
+const { user } = useUser()
 const { loggedIn } = useUserSession();
+const { findProjectById } = useProject()
+const { loadTimes, getOrganisationTimes } = useTime();
+const { loadProject, updateProject, syncOfflineProject, isOnlineProject } = useProject();
 
+const timeStore = useTimerStore();
 
 definePageMeta({
     validate: async (route) => {
@@ -19,8 +20,11 @@ definePageMeta({
 
 const projectId = route.params.id as string;
 
-const project = projectStore.findProjectById(projectId)
-const projectTimes = timeStore.findTime((time) => time.projectId === projectId)
+const project = findProjectById(projectId);
+const orgTimes = getOrganisationTimes();
+// show all times of the current user and offline times
+const userTimes = computed(() => orgTimes.value.filter((item) => !item.userId || item.userId === user.value?.id));
+const projectTimes = computed(() => userTimes.value.filter((time) => time.projectId === projectId));
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 const isProjectOffline = computed(() => loggedIn.value && project.value && !isOnlineProject(project.value));
 

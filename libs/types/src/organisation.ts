@@ -43,6 +43,8 @@ export interface Organisation {
   name: string;
   image?: string | null;
 
+  role?: OrganisationMemberRole | null;
+
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }

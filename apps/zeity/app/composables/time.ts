@@ -7,6 +7,7 @@ interface FetchTimesOptions {
   offset?: number;
   limit?: number;
 
+  userId?: string | string[];
   projectId?: string | string[];
   rangeStart?: string;
   rangeEnd?: string;

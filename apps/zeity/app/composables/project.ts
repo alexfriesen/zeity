@@ -70,6 +70,11 @@ export function useProject() {
     return computed(() => ref.value);
   }
 
+  function findProjectById(id: string | number) {
+    const ref = store.findProjectById(id);
+    return computed(() => ref.value);
+  }
+
   async function createProject(data: Project) {
     try {
       if (loggedIn.value) {
@@ -119,12 +124,12 @@ export function useProject() {
     const project =
       typeof idOrProject === 'object'
         ? idOrProject
-        : store.findProjectById(idOrProject).value;
+        : findProjectById(idOrProject).value;
     return !!project?.userId;
   }
 
   async function syncOfflineProject(id: string | number) {
-    const offlineProject = store.findProjectById(id).value;
+    const offlineProject = findProjectById(id).value;
     if (!offlineProject || isOnlineProject(offlineProject)) return;
 
     const newProject = await createProject(offlineProject);
@@ -139,6 +144,7 @@ export function useProject() {
     loadProjects,
     loadProject,
 
+    findProjectById,
     getOrganisationProjects,
 
     createProject,

@@ -172,8 +172,8 @@ function isSelected(filter: DateFilter) {
 </script>
 
 <template>
-    <section class="flex flex-col gap-4 my-3">
-        <div class="scrollable flex gap-2 py-2">
+    <section class="flex flex-col">
+        <div class="scrollable flex gap-2 pb-3">
             <UButton v-for="filter of dateFilters" :key=filter.key :label="filter.label || filter.text"
                 :icon="isSelected(filter) ? 'i-lucide-check' : undefined"
                 :color="isSelected(filter) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full"

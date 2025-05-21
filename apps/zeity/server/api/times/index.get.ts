@@ -4,6 +4,7 @@ import { eq, asc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
+import { userIdsBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
 
+      userId: coerceArray(z.string().uuid()).optional(),
       projectId: coerceArray(z.string().uuid()).optional(),
       rangeStart: z.coerce.date().optional(),
       rangeEnd: z.coerce.date().optional(),
@@ -28,10 +30,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const whereStatements = [
-    eq(times.userId, session.user.id),
-    eq(times.organisationId, organisation.value),
-  ];
+  const whereStatements = [eq(times.organisationId, organisation.value)];
+
+  if (query.data.userId) {
+    // check if the u belongs to the organisation
+    const usersBelongToOrg = await userIdsBelongsToOrganisation(
+      { id: organisation.value },
+      query.data.userId
+    );
+    if (!usersBelongToOrg) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+
+    whereStatements.push(inArray(times.userId, query.data.userId));
+  } else {
+    whereStatements.push(eq(times.userId, session.user.id));
+  }
 
   if (query.data.projectId) {
     // check if the project belongs to the organisation

@@ -5,19 +5,42 @@ import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
 
 import type { DateRange } from '~/types/date-filter';
 
-const dateFilter = ref<DateRange>();
-const projectFilters = ref<string[]>([]);
-
+const { user } = useUser();
 const { currentOrganisationId } = useOrganisation();
 const { loadTimes, getOrganisationTimes } = useTime();
 const { loadProjects } = useProject();
 
+const dateFilter = ref<DateRange>();
+const projectFilters = ref<string[]>([]);
+const memberFilters = ref<string[]>([]);
+
 const orgTimes = getOrganisationTimes();
+const filteredUserIds = computed(() => {
+    // user is not set if the user is not logged in
+    if (!user.value) {
+        return [];
+    }
+    // if no filters are set, return the current user id
+    if (!memberFilters.value.length) {
+        // TODO: should the default be the current user or all users?
+        return [user.value.id];
+    }
+    // if filters are set, return the filtered user ids
+    return memberFilters.value;
+});
 const filteredTimes = computed(() => {
     const dFilter = dateFilter.value;
     const pFilters = projectFilters.value;
-    let times = [...orgTimes.value];
+    const userIds = filteredUserIds.value;
 
+    let times = orgTimes.value;
+
+    // filter times by user ids
+    if (userIds.length) {
+        times = times.filter((item) => userIds?.includes(item.userId));
+    }
+
+    // filter times by date range
     if (dFilter && dFilter.start && dFilter.end) {
         times = times.filter(
             (item) => {
@@ -29,7 +52,8 @@ const filteredTimes = computed(() => {
         );
     }
 
-    if (projectFilters.value.length) {
+    // filter times by project ids
+    if (pFilters.length) {
         times = times.filter((item) =>
             pFilters?.some((project) => item.projectId?.includes(project)),
         );
@@ -40,13 +64,14 @@ const filteredTimes = computed(() => {
 
 const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
 
-async function loadAllTimes(range: DateRange, projectIds: string[], limit = 100) {
+async function loadAllTimes(range: DateRange, projectIds: string[], userIds: string[], limit = 100) {
     let offset = 0;
     let endReached = false;
     while (!endReached) {
         const times = await loadTimes({
             limit,
             offset,
+            userId: userIds,
             projectId: projectIds,
             rangeStart: toISOString(range.start),
             rangeEnd: toISOString(range.end),
@@ -79,7 +104,7 @@ async function loadAllActiveProjects(status = [PROJECT_STATUS_ACTIVE], limit = 1
 async function reloadAll() {
     await loadAllActiveProjects();
     if (dateFilter.value) {
-        await loadAllTimes(dateFilter.value, projectFilters.value);
+        await loadAllTimes(dateFilter.value, projectFilters.value, memberFilters.value);
     }
 }
 
@@ -91,18 +116,19 @@ watch(currentOrganisationId, async () => {
     await reloadAll();
 });
 
-watch([dateFilter, projectFilters], async ([dateRange, projects]) => {
+watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, users]) => {
     if (dateRange && dateRange.start && dateRange.end) {
-        await loadAllTimes(dateRange, projects);
+        await loadAllTimes(dateRange, projects, users);
     }
 });
 </script>
 
 <template>
     <div class="my-3 space-y-6">
-        <section>
+        <section class="flex flex-col gap-1">
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
+            <OrganisationMemberFilter v-if="user" v-model="memberFilters" />
         </section>
 
         <UCard as="section">

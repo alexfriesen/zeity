@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { sortDatesDescending } from '@zeity/utils/date';
 
+const { user } = useUser();
 const timeDetail = useTimeDetail();
 const timerStore = useTimerStore();
 const { currentOrganisationId } = useOrganisation();
 const { loadTimes, toggleDraft, getOrganisationTimes } = useTime();
 
 const orgTimes = getOrganisationTimes();
-const sortedTimes = computed(() => orgTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
-const isEmpty = computed(() => orgTimes.value.length < 1);
+// show all times of the current user and offline times
+const userTimes = computed(() => orgTimes.value.filter((item) => !item.userId || item.userId === user.value?.id));
+const sortedTimes = computed(() => userTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
+const isEmpty = computed(() => userTimes.value.length < 1);
 
 function timeNew() {
     const now = new Date().toISOString();

@@ -25,5 +25,11 @@
   "resolutions": {
     "ipx": "^3.0.3"
   },
+  "pnpm": {
+    "overrides": {
+      "@netlify/functions": "-",
+      "@netlify/blobs": "-"
+    }
+  },
   "packageManager": "pnpm@10.11.0"
 }

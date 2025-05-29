@@ -5,9 +5,18 @@ definePageMeta({
 
 const { t } = useI18n();
 const toast = useToast();
-const { user, loading, deleteUser } = useUser();
-const { currentOrganisationId, getAllOrganisations } = useOrganisation();
-const organisations = getAllOrganisations();
+const { deleteUser, fetchUser } = useUser();
+const { currentOrganisationId, fetchOrganisations } = useOrganisation();
+
+const { pending, data } = await fetchUser();
+const { pending: loadingOrganisations, data: organisations } = await fetchOrganisations();
+
+const noOrganisations = computed(() => {
+    if (loadingOrganisations) {
+        return false;
+    }
+    return (organisations.value?.length ?? 0) < 1
+});
 
 function logout() {
     useAuth().logout()
@@ -48,20 +57,24 @@ async function handleDeleteUser() {
 
             <div class="space-y-4">
 
-                <UAlert v-if="organisations.length < 1" icon="i-lucide-circle-alert" color="primary" variant="subtle"
+                <UAlert v-if="noOrganisations" icon="i-lucide-circle-alert" color="primary" variant="subtle"
                     title="Create Organisation" description="Create an organisation to start using zeity." :actions="[
                         { label: $t('organisations.create'), icon: 'i-lucide-plus', to: '/organisations/create' },
                     ]" />
 
-                <UserForm v-model="user" :loading="loading" />
+                <UserForm v-model="data.user" :loading="pending" />
 
                 <USeparator />
 
                 <UFormField :label="$t('user.organisation')" size="lg">
-                    <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id" label-key="name"
-                        variant="card" />
+                    <template v-if="loadingOrganisations">
+                        <USkeleton class="h-13.5 w-full" />
+                    </template>
+                    <template v-else>
+                        <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id"
+                            label-key="name" variant="card" />
+                    </template>
                 </UFormField>
-
                 <USeparator />
 
                 <div class="flex flex-col gap-2 justify-between">

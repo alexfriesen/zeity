@@ -16,7 +16,7 @@ definePageMeta({
 const organisationId = route.params.id as string;
 
 const { fetchOrganisation, uploadOrganisationImage } = useOrganisation();
-const { status, data, refresh } = await useLazyAsyncData(`organisation/${organisationId}`, () => fetchOrganisation(organisationId), { server: false })
+const { status, data, refresh } = await fetchOrganisation(organisationId);
 
 const schema = z.object({
     name: z.string().min(3).max(150).default(''),
@@ -132,7 +132,7 @@ function deleteOrganisation() {
                     {{ $t('common.save') }}
                 </UButton>
             </UForm>
-            <div v-else class="my-4 flex items-center justify-between gap-2">
+            <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
                 <h2
                     class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                     {{ data?.name }}

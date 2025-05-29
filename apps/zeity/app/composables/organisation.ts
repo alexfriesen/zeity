@@ -5,36 +5,32 @@ export function useOrganisation() {
   const { currentOrganisation, currentOrganisationId } = storeToRefs(store);
 
   function fetchOrganisations() {
-    store.setLoading(true);
-    return useRequestFetch()('/api/organisation', {
-      retry: false,
-    })
-      .then((orgs) => {
+    return useFetch('/api/organisation').then((result) => {
+      store.setLoading(result.pending.value);
+
+      if (result.status.value === 'success') {
+        const orgs = result.data.value || [];
         store.setOrganisations(orgs);
-        return orgs;
-      })
-      .catch((error) => {
-        console.error('Failed to fetch user:', error);
-        return [];
-      })
-      .finally(() => {
-        store.setLoading(false);
-      });
+      }
+
+      return result;
+    });
   }
 
   function fetchOrganisation(id: string) {
-    return $fetch(`/api/organisation/${id}`);
+    return useFetch(`/api/organisation/${id}`);
   }
 
   function fetchOrganisationMembers(orgId: string) {
-    return $fetch(`/api/organisation/${orgId}/member`);
+    return useFetch(`/api/organisation/${orgId}/member`);
   }
 
   async function refreshOrganisations() {
-    const orgs = await fetchOrganisations();
+    const { data } = await fetchOrganisations();
+    const orgs = data.value || [];
 
     const orgId = currentOrganisationId.value;
-    if (!orgId || !orgs?.map((org) => org.id).includes(orgId)) {
+    if (!orgId || !orgs.map((org) => org.id).includes(orgId)) {
       store.setCurrentOrganisationId(orgs[0]?.id ?? null);
     }
 

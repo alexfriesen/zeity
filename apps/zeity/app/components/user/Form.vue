@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { User } from '@zeity/types/user';
+import type { User } from '@zeity/database/user';
 
 const props = defineProps({
     loading: {

@@ -3,10 +3,12 @@ import type { DropdownMenuItem } from '@nuxt/ui';
 
 const { t } = useI18n();
 const { logout } = useAuth();
-const { user } = useUser();
+const { fetchUser } = useUser();
 
 const { currentOrganisationId, setCurrentOrganisationId, getAllOrganisations } = useOrganisation();
 const organisations = getAllOrganisations();
+
+const { data } = await fetchUser();
 
 const userMenu = computed(() => [
     [
@@ -17,8 +19,8 @@ const userMenu = computed(() => [
             to: '/user',
             slot: 'profile',
         },
-
-    ], [
+    ],
+    [
         {
             label: t('organisations.title'),
             to: '/organisations',
@@ -46,16 +48,16 @@ const userMenu = computed(() => [
 
 <template>
     <UDropdownMenu :items="userMenu" size="xl">
-        <UAvatar :src="user?.image || undefined" :alt="user?.name" as="button"
+        <UAvatar :src="data?.user.image || undefined" :alt="data?.user.name" as="button"
             class="ring ring-inset ring-primary/50 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:bg-primary/10" />
         <template #profile>
-            <UAvatar :src="user?.image || undefined" :alt="user?.name" size="xl" />
+            <UAvatar :src="data?.user.image || undefined" :alt="data?.user.name" size="xl" />
             <div class="flex flex-col">
                 <h3 class="text-base font-semibold">
-                    {{ user?.name }}
+                    {{ data?.user.name }}
                 </h3>
                 <p class="text-xs text-muted">
-                    {{ user?.email }}
+                    {{ data?.user.email }}
                 </p>
             </div>
         </template>

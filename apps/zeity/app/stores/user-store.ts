@@ -1,4 +1,4 @@
-import type { User } from '@zeity/types/user';
+import type { User } from '@zeity/database/user';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null);

@@ -1,25 +1,25 @@
 <script setup lang="ts">
-const { currentOrganisationId, setCurrentOrganisationId, refreshOrganisations, getAllOrganisations } = useOrganisation();
+const { currentOrganisationId, setCurrentOrganisationId, fetchOrganisations } = useOrganisation();
 
-const organisations = getAllOrganisations();
-const isEmpty = computed(() => organisations.value.length === 0);
-
-onMounted(() => {
-    refreshOrganisations();
+const { data: organisations, pending } = await fetchOrganisations();
+const isEmpty = computed(() => {
+    if (pending.value) {
+        return false;
+    }
+    return (organisations.value?.length ?? 0) < 1
 });
 </script>
 
 <template>
 
     <div class="page my-3">
-        <h2
-            class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-            {{ $t('organisations.title') }}
-        </h2>
 
         <section class="flex flex-col my-3 space-y-4">
-            <div class="flex items-center justify-between gap-4">
-                <div />
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <h2
+                    class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                    {{ $t('organisations.title') }}
+                </h2>
                 <UButton to="/organisations/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
             </div>
 

@@ -4,10 +4,7 @@ const model = defineModel<string[]>();
 const { user } = useUser();
 const { fetchOrganisationMembers, currentOrganisationId } = useOrganisation();
 
-const { pending, data } = await useAsyncData(
-    computed(() => `org/${currentOrganisationId.value}/members`),
-    () => fetchOrganisationMembers(currentOrganisationId.value!)
-);
+const { pending, data } = await fetchOrganisationMembers(currentOrganisationId.value!);
 const sortedMembers = computed(() => {
     if (!data.value) return [];
     return data.value.toSorted((member) => member.userId === user.value?.id ? -1 : 1);

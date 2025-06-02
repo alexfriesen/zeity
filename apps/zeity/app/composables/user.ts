@@ -1,4 +1,4 @@
-import type { User } from '@zeity/types';
+import type { User } from '@zeity/database/user';
 
 export function useUser() {
   const { clear } = useUserSession();
@@ -6,20 +6,20 @@ export function useUser() {
   const { user, loading } = storeToRefs(userStore);
 
   function fetchUser() {
-    loading.value = true;
-    return $fetch('/api/user/current', {
-      retry: false,
-    })
-      .then(({ user }) => {
-        userStore.setUser(user || null);
-      })
-      .catch((error) => {
-        console.error('Failed to fetch user:', error);
+    return useFetch('/api/user/current').then((result) => {
+      userStore.setLoading(result.pending.value);
+
+      if (result.status.value === 'success') {
+        const user = result?.data.value?.user ?? null;
+        userStore.setUser(user as User | null);
+      }
+
+      if (result.error.value?.data.statusCode === 401) {
         clear();
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+      }
+
+      return result;
+    });
   }
 
   async function deleteUser() {

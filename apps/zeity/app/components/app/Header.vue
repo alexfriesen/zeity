@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const { isLoading } = useLoadingIndicator();
 const { loggedIn } = useUserSession();
 const timeDetail = useTimeDetail();
+
 function timeNew() {
     const now = new Date().toISOString();
     timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
@@ -10,6 +12,8 @@ function timeNew() {
 <template>
     <header class="bg-(--ui-bg)/75 backdrop-blur border-b border-(--ui-border) h-(--ui-header-height) sticky top-0 z-50"
         :class="$attrs.class">
+        <UProgress v-show="isLoading" size="2xs" class="absolute" />
+
         <div
             class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-full">
             <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">

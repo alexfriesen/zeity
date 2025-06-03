@@ -30,5 +30,5 @@ jobs:
         with:
           push: true
           context: .
-          file: ./apps/zeity/Dockerfile
+          file: apps/zeity/Dockerfile
           tags: alexfriesen/zeity:latest

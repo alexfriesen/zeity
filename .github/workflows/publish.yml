@@ -28,7 +28,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: .
           file: ./apps/zeity/Dockerfile
-          push: true
           tags: alexfriesen/zeity:latest

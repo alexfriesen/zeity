@@ -3,6 +3,8 @@
 .vscode
 .env
 .env*
+.nuxt
+.output
 Dockerfile
 node_modules
 dist

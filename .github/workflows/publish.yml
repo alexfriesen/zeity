@@ -27,4 +27,4 @@ jobs:
           push: true
           tags: |
             alexfriesen/zeity:latest
-            alexfriesen/zeity:${{ env.GITHUB_TAG }}
+            alexfriesen/zeity:${{ github.ref_name }}

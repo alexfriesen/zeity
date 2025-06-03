@@ -18,16 +18,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./apps/zeity/Dockerfile
           push: true
-          tags: |
-            alexfriesen/zeity:latest
-            alexfriesen/zeity:${{ github.ref_name }}
+          tags: alexfriesen/zeity:latest

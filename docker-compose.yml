@@ -39,13 +39,13 @@ services:
     ports:
       - 3000:3000
     environment:
-      NUXT_DATABASE_URL: postgresql://postgres:postgres@postgres/zeity
-      NUXT_MAILER_SMTP_HOST: maildev
-      NUXT_MAILER_SMTP_PORT: 1025
-      NUXT_S3_END_POINT: http://minio:9000
-      NUXT_S3_ACCESSKEY: minio
-      NUXT_S3_SECRETKEY: minio123
-      NUXT_S3_BUCKET: zeity
+      ZEITY_DATABASE_URL: postgresql://postgres:postgres@postgres/zeity
+      ZEITY_MAILER_SMTP_HOST: maildev
+      ZEITY_MAILER_SMTP_PORT: 1025
+      ZEITY_S3_END_POINT: http://minio:9000
+      ZEITY_S3_ACCESSKEY: minio
+      ZEITY_S3_SECRETKEY: minio123
+      ZEITY_S3_BUCKET: zeity
       NODE_ENV: development
 
 volumes:

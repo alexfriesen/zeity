@@ -145,6 +145,9 @@ export default defineNuxtConfig({
     public: {
       version: packageJson.version || '0.0.0',
     },
+    nitro: {
+      envPrefix: 'ZEITY_',
+    }
   },
   nitro: {
     experimental: {

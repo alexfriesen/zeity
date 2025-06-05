@@ -145,6 +145,9 @@ export default defineNuxtConfig({
     public: {
       version: packageJson.version || '0.0.0',
     },
+    nitro: {
+      envPrefix: 'ZEITY_',
+    }
   },
   nitro: {
     experimental: {
@@ -157,6 +160,11 @@ export default defineNuxtConfig({
       options: {
         target: 'esnext',
       },
+    },
+    externals: {
+      // bundle the S3 client in the server bundle as nitro does not support jsr packages yet
+      // see: https://github.com/nitrojs/nitro/issues/3034
+      inline: ['@bradenmacdonald/s3-lite-client'],
     },
   },
   devtools: { enabled: true },

@@ -28,6 +28,26 @@ services:
       - 1080:1080
       - 1025:1025
 
+  zeity:
+    build:
+      context: .
+      dockerfile: ./apps/zeity/Dockerfile
+    depends_on:
+      - postgres
+      - maildev
+      - minio
+    ports:
+      - 3000:3000
+    environment:
+      ZEITY_DATABASE_URL: postgresql://postgres:postgres@postgres/zeity
+      ZEITY_MAILER_SMTP_HOST: maildev
+      ZEITY_MAILER_SMTP_PORT: 1025
+      ZEITY_S3_END_POINT: http://minio:9000
+      ZEITY_S3_ACCESSKEY: minio
+      ZEITY_S3_SECRETKEY: minio123
+      ZEITY_S3_BUCKET: zeity
+      NODE_ENV: development
+
 volumes:
   pg-data:
   minio-data:

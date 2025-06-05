@@ -1,7 +1,7 @@
 # base stage
 FROM node:24-alpine AS node-alpine
 
-RUN apk update && \
+RUN apk update --no-cache && \
     apk upgrade && \
     apk cache clean && \
     rm -rf /var/cache/apk/*

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { OrganisationMemberWithUser } from '~/types/organisation';
+
 import { pick } from '@zeity/utils/object';
 import { generateCSV, toCSVBlob } from '@zeity/utils/csv';
 
@@ -15,7 +17,11 @@ const props = defineProps({
     projects: {
         type: Array as PropType<Project[]>,
         default: () => [],
-    }
+    },
+    members: {
+        type: Array as PropType<OrganisationMemberWithUser[]>,
+        default: () => [],
+    },
 });
 
 const format = ref('csv');
@@ -24,14 +30,15 @@ const formatOptions = [
     { label: 'JSON', value: 'json' },
 ];
 
-type EnhancedTime = Time & { project: string | null };
-const exportedFields: (keyof EnhancedTime)[] = ['id', 'start', 'duration', 'project', 'notes'] as const;
+type EnhancedTime = Time & { project: string | null, user: string | null };
+const exportedFields: (keyof EnhancedTime)[] = ['start', 'duration', 'project', 'notes', 'user'] as const;
 
 function downloadReport(type = 'json') {
     const times = props.times;
     const enhancedTimes = times.map((item) => ({
         ...item,
         project: getProjectName(item.projectId),
+        user: getUserName(item.userId),
     }));
 
     const result = generateReport(type, enhancedTimes);
@@ -39,6 +46,19 @@ function downloadReport(type = 'json') {
     if (result) {
         downloadAs(URL.createObjectURL(result), `report.${type}`);
     }
+}
+
+function getUserName(userId: string | undefined | null): string | null {
+    if (!userId) {
+        return null;
+    }
+
+    const member = props.members.find(item => item.userId === userId);
+    if (member?.user) {
+        return member.user.name;
+    }
+
+    return null;
 }
 
 function getProjectName(projectId: string | undefined | null): string | null {

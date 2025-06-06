@@ -17,12 +17,20 @@ export function useOrganisation() {
     });
   }
 
-  function fetchOrganisation(id: string) {
-    return useFetch(`/api/organisation/${id}`);
+  function fetchOrganisation(orgId: MaybeRef<string | null | undefined>) {
+    const id = toRef(orgId);
+    return useFetch(() => `/api/organisation/${id.value}`);
   }
 
-  function fetchOrganisationMembers(orgId: string) {
-    return useFetch(`/api/organisation/${orgId}/member`);
+  function fetchOrganisationMembers(
+    orgId: MaybeRef<string | null | undefined>
+  ) {
+    const id = toRef(orgId);
+    return useFetch(() => `/api/organisation/${id.value}/member`, {
+      lazy: true,
+      watch: [id],
+      default: () => [],
+    });
   }
 
   async function refreshOrganisations() {

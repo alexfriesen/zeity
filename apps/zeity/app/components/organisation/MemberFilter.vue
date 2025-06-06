@@ -1,13 +1,24 @@
 <script setup lang="ts">
+import type { OrganisationMemberWithUser } from '~/types/organisation';
+
 const model = defineModel<string[]>();
 
-const { user } = useUser();
-const { fetchOrganisationMembers, currentOrganisationId } = useOrganisation();
+const { members } = defineProps({
+    pending: {
+        type: Boolean,
+        default: false,
+    },
+    members: {
+        type: Array as PropType<OrganisationMemberWithUser[]>,
+        default: () => [],
+    },
+})
 
-const { pending, data } = await fetchOrganisationMembers(currentOrganisationId.value!);
+const { user } = useUser();
+
 const sortedMembers = computed(() => {
-    if (!data.value) return [];
-    return data.value.toSorted((member) => member.userId === user.value?.id ? -1 : 1);
+    if (!members) return [];
+    return members?.toSorted((member) => member.userId === user.value?.id ? -1 : 1);
 });
 
 function toggleSelected(id: string) {

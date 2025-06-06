@@ -2,17 +2,19 @@
 import { isAfter, isBefore } from 'date-fns';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
-
 import type { DateRange } from '~/types/date-filter';
 
 const { user } = useUser();
-const { currentOrganisationId } = useOrganisation();
-const { loadTimes, getOrganisationTimes } = useTime();
+const { isLoggedIn } = useAuth();
 const { loadProjects } = useProject();
+const { loadTimes, getOrganisationTimes } = useTime();
+const { fetchOrganisationMembers, currentOrganisationId } = useOrganisation();
 
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
 const memberFilters = ref<string[]>([]);
+
+const { pending: membersPending, data: membersData, execute: membersExecute } = await fetchOrganisationMembers(currentOrganisationId!);
 
 const orgTimes = getOrganisationTimes();
 const filteredUserIds = computed(() => {
@@ -37,7 +39,7 @@ const filteredTimes = computed(() => {
 
     // filter times by user ids
     if (userIds.length) {
-        times = times.filter((item) => userIds?.includes(item.userId));
+        times = times.filter((item) => item.userId && userIds?.includes(item.userId));
     }
 
     // filter times by date range
@@ -102,6 +104,11 @@ async function loadAllActiveProjects(status = [PROJECT_STATUS_ACTIVE], limit = 1
 }
 
 async function reloadAll() {
+    if (!isLoggedIn.value) {
+        return;
+    }
+
+    await membersExecute();
     await loadAllActiveProjects();
     if (dateFilter.value) {
         await loadAllTimes(dateFilter.value, projectFilters.value, memberFilters.value);
@@ -128,7 +135,8 @@ watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, 
         <section class="flex flex-col gap-1">
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
-            <OrganisationMemberFilter v-if="user" v-model="memberFilters" />
+            <OrganisationMemberFilter v-if="user" v-model="memberFilters" :members="membersData"
+                :pending="membersPending" />
         </section>
 
         <UCard as="section">
@@ -144,7 +152,7 @@ watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, 
                 <h2>{{ $t('reports.report') }}</h2>
             </template>
 
-            <ReportDownload :times="filteredTimes" />
+            <ReportDownload :times="filteredTimes" :members="membersData" />
         </UCard>
     </div>
 </template>

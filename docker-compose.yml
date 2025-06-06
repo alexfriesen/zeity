@@ -46,7 +46,8 @@ services:
       ZEITY_S3_ACCESSKEY: minio
       ZEITY_S3_SECRETKEY: minio123
       ZEITY_S3_BUCKET: zeity
-      NODE_ENV: development
+      ZEITY_SESSION_PASSWORD: abcdefghijklmnopqrstuvwxyz1234567890
+      NODE_ENV: production
 
 volumes:
   pg-data:

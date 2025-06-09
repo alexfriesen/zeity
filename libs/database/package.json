@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
-    "drizzle-orm": "^0.44.1",
+    "drizzle-orm": "^0.44.2",
     "pg": "^8.16.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
-    "@types/node": "^22.15.29",
+    "@types/node": "^22.15.30",
     "@types/pg": "^8.15.4",
     "drizzle-kit": "^0.31.1",
     "eslint": "~9.28.0",

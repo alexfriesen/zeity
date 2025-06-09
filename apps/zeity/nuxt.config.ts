@@ -147,7 +147,7 @@ export default defineNuxtConfig({
     },
     nitro: {
       envPrefix: 'ZEITY_',
-    }
+    },
   },
   nitro: {
     experimental: {

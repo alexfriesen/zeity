@@ -27,10 +27,17 @@ const isEmpty = computed(() => {
                 <template #header>
                     <div class="flex items-center justify-between gap-4 flex-shrink">
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
-                            class="block -mx-3 truncate">
+                            class="flex items-center justify-between -mx-3 truncate">
                             <UAvatar :src="organisation.image || undefined" :alt="organisation.name" size="lg"
                                 class="mr-2" />
-                            {{ organisation.name }}
+                            <div class="truncate">
+                                <span>
+                                    {{ organisation.name }}
+                                </span>
+                                <p class="text-xs text-dimmed">
+                                    {{ $t('organisations.members.title') }}: {{ organisation.stats.members }}
+                                </p>
+                            </div>
                         </UButton>
                         <UButton variant="ghost" size="lg" square class="rounded-full"
                             :color="currentOrganisationId === organisation.id ? 'primary' : 'neutral'"

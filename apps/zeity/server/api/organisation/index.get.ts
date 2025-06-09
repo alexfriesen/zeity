@@ -23,17 +23,35 @@ export default defineEventHandler(async (event) => {
   }
 
   const baseUrl = getRequestURL(event).origin;
-  const result = await useDrizzle()
+  const db = useDrizzle();
+
+  const membersCountSubquery = db
+    .select({
+      organisationId: organisationMembers.organisationId,
+      counter: sql<number>`count(*)`.mapWith(Number).as('counter'),
+    })
+    .from(organisationMembers)
+    .groupBy(organisationMembers.organisationId)
+    .as('members_count');
+
+  const result = await db
     .select({
       id: organisations.id,
       name: organisations.name,
       image: organisations.image,
       role: organisationMembers.role,
+      stats: {
+        members: membersCountSubquery.counter,
+      },
     })
     .from(organisations)
     .leftJoin(
       organisationMembers,
       eq(organisationMembers.organisationId, organisations.id)
+    )
+    .leftJoin(
+      membersCountSubquery,
+      eq(membersCountSubquery.organisationId, organisations.id)
     )
     .where(eq(organisationMembers.userId, session.user.id))
     .orderBy(asc(organisations.name))

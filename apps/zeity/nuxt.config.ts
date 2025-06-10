@@ -116,6 +116,11 @@ export default defineNuxtConfig({
   },
   security: {
     enabled: isProd,
+    headers: {
+      contentSecurityPolicy: {
+        'upgrade-insecure-requests': false,
+      },
+    },
   },
   routeRules: {
     '/user/**': {

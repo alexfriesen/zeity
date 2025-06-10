@@ -18,15 +18,17 @@ export function useDrizzle() {
 }
 
 export function useDrizzleMigration() {
+  const migrationsPath =
+    process.env.MIGRATIONS_PATH || './server/database/migrations';
+
+  logger.log('migrationsPath', migrationsPath);
   return {
     async run() {
       try {
-        if (import.meta.dev) {
-          await createDrizzleMigration(pool, './server/database/migrations');
-
-          logger.success('schema and db migrated');
-        }
+        await createDrizzleMigration(pool, migrationsPath);
+        logger.success('schema and db migrated');
       } catch (error) {
+        logger.fail('schema and db migrated');
         logger.error(error);
       }
     },

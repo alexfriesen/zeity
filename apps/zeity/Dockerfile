@@ -30,6 +30,9 @@ WORKDIR /home/node/
 RUN mkdir -p /home/node/app
 
 COPY --from=builder --chown=node:node /home/node/apps/zeity/.output ./app
+COPY --from=builder --chown=node:node /home/node/apps/zeity/server/database/migrations ./app/database/migrations
+
+ENV MIGRATIONS_PATH=./app/database/migrations
 
 EXPOSE 3000
 CMD [ "node", "/home/node/app/server/index.mjs" ]

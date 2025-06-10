@@ -21,7 +21,6 @@ export function useDrizzleMigration() {
   const migrationsPath =
     process.env.MIGRATIONS_PATH || './server/database/migrations';
 
-  logger.log('migrationsPath', migrationsPath);
   return {
     async run() {
       try {

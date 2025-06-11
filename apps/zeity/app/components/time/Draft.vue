@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
 
-import { timeDiff } from '@zeity/utils/date';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
 const {
@@ -19,10 +19,10 @@ const diff = computed(() => {
     return 0;
 });
 
-const now = ref(new Date());
+const now = ref(nowWithoutMillis());
 
 const { pause, resume } = useIntervalFn(() => {
-    now.value = new Date();
+    now.value = nowWithoutMillis();
 }, 1000, { immediateCallback: true });
 
 onMounted(() => {

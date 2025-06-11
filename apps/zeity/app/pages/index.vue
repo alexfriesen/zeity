@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sortDatesDescending } from '@zeity/utils/date';
+import { nowWithoutMillis, sortDatesDescending } from '@zeity/utils/date';
 
 const { user } = useUser();
 const timeDetail = useTimeDetail();
@@ -14,7 +14,7 @@ const sortedTimes = computed(() => userTimes.value.toSorted((a, b) => sortDatesD
 const isEmpty = computed(() => userTimes.value.length < 1);
 
 function timeNew() {
-    const now = new Date().toISOString();
+    const now = nowWithoutMillis().toISOString();
     timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
 }
 

@@ -5,7 +5,7 @@ import { addMilliseconds } from 'date-fns';
 import { nanoid } from 'nanoid';
 import z from 'zod';
 
-import { timeDiff } from '@zeity/utils/date';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '@zeity/types/time';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
@@ -44,9 +44,9 @@ const isOffline = computed(() => {
     return isTimeValue(time) && !isOnlineTime(time);
 });
 
-const now = ref(new Date());
+const now = ref(nowWithoutMillis());
 const { pause, resume } = useIntervalFn(() => {
-    now.value = new Date();
+    now.value = nowWithoutMillis();
 }, 1000, { immediateCallback: true });
 
 onUnmounted(() => {

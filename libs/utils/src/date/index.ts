@@ -4,6 +4,7 @@ import {
   minutesToHours,
   roundToNearestMinutes,
   secondsToMinutes,
+  setMilliseconds,
 } from 'date-fns';
 import {
   millisecondsInSecond,
@@ -171,6 +172,10 @@ export function toStartOfDay(value: DateLike) {
   date.setHours(0, 0, 0, 0);
 
   return date;
+}
+
+export function nowWithoutMillis() {
+  return setMilliseconds(new Date(), 0);
 }
 
 export function roundToSeconds(

@@ -1,5 +1,5 @@
 import type { DraftTime, Time } from '@zeity/types';
-import { timeDiff } from '@zeity/utils/date';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import { nanoid } from 'nanoid';
 import { useTimerStore } from '~/stores/timerStore';
 
@@ -127,7 +127,7 @@ export function useTime() {
   }
   function startDraft(time?: Partial<DraftTime>): DraftTime {
     const newDraft = {
-      start: new Date().toISOString(),
+      start: nowWithoutMillis().toISOString(),
       notes: '',
       ...time,
     };
@@ -140,7 +140,7 @@ export function useTime() {
     if (!draftValue) return;
 
     const start = draftValue.start;
-    const end = new Date();
+    const end = nowWithoutMillis();
     const duration = timeDiff(end, start);
 
     const time = {

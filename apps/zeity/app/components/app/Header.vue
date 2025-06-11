@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { nowWithoutMillis } from '@zeity/utils/date';
+
 const { loggedIn } = useUserSession();
 const timeDetail = useTimeDetail();
 function timeNew() {
-    const now = new Date().toISOString();
+    const now = nowWithoutMillis().toISOString();
     timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
 }
 </script>

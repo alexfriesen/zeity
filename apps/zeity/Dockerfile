@@ -9,6 +9,7 @@ RUN apk update --no-cache && \
 # builder stage
 FROM node-alpine AS builder
 
+ENV NODE_ENV=production
 WORKDIR /home/node/
 COPY --chown=node:node ./ /home/node/
 

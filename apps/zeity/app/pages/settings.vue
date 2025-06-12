@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Project, Time } from '@zeity/types';
+import { omit } from '@zeity/utils/object';
 import { downloadAs } from '~/utils/download-file';
 
 const { t } = useI18n();
@@ -107,11 +109,11 @@ async function handleImport(event: Event) {
     if (!result) return;
 
     if (json.times && Array.isArray(json.times)) {
-        timeStore.upsertTimes(json.times);
+        timeStore.upsertTimes(json.times.map((time: Time) => omit(time, 'userId', 'organisationId')));
     }
 
     if (json.projects && Array.isArray(json.projects)) {
-        projectStore.upsertProjects(json.projects);
+        projectStore.upsertProjects(json.projects.map((project: Project) => omit(project, 'userId', 'organisationId')));
     }
 }
 </script>
@@ -157,7 +159,7 @@ async function handleImport(event: Event) {
         <FieldSet :label="$t('settings.data')">
 
             <div class="flex gap-3">
-                <input ref="fileprompt" hidden type="file" accept="application/json" @change="handleImport" >
+                <input ref="fileprompt" hidden type="file" accept="application/json" @change="handleImport">
                 <UButton :label="$t('settings.import')" block color="neutral" variant="subtle"
                     icon="i-lucide-hard-drive-download" @click="filePrompt?.click()" />
 

@@ -2,7 +2,6 @@
 import { DateFieldInput, DateFieldRoot } from 'reka-ui';
 import { type ZonedDateTime, parseAbsolute, now, getLocalTimeZone } from '@internationalized/date';
 
-
 export interface DateTimeProps {
     // eslint-disable-next-line vue/require-default-prop
     id?: string
@@ -33,7 +32,8 @@ const { id, name, disabled } = useFormField<DateTimeProps>(props)
 
 watch(model, (value) => {
     const tz = getLocalTimeZone();
-    datetimeValue.value = value ? parseAbsolute(value, tz) : now(tz);
+    const date = value ? parseAbsolute(value, tz) : now(tz);
+    datetimeValue.value = date.set({ millisecond: 0 });
 }, { immediate: true });
 watch(datetimeValue, (value) => {
     model.value = value ? value.toAbsoluteString() : '';

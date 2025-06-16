@@ -16,7 +16,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.1",
+    "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.2",
     "@internationalized/date": "^3.8.2",
     "@number-flow/vue": "^0.4.8",
     "@nuxtjs/html-validator": "^2.1.0",
@@ -31,11 +31,11 @@
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.44.2",
     "jose": "^6.0.11",
-    "unemail": "^0.1.1",
-    "zod": "^3.25.56"
+    "unemail": "^0.2.0",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.47",
+    "@iconify-json/lucide": "^1.2.49",
     "@nuxt/eslint": "^1.4.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/test-utils": "^3.19.1",
@@ -47,11 +47,11 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.1",
-    "happy-dom": "^17.6.3",
+    "happy-dom": "^18.0.1",
     "nuxt": "^3.17.5",
     "nuxt-auth-utils": "^0.5.20",
     "nuxt-security": "^2.2.0",
     "vue-i18n": "^11.1.5",
-    "vue-tsc": "3.0.0-alpha.8"
+    "vue-tsc": "3.0.0-alpha.10"
   }
 }

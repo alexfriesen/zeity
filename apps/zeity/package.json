@@ -35,7 +35,7 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.50",
+    "@iconify-json/lucide": "^1.2.51",
     "@nuxt/eslint": "^1.4.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/test-utils": "^3.19.1",

@@ -24,6 +24,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
+    mode: isProd ? 'production' : 'development',
     disable: !isProd,
     strategies: 'generateSW',
     registerType: 'autoUpdate',
@@ -61,6 +62,7 @@ export default defineNuxtConfig({
     workbox: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     },
+    includeAssets: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     },

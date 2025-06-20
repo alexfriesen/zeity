@@ -61,6 +61,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
+      navigateFallback: undefined,
     },
     includeAssets: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     injectManifest: {
@@ -74,6 +75,7 @@ export default defineNuxtConfig({
       suppressWarnings: true,
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
     },
   },
   i18n: {
@@ -157,6 +159,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    compressPublicAssets: true,
     experimental: {
       tasks: true,
     },

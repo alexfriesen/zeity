@@ -44,7 +44,7 @@
     "@types/etag": "^1.8.4",
     "@types/nodemailer": "^6.4.17",
     "@vite-pwa/nuxt": "^1.0.4",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.0",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.1",
     "happy-dom": "^18.0.1",

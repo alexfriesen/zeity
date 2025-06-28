@@ -35,7 +35,7 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.52",
+    "@iconify-json/lucide": "^1.2.53",
     "@nuxt/eslint": "^1.4.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/test-utils": "^3.19.1",
@@ -46,12 +46,12 @@
     "@vite-pwa/nuxt": "^1.0.4",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/test-utils": "^2.4.6",
-    "drizzle-kit": "^0.31.2",
+    "drizzle-kit": "^0.31.4",
     "happy-dom": "^18.0.1",
     "nuxt": "^3.17.5",
     "nuxt-auth-utils": "^0.5.20",
     "nuxt-security": "^2.2.0",
     "vue-i18n": "^11.1.7",
-    "vue-tsc": "3.0.0-beta.4"
+    "vue-tsc": "3.0.0-beta.5"
   }
 }

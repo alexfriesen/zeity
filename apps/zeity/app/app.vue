@@ -19,6 +19,8 @@ const uiLocale = computed(() => {
   return locales[locale.value || 'en'];
 });
 
+const isDev = import.meta.dev;
+
 const lang = computed(() => locales[locale.value].code)
 const dir = computed(() => locales[locale.value].dir)
 useHead({
@@ -38,7 +40,7 @@ useHead({
 <template>
 
   <Head>
-    <NuxtPwaManifest />
+    <NuxtPwaManifest v-if="!isDev" />
   </Head>
 
   <UApp :locale="uiLocale">

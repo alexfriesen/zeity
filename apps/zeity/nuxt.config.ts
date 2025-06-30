@@ -24,6 +24,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
+    mode: isProd ? 'production' : 'development',
     disable: !isProd,
     strategies: 'generateSW',
     registerType: 'autoUpdate',
@@ -60,7 +61,9 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
+      navigateFallback: undefined,
     },
+    includeAssets: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
     },
@@ -72,6 +75,7 @@ export default defineNuxtConfig({
       suppressWarnings: true,
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
     },
   },
   i18n: {
@@ -155,6 +159,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    compressPublicAssets: true,
     experimental: {
       tasks: true,
     },

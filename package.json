@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "pnpm run -r dev",
+    "start": "pnpm run --parallel -r dev ",
     "build": "pnpm run -r build",
     "lint": "pnpm run -r lint",
     "test": "vitest"

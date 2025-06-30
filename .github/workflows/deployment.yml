@@ -2,8 +2,8 @@ name: Deployment
 
 on:
   push:
-    tags:
-      - '**'
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -19,12 +19,12 @@ jobs:
 
       - name: Install and Build
         run: |
-          pnpm --filter ./apps/zeity/ generate:gh
+          pnpm --filter ./apps/website/ build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./apps/zeity/.output/public
+          path: ./apps/website/.output/public
 
   deploy:
     # Add a dependency to the build job

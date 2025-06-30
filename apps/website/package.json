@@ -1,0 +1,31 @@
+{
+  "name": "zeity-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck:broken": "nuxt typecheck",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@iconify-json/circle-flags": "^1.2.6",
+    "@iconify-json/lucide": "^1.2.53",
+    "@iconify-json/ri": "^1.2.5",
+    "@nuxt/content": "^3.6.1",
+    "@nuxt/eslint": "^1.4.1",
+    "@nuxt/icon": "^1.15.0",
+    "@nuxt/image": "^1.10.0",
+    "@nuxt/ui": "^3.2.0",
+    "@nuxtjs/i18n": "^9.5.6",
+    "@nuxtjs/seo": "^3.1.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^24.0.7",
+    "eslint": "~9.30.0",
+    "nuxt": "^3.17.5"
+  }
+}

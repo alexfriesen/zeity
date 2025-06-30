@@ -63,7 +63,8 @@ export default defineNuxtConfig({
   },
   robots: {
     enabled: true,
-    allow: ['*'],
+    // allow: ['*'],
+    disallow: ['*'],
   },
   security: {
     enabled: isProd,

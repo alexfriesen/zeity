@@ -26,7 +26,7 @@
 						</UBadge>
 					</div>
 					<UButton :to="article.path" :aria-label="article.title" size="lg" variant="ghost" color="primary">
-						<span>{{ $t('docs.more') }}</span>
+						<span>{{ $t('docs.read') }}</span>
 					</UButton>
 				</footer>
 			</article>

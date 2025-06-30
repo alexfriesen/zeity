@@ -1,5 +1,5 @@
 <template>
-	<Content>
+	<AppContent>
 		<UCard>
 			<template #header>
 				{{ $t('home.title') }}
@@ -13,7 +13,7 @@
 				</UButton>
 			</div>
 		</UCard>
-	</Content>
+	</AppContent>
 </template>
 
 <script setup lang="ts">

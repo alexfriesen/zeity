@@ -15,13 +15,13 @@
 
 		<Body>
 			<header class="shadow">
-				<Navigation />
+				<AppNavigation />
 			</header>
 			<main>
 				<slot />
 			</main>
 			<footer>
-				<Content class="flex flex-col md:flex-row items-center justify-evenly gap-2">
+				<AppContent class="flex flex-col md:flex-row items-center justify-evenly gap-2">
 					<LangSelect />
 					<div>
 						<p class="text-base p-2">
@@ -35,7 +35,7 @@
 							<UIcon :name="link.icon" class="w-6 h-6" />
 						</UButton>
 					</div>
-				</Content>
+				</AppContent>
 			</footer>
 		</Body>
 

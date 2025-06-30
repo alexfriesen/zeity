@@ -1,10 +1,10 @@
 <template>
-	<Content class="flex flex-col items-center">
+	<AppContent class="flex flex-col items-center">
 		<UIcon name="i-lucide-triangle-alert" class="block h-32 w-32" />
 		<h2 class="text-5xl">
 			NOT FOUND
 		</h2>
-	</Content>
+	</AppContent>
 </template>
 
 <script setup lang="ts">

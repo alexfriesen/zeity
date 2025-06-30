@@ -23,7 +23,7 @@ function handleError() {
 
 <template>
   <NuxtLayout>
-    <Content>
+    <AppContent>
       <div class="grid place-content-center h-full p-4 gap-4">
         <div class="flex items-center gap-2 text-3xl">
           <UIcon name="i-lucide-octagon-alert" />
@@ -40,6 +40,6 @@ function handleError() {
           {{ $t('actions.back') }}
         </UButton>
       </div>
-    </Content>
+    </AppContent>
   </NuxtLayout>
 </template>

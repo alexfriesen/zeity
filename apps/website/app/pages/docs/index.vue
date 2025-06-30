@@ -1,5 +1,5 @@
 <template>
-	<Content class="flex flex-col gap-4">
+	<AppContent class="flex flex-col gap-4">
 		<div class="prose dark:prose-invert">
 			<h2 class="text-3xl sm:text-4xl tracking-tight">
 				{{ $t('docs.title') }}
@@ -31,7 +31,7 @@
 				</footer>
 			</article>
 		</div>
-	</Content>
+	</AppContent>
 </template>
 
 <script setup lang="ts">

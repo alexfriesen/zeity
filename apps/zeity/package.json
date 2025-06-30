@@ -7,11 +7,9 @@
     "lint:fix": "eslint . --fix",
     "typecheck:broken": "nuxt typecheck",
     "build": "nuxt build",
-    "build:gh": "nuxt generate --prefix github_pages",
     "dev": "nuxt dev",
     "db:generate": "drizzle-kit generate",
     "generate": "nuxt generate",
-    "generate:gh": "nuxt generate --prefix github_pages",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

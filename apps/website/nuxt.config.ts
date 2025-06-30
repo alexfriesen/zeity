@@ -29,9 +29,9 @@ export default defineNuxtConfig({
   },
   i18n: {
     baseUrl: baseUrl,
-    strategy: 'prefix',
+    strategy: 'prefix_and_default',
     detectBrowserLanguage: {
-      redirectOn: 'no prefix',
+      redirectOn: 'root',
       useCookie: false,
     },
     locales: [
@@ -61,9 +61,6 @@ export default defineNuxtConfig({
     },
     provider: 'iconify',
   },
-  colorMode: {
-    storageKey: 'zeity-color-mode',
-  },
   robots: {
     enabled: true,
     allow: ['*'],
@@ -76,22 +73,20 @@ export default defineNuxtConfig({
       },
     },
   },
-  routeRules: {
-    '/user/**': {
-      appMiddleware: ['auth'],
-    },
-    '/organisations/**': {
-      appMiddleware: ['auth'],
-    },
-  },
+  site: {
+		url: baseUrl,
+		name: 'zeity',
+	},
   nitro: {
     static: true,
     prerender: {
-      routes: ['/', '/robots.txt', '/sitemap.xml'],
+      routes: ['/', '/robots.txt'],
     },
   },
-  devtools: { enabled: true },
   devServer: {
     port: 4000,
+  },
+  devtools: {
+    enabled: true,
   },
 });

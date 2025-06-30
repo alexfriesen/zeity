@@ -30,7 +30,7 @@ useSeoMeta({
 
 defineOgImageComponent('MetaOgImage', {
 	siteName: 'www.zeity.co',
-	image: 'http://localhost:4000/favicon.svg',
+	image: '/favicon.svg',
 	imageRound: false,
 });
 </script>

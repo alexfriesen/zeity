@@ -10,7 +10,8 @@
 			<UNavigationMenu :items="menu" orientation="horizontal" content-orientation="vertical"
 				class="hidden md:flex justify-between flex-grow" />
 
-			<UButton class="md:hidden" icon="i-lucide-menu" variant="ghost" @click="openMoreMenu = true" />
+			<UButton class="md:hidden" icon="i-lucide-menu" variant="ghost" color="neutral" square
+				@click="openMoreMenu = true" />
 		</div>
 
 		<USlideover v-model:open="openMoreMenu" title="Menu" side="right">
@@ -32,9 +33,9 @@ const menu = [
 	[
 		{ label: t('docs.title'), to: localePath('/docs'), icon: 'i-lucide-library-big' },
 	],
-	// [
-	// 	{ label: t('contact.title'), to: localePath('/contact'), icon: 'i-lucide-mail' }
-	// ]
+	[
+		{ label: 'GitHub', to: 'https://github.com/alexfriesen/zeity', icon: 'i-ri-github-fill' },
+	]
 ]
 
 const openMoreMenu = ref(false);

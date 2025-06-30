@@ -1,0 +1,97 @@
+const isProd = process.env.NODE_ENV === 'production';
+const baseUrl = 'https://www.zeity.co';
+
+export default defineNuxtConfig({
+  compatibilityDate: '2024-04-03',
+  future: {
+    compatibilityVersion: 4,
+    typescriptBundlerResolution: true,
+  },
+  experimental: {
+    viewTransition: true,
+  },
+  modules: [
+    '@nuxt/eslint',
+    '@nuxtjs/seo',
+    '@nuxtjs/i18n',
+    'nuxt-og-image',
+    'nuxt-schema-org',
+    '@nuxt/content',
+    '@nuxt/image',
+    '@nuxt/ui',
+    'nuxt-security',
+  ],
+  css: ['~/assets/css/main.css'],
+  content: {
+    experimental: {
+      nativeSqlite: true,
+    },
+  },
+  i18n: {
+    baseUrl: baseUrl,
+    strategy: 'prefix',
+    detectBrowserLanguage: {
+      redirectOn: 'no prefix',
+      useCookie: false,
+    },
+    locales: [
+      {
+        code: 'de',
+        name: 'Deutsch',
+      },
+      {
+        code: 'en',
+        name: 'English',
+      },
+    ],
+    defaultLocale: 'en',
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+  },
+  icon: {
+    customCollections: [
+      {
+        prefix: 'zeity',
+        dir: './public/icons',
+      },
+    ],
+    clientBundle: {
+      scan: true,
+    },
+    provider: 'iconify',
+  },
+  colorMode: {
+    storageKey: 'zeity-color-mode',
+  },
+  robots: {
+    enabled: true,
+    allow: ['*'],
+  },
+  security: {
+    enabled: isProd,
+    headers: {
+      contentSecurityPolicy: {
+        'upgrade-insecure-requests': false,
+      },
+    },
+  },
+  routeRules: {
+    '/user/**': {
+      appMiddleware: ['auth'],
+    },
+    '/organisations/**': {
+      appMiddleware: ['auth'],
+    },
+  },
+  nitro: {
+    static: true,
+    prerender: {
+      routes: ['/', '/robots.txt', '/sitemap.xml'],
+    },
+  },
+  devtools: { enabled: true },
+  devServer: {
+    port: 4000,
+  },
+});

@@ -17,6 +17,17 @@ export function useDrizzle() {
   return db;
 }
 
+export async function checkConnection() {
+  try {
+    await useDrizzle().execute(`select 1`);
+
+    return true;
+  } catch (error) {
+    logger.error('Error executing ping:', error);
+    return false;
+  }
+}
+
 export function useDrizzleMigration() {
   const migrationsPath =
     process.env.MIGRATIONS_PATH || './server/database/migrations';

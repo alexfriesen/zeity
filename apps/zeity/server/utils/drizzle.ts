@@ -5,6 +5,7 @@ import {
   createDrizzleMigration,
   createPool,
 } from '@zeity/database';
+import { setReady } from './readyness';
 
 export { sql, gte, lte, gt, lt, eq, and, or, asc, desc } from '@zeity/database';
 
@@ -37,6 +38,8 @@ export function useDrizzleMigration() {
       try {
         await createDrizzleMigration(pool, migrationsPath);
         logger.success('schema and db migrated');
+
+        setReady('migrations', true);
       } catch (error) {
         logger.fail('schema and db migrated');
         logger.error(error);

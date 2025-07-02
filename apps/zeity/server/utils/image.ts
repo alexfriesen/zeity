@@ -18,5 +18,8 @@ export function checkMimeType(mimeType: string = 'unknown') {
 }
 
 export function checkFileSize(fileSize: number) {
-  return fileSize <= MAX_FILE_SIZE;
+  const minCheck = fileSize > 0;
+  const maxCheck = fileSize <= MAX_FILE_SIZE;
+
+  return minCheck && maxCheck;
 }

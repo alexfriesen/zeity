@@ -5,6 +5,7 @@ import {
   createDrizzleMigration,
   createPool,
 } from '@zeity/database';
+import { setReady } from './readyness';
 
 export { sql, gte, lte, gt, lt, eq, and, or, asc, desc } from '@zeity/database';
 
@@ -17,6 +18,17 @@ export function useDrizzle() {
   return db;
 }
 
+export async function checkConnection() {
+  try {
+    await useDrizzle().execute(`select 1`);
+
+    return true;
+  } catch (error) {
+    logger.error('Error executing ping:', error);
+    return false;
+  }
+}
+
 export function useDrizzleMigration() {
   const migrationsPath =
     process.env.MIGRATIONS_PATH || './server/database/migrations';
@@ -26,6 +38,8 @@ export function useDrizzleMigration() {
       try {
         await createDrizzleMigration(pool, migrationsPath);
         logger.success('schema and db migrated');
+
+        setReady('migrations', true);
       } catch (error) {
         logger.fail('schema and db migrated');
         logger.error(error);

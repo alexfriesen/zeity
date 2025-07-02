@@ -1,5 +1,6 @@
-import { type ExtractComponentProps, render } from '@vue-email/render';
 import type { Component } from 'vue';
+import type { ExtractComponentProps } from '@vue-email/render';
+import { render } from '@vue-email/render';
 
 import MailWelcome from '../mail/MailWelcome.vue';
 import MailMessage from '../mail/MailMessage.vue';

@@ -1,7 +1,8 @@
 import type { H3Event } from 'h3';
 import { createConsola } from 'consola';
-import { createEmailService, type EmailService } from 'unemail';
 import type { EmailAddress } from 'unemail/types';
+import type { EmailService } from 'unemail';
+import { createEmailService } from 'unemail';
 import smtpProvider from 'unemail/providers/smtp';
 
 import type { MailSection } from '~~/types/mail';

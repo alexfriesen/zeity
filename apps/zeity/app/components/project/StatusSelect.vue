@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED, type ProjectStatus } from '@zeity/types/project';
+import type { ProjectStatus } from '@zeity/types/project';
+import { PROJECT_STATUS_ACTIVE, PROJECT_STATUS_CLOSED } from '@zeity/types/project';
 
 const { t } = useI18n();
 const model = defineModel<ProjectStatus>();

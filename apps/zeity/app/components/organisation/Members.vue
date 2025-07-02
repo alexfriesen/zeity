@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
-import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_MEMBER, ORGANISATION_MEMBER_ROLE_OWNER, type OrganisationMember, type OrganisationMemberRole } from '@zeity/types/organisation'
+import type { OrganisationMember, OrganisationMemberRole } from '@zeity/types/organisation'
+import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_MEMBER, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation'
 import { findRoleColor, findRoleIcon, findRoleLabel } from '~/utils/organisation'
 
 const UBadge = resolveComponent('UBadge')

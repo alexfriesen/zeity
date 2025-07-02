@@ -18,7 +18,9 @@ import type { DateRange as CalendarDateRange } from 'reka-ui';
 import { fromDate, getLocalTimeZone } from '@internationalized/date';
 import { formatRelativeDateDiff } from '@zeity/utils/date';
 
-import { DateFilterType, type DateFilter, type DateRange } from '~/types/date-filter';
+import type { DateFilter, DateRange } from '~/types/date-filter';
+import { DateFilterType } from '~/types/date-filter';
+
 
 const { t } = useI18n();
 const settings = useSettingsStore();

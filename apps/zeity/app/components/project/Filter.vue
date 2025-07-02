@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PROJECT_STATUS_ACTIVE, type Project } from '@zeity/types/project';
+import type { Project } from '@zeity/types/project';
+import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
 const model = defineModel<string[]>();
 

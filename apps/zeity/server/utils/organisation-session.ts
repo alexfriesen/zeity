@@ -1,4 +1,5 @@
-import { type H3Event, getCookie } from 'h3';
+import type { H3Event } from 'h3';
+import { getCookie } from 'h3';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 

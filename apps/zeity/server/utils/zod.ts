@@ -1,4 +1,5 @@
-import { z, type ZodType } from 'zod';
+import type { ZodType } from 'zod';
+import { z } from 'zod';
 
 export function coerceArray<T extends ZodType>(schema: T) {
   return z

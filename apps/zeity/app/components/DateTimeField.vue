@@ -1,6 +1,7 @@
 <script lang="ts">
 import { DateFieldInput, DateFieldRoot } from 'reka-ui';
-import { type ZonedDateTime, parseAbsolute, now, getLocalTimeZone } from '@internationalized/date';
+import type { ZonedDateTime } from '@internationalized/date';
+import { parseAbsolute, now, getLocalTimeZone } from '@internationalized/date';
 
 export interface DateTimeProps {
     // eslint-disable-next-line vue/require-default-prop

@@ -1,5 +1,5 @@
+import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import {
-  type OrganisationMemberRole,
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,

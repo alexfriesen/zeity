@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay, type DateLike, } from '@zeity/utils/date';
 import type { Time } from '@zeity/types/time';
+import type { DateLike } from '@zeity/utils/date';
+import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay } from '@zeity/utils/date';
 
 const { times } = defineProps({
 	class: { type: String, default: '' },

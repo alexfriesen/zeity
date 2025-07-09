@@ -9,14 +9,14 @@ export default defineContentConfig({
   collections: {
     docs_en: defineCollection(
       asSitemapCollection({
-        source: 'en/docs/*.md',
+        source: 'en/docs/**/*',
         type: 'page',
         schema: docsSchema,
       })
     ),
     docs_de: defineCollection(
       asSitemapCollection({
-        source: 'de/docs/*.md',
+        source: 'de/docs/**/*',
         type: 'page',
         schema: docsSchema,
       })

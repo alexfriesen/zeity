@@ -30,7 +30,7 @@
     "drizzle-orm": "^0.44.2",
     "jose": "^6.0.11",
     "unemail": "^0.2.0",
-    "zod": "^3.25.75"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.56",

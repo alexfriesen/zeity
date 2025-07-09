@@ -75,13 +75,18 @@ export default defineNuxtConfig({
     },
   },
   site: {
-		url: baseUrl,
-		name: 'zeity',
-	},
+    url: baseUrl,
+    name: 'zeity',
+  },
   nitro: {
     static: true,
     prerender: {
       routes: ['/', '/robots.txt'],
+    },
+  },
+  routeRules: {
+    '/de/docs/**': {
+      redirect: '/en/docs/',
     },
   },
   devServer: {

@@ -1,9 +1,6 @@
 import z from 'zod';
 
-import { users } from '@zeity/database/user';
 import { organisationTeams } from '@zeity/database/organisation-team';
-import { organisationMembers } from '@zeity/database/organisation-member';
-import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
 import { canUserReadOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {

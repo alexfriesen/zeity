@@ -8,5 +8,7 @@ export { times } from './time';
 export { projects } from './project';
 
 export { organisations } from './organisation';
+export { organisationTeams } from './organisation-team';
+export { organisationTeamMembers } from './organisation-team-member';
 export { organisationMembers } from './organisation-member';
 export { organisationInvites } from './organisation-invite';

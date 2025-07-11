@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { eq, asc } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
+import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationMembers } from '@zeity/database/organisation-member';
 
 export default defineEventHandler(async (event) => {
@@ -28,11 +29,20 @@ export default defineEventHandler(async (event) => {
   const membersCountSubquery = db
     .select({
       organisationId: organisationMembers.organisationId,
-      counter: sql<number>`count(*)`.mapWith(Number).as('counter'),
+      counter: sql<number>`count(*)`.mapWith(Number).as('members_count'),
     })
     .from(organisationMembers)
     .groupBy(organisationMembers.organisationId)
     .as('members_count');
+
+  const teamsCountSubquery = db
+    .select({
+      organisationId: organisationTeams.organisationId,
+      counter: sql<number>`count(*)`.mapWith(Number).as('teams_count'),
+    })
+    .from(organisationTeams)
+    .groupBy(organisationTeams.organisationId)
+    .as('teams_count');
 
   const result = await db
     .select({
@@ -42,6 +52,7 @@ export default defineEventHandler(async (event) => {
       role: organisationMembers.role,
       stats: {
         members: membersCountSubquery.counter,
+        teams: teamsCountSubquery.counter,
       },
     })
     .from(organisations)
@@ -52,6 +63,10 @@ export default defineEventHandler(async (event) => {
     .leftJoin(
       membersCountSubquery,
       eq(membersCountSubquery.organisationId, organisations.id)
+    )
+    .leftJoin(
+      teamsCountSubquery,
+      eq(teamsCountSubquery.organisationId, organisations.id)
     )
     .where(eq(organisationMembers.userId, session.user.id))
     .orderBy(asc(organisations.name))

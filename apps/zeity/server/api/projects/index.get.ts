@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (query.data.search) {
-    whereStatements.push(ilike(projects.name, query.data.search));
+    whereStatements.push(ilike(projects.name, `%${query.data.search}%`));
   }
 
   const result = await useDrizzle()

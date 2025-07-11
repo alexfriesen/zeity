@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, uuid, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, serial, unique, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import { timestampColumns } from './common';
@@ -8,6 +8,11 @@ import { users } from './user';
 export const organisationMembers = pgTable(
   'organisation_member',
   {
+    id: serial('id').primaryKey(),
+    role: varchar('role', { length: 10 })
+      .notNull()
+      .$type<OrganisationMemberRole>(),
+
     userId: uuid('user_id')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
@@ -15,13 +20,9 @@ export const organisationMembers = pgTable(
       .notNull()
       .references(() => organisations.id, { onDelete: 'cascade' }),
 
-    role: varchar('role', { length: 10 })
-      .notNull()
-      .$type<OrganisationMemberRole>(),
-
     ...timestampColumns(),
   },
-  (table) => [primaryKey({ columns: [table.userId, table.organisationId] })]
+  (table) => [unique().on(table.userId, table.organisationId)]
 );
 
 export type OrganisationMember = typeof organisationMembers.$inferSelect; // return type when queried

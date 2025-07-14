@@ -149,7 +149,7 @@ function deleteMembers(memberIds: number[]) {
 
             <template #name-cell="{ row }">
                 <div class="flex items-center gap-3">
-                    <UAvatar :src="getAvatarPath(row.original.user)" :alt="`${row.original.user?.name}`" />
+                    <UAvatar :src="getUserImagePath(row.original.user)" :alt="`${row.original.user?.name}`" />
                     <p class="font-medium text-highlighted">
                         {{ row.original.user?.name }}
                     </p>

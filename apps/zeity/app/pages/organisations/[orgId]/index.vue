@@ -110,8 +110,6 @@ function deleteOrganisation() {
             title: t('organisations.delete.error'),
         })
     })
-
-
 }
 </script>
 
@@ -120,7 +118,7 @@ function deleteOrganisation() {
         <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
 
         <div class="flex flex-col items-center justify-center">
-            <UAvatar :src="data?.image || undefined" :alt="data?.name" size="3xl" class="mb-4" />
+            <UAvatar :src="getOrganisationImagePath(data)" :alt="data?.name" size="3xl" class="mb-4" />
             <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
                 {{ $t('common.upload') }}
             </UButton>

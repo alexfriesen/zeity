@@ -23,7 +23,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const baseUrl = getRequestURL(event).origin;
   const db = useDrizzle();
 
   const membersCountSubquery = db
@@ -69,15 +68,7 @@ export default defineEventHandler(async (event) => {
       eq(teamsCountSubquery.organisationId, organisations.id)
     )
     .where(eq(organisationMembers.userId, session.user.id))
-    .orderBy(asc(organisations.name))
-    .then((rows) => {
-      return rows.map((row) => ({
-        ...row,
-        image: row.image
-          ? baseUrl + '/organisation/' + row.id + '/image'
-          : null,
-      }));
-    });
+    .orderBy(asc(organisations.name));
 
   return result;
 });

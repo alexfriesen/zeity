@@ -44,11 +44,11 @@ function openChange(value: boolean) {
 
 
 <template>
-    <UInputMenu v-model="model" v-model:search-term="query" :loading="pending" :items="data" @update:open="openChange"
-        multiple size="xl" value-key="id" label-key="user.name">
+    <UInputMenu v-model="model" v-model:search-term="query" :loading="pending" :items="data" multiple size="xl"
+        value-key="id" label-key="user.name" @update:open="openChange">
         <template #item="{ item }">
             <div class="flex items-center gap-3">
-                <UAvatar :src="getAvatarPath(item.user)" :alt="`${item.user?.name}`" />
+                <UAvatar :src="getUserImagePath(item.user)" :alt="`${item.user?.name}`" />
                 <p class="font-medium text-highlighted">
                     {{ item.user?.name }}
                 </p>

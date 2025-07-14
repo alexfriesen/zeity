@@ -28,7 +28,7 @@ const isEmpty = computed(() => {
                     <div class="flex items-center justify-between gap-4 flex-shrink">
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
                             class="flex items-center justify-between -mx-3 truncate">
-                            <UAvatar :src="organisation.image || undefined" :alt="organisation.name" size="lg"
+                            <UAvatar :src="getOrganisationImagePath(organisation)" :alt="organisation.name" size="lg"
                                 class="mr-2" />
                             <div class="truncate">
                                 <span class="text-lg">

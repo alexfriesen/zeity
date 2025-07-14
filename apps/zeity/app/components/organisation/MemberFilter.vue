@@ -43,7 +43,7 @@ function isSelected(id: string) {
             <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
             <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
             <UButton v-for="value of sortedMembers" :key=value.userId :label="value.user.name"
-                :avatar="{ src: value.user.image || undefined, alt: value.user.name }"
+                :avatar="{ src: getUserImagePath(value.user), alt: value.user.name }"
                 :icon="isSelected(value.userId) ? 'i-lucide-check' : undefined"
                 :color="isSelected(value.userId) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
                 @click="toggleSelected(value.userId)" />

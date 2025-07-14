@@ -163,7 +163,7 @@ function setMemberRole(userId: string, role: OrganisationMemberRole) {
         <UTable :data="members" :columns="membersColumns">
             <template #name-cell="{ row }">
                 <div class="flex items-center gap-3">
-                    <UAvatar :src="row.original.user?.image || undefined" :alt="`${row.original.user?.name}`" />
+                    <UAvatar :src="getUserImagePath(row.original.user)" :alt="`${row.original.user?.name}`" />
                     <p class="font-medium text-highlighted">
                         {{ row.original.user?.name }}
                     </p>

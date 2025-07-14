@@ -21,6 +21,7 @@ export default defineI18nConfig(() => ({
       common: {
         actions: 'Actions',
         add: 'Add',
+        all: 'All',
         cancel: 'Cancel',
         custom: 'Custom',
         delete: 'Delete',
@@ -58,6 +59,7 @@ export default defineI18nConfig(() => ({
         addNotes: 'Add notes',
         noProject: 'No project',
         offline: 'Time is not synced',
+        dateFilter: 'Date',
       },
       projects: {
         title: 'Projects',
@@ -210,6 +212,7 @@ export default defineI18nConfig(() => ({
       common: {
         actions: 'Aktionen',
         add: 'Hinzufügen',
+        all: 'Alle',
         cancel: 'Abbrechen',
         custom: 'Benutzerdefiniert',
         delete: 'Löschen',
@@ -247,6 +250,7 @@ export default defineI18nConfig(() => ({
         addNotes: 'Notizen hinzufügen',
         noProject: 'Kein Projekt',
         offline: 'Zeit is nicht synchronisiert',
+        dateFilter: 'Datum',
       },
       projects: {
         title: 'Projekte',

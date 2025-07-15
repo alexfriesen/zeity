@@ -2,8 +2,9 @@
 import { isAfter, isBefore } from 'date-fns';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
-import type { DateRange } from '~/types/date-filter';
+import type { OrganisationTeam } from '@zeity/database/organisation-team';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
+import type { DateRange } from '~/types/date-filter';
 
 const { user } = useUser();
 const { isLoggedIn } = useAuth();
@@ -13,9 +14,13 @@ const { currentOrganisationId } = useOrganisation();
 
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
+const teamFilters = ref<OrganisationTeam[]>([]);
 const memberFilters = ref<OrganisationMemberWithUser[]>([]);
 
 const orgTimes = getOrganisationTimes();
+const filteredTeamIds = computed(() => {
+    return teamFilters.value.map(team => team.id);
+});
 const filteredUserIds = computed(() => {
     // user is not set if the user is not logged in
     if (!user.value) {
@@ -128,7 +133,8 @@ watch([dateFilter, projectFilters, filteredUserIds], async ([dateRange, projects
         <section class="flex flex-col gap-1">
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
-            <OrganisationTeamFilter v-if="user" v-model="memberFilters" />
+            <OrganisationTeamFilter v-if="user" v-model="teamFilters" />
+            <OrganisationMemberFilter v-if="user" v-model="memberFilters" :team-ids="filteredTeamIds" />
         </section>
 
         <UCard as="section">

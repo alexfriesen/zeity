@@ -3,28 +3,41 @@ import type { OrganisationMemberWithUser } from '~/types/organisation';
 
 const model = defineModel<OrganisationMemberWithUser[]>();
 
-const { members } = defineProps({
-    pending: {
-        type: Boolean,
-        default: false,
-    },
-    members: {
-        type: Array as PropType<OrganisationMemberWithUser[]>,
+const props = defineProps({
+    teamIds: {
+        type: Array as PropType<number[]>,
         default: () => [],
     },
 })
 
+const teamIds = computed(() => props.teamIds || []);
+
 const { user } = useUser();
+const { currentOrganisationId } = useOrganisation();
+const { pending, data } = await useLazyAsyncData(`organisation-${currentOrganisationId.value}-member`, () =>
+    $fetch(`/api/organisation/${currentOrganisationId.value}/member`, {
+        method: 'GET',
+        query: {
+            team: teamIds.value,
+        },
+    }),
+    {
+        server: false,
+        watch: [currentOrganisationId, teamIds],
+    }
+);
 
 const sortedMembers = computed(() => {
+    const members = data.value || [];
     if (!members) return [];
-    return members?.toSorted((member) => member.userId === user.value?.id ? -1 : 1);
+    return members.toSorted((member) => member.userId === user.value?.id ? -1 : 1);
 });
-const selectedIds = computed(() => model.value?.map(member => member.id));
-const noSelected = computed(() => model.value?.length === 0);
+
+const selectedIds = computed(() => (model.value || []).map(member => member.id));
+const noSelected = computed(() => selectedIds.value.length === 0);
 
 function toggleSelected(id: number) {
-    const set = new Set(selectedIds.value || []);
+    const set = new Set(selectedIds.value);
     if (set.has(id)) {
         set.delete(id);
     } else {
@@ -34,8 +47,8 @@ function toggleSelected(id: number) {
 }
 
 function isSelected(id: number) {
-    const data = selectedIds.value || [];
-    return data.includes(id);
+    const ids = selectedIds.value;
+    return ids.includes(id);
 }
 function deselectAll() {
     if (!noSelected.value) {

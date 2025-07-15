@@ -1,30 +1,18 @@
 <script setup lang="ts">
-import type { OrganisationMemberWithUser } from '~/types/organisation';
+import type { OrganisationTeam } from '@zeity/database/organisation-team';
 
-const { user } = useUser();
-const { currentOrganisationId, fetchOrganisationTeams } = useOrganisation();
-const { pending: teamsPending, data: teams } = await fetchOrganisationTeams(currentOrganisationId!);
-const { pending: membersPending, data: members } = await useLazyAsyncData(`organisation-${currentOrganisationId.value}-member`, () =>
-    $fetch(`/api/organisation/${currentOrganisationId.value}/member`, {
-        method: 'GET',
-        query: {
-            team: selectedIds.value,
-        },
-    }),
-    {
-        watch: [selectedIds],
-    }
-);
-
-const model = defineModel<OrganisationMemberWithUser[]>();
-const selectedIds = ref<number[]>([]);
+const model = defineModel<OrganisationTeam[]>();
+const selectedIds = computed(() => (model.value || []).map(team => team.id));
 const noSelected = computed(() => selectedIds.value.length === 0);
 
-const sortedMembers = computed(() => {
-    const data = members.value || [];
-    if (!data) return [];
-    return data.toSorted((member) => member.userId === user.value?.id ? -1 : 1);
-});
+const { currentOrganisationId } = useOrganisation();
+const { pending, data } = await useLazyAsyncData(
+    () => $fetch(`/api/organisation/${currentOrganisationId.value}/team`),
+    {
+        watch: [currentOrganisationId],
+    }
+);
+const teams = computed(() => data.value || []);
 
 function toggleSelected(id: number) {
     const set = new Set(selectedIds.value || []);
@@ -33,17 +21,17 @@ function toggleSelected(id: number) {
     } else {
         set.add(id);
     }
-    selectedIds.value = Array.from(set);
+    model.value = teams.value.filter(team => set.has(team.id));
 }
 
 function isSelected(id: number) {
-    const data = selectedIds.value || [];
-    return data.includes(id);
+    const ids = selectedIds.value || [];
+    return ids.includes(id);
 }
 
 function deselectAll() {
     if (!noSelected.value) {
-        selectedIds.value = [];
+        model.value = [];
     }
 }
 </script>
@@ -55,16 +43,14 @@ function deselectAll() {
             <UButton :label="$t('common.all')" :icon="noSelected ? 'i-lucide-check' : undefined"
                 :color="noSelected ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
                 @click="deselectAll()" />
-            <USkeleton v-if="teamsPending" class="h-8 w-16 rounded-full" />
-            <USkeleton v-if="teamsPending" class="h-8 w-16 rounded-full" />
-            <UButton v-for="team of teams" :key=team.id :label="team.name"
+            <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
+            <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
+            <UButton v-for="team of data" :key=team.id :label="team.name"
                 :icon="isSelected(team.id) ? 'i-lucide-check' : undefined"
                 :color="isSelected(team.id) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
                 @click="toggleSelected(team.id)" />
         </div>
     </section>
-
-    <OrganisationMemberFilter v-model="model" :members="sortedMembers" :pending="membersPending" />
 </template>
 
 <style scoped>

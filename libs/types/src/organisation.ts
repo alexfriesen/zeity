@@ -12,6 +12,7 @@ export const ORGANISATION_MEMBER_ROLES = [
 export type OrganisationMemberRole = (typeof ORGANISATION_MEMBER_ROLES)[number];
 
 export interface OrganisationMember {
+  id: number;
   organisationId: string;
   userId: string;
   role: OrganisationMemberRole;

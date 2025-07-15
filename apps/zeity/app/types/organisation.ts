@@ -2,7 +2,7 @@ import type { OrganisationMember } from '@zeity/database/organisation-member';
 
 export type OrganisationMemberWithUser = Pick<
   OrganisationMember,
-  'userId' | 'organisationId' | 'role'
+  'id' | 'userId' | 'organisationId' | 'role'
 > & {
   user: {
     id: string;

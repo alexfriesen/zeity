@@ -4,8 +4,6 @@ import { users } from '@zeity/database/user';
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
 
-  const baseUrl = getRequestURL(event).origin;
-
   const user = await useDrizzle()
     .select({
       id: users.id,
@@ -21,7 +19,6 @@ export default defineEventHandler(async (event) => {
     .then((user) => ({
       ...user,
       emailVerified: Boolean(user?.emailVerified),
-      image: user?.image ? baseUrl + '/user/' + user.id + '/image' : null,
     }));
 
   return {

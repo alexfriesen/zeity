@@ -3,6 +3,7 @@ import type { Organisation } from '@zeity/database/organisation';
 import type { OrganisationMember } from '@zeity/database/organisation-member';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
+  ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types';
 import {
@@ -57,6 +58,17 @@ export function canUserUpdateOrganisation(
     (member) =>
       member.userId === user.id && privilegedRoles.includes(member.role)
   );
+}
+
+export function canUserReadOrganisationByOrgId(
+  user: Pick<User, 'id'>,
+  orgId: string
+) {
+  return hasUserOrganisationMemberRole(user.id, orgId, [
+    ORGANISATION_MEMBER_ROLE_OWNER,
+    ORGANISATION_MEMBER_ROLE_ADMIN,
+    ORGANISATION_MEMBER_ROLE_MEMBER,
+  ]);
 }
 
 export function canUserUpdateOrganisationByOrgId(

@@ -14,6 +14,7 @@ export {
   eq,
   ilike,
   inArray,
+  notInArray,
   and,
   or,
   asc,

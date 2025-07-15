@@ -1,6 +1,9 @@
 import { count, inArray } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
+import { organisationTeams } from '@zeity/database/organisation-team';
+import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
 import { organisationMembers } from '@zeity/database/organisation-member';
+
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
 
@@ -77,4 +80,30 @@ export function countOrganisationMemberOwner(
       )
     )
     .then((res) => res[0]?.count ?? 0);
+}
+
+export function getOrganisationTeamsByOrgId(organisationId: string) {
+  const db = useDrizzle();
+  const membersCountSubquery = db
+    .select({
+      teamId: organisationTeamMembers.teamId,
+      counter: sql<number>`count(*)`.mapWith(Number).as('members_count'),
+    })
+    .from(organisationTeamMembers)
+    .groupBy(organisationTeamMembers.teamId)
+    .as('members_count');
+
+  return db
+    .select({
+      id: organisationTeams.id,
+      name: organisationTeams.name,
+      description: organisationTeams.description,
+      memberCount: membersCountSubquery.counter,
+    })
+    .from(organisationTeams)
+    .leftJoin(
+      membersCountSubquery,
+      eq(membersCountSubquery.teamId, organisationTeams.id)
+    )
+    .where(eq(organisationTeams.organisationId, organisationId));
 }

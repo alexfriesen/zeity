@@ -28,14 +28,17 @@ const isEmpty = computed(() => {
                     <div class="flex items-center justify-between gap-4 flex-shrink">
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
                             class="flex items-center justify-between -mx-3 truncate">
-                            <UAvatar :src="organisation.image || undefined" :alt="organisation.name" size="lg"
+                            <UAvatar :src="getOrganisationImagePath(organisation)" :alt="organisation.name" size="lg"
                                 class="mr-2" />
                             <div class="truncate">
-                                <span>
+                                <span class="text-lg">
                                     {{ organisation.name }}
                                 </span>
                                 <p class="text-xs text-dimmed">
-                                    {{ $t('organisations.members.title') }}: {{ organisation.stats.members }}
+                                    {{ $t('organisations.members.count', organisation.stats.members ?? 0) }}
+                                </p>
+                                <p class="text-xs text-dimmed">
+                                    {{ $t('organisations.teams.count', organisation.stats.teams ?? 0) }}
                                 </p>
                             </div>
                         </UButton>

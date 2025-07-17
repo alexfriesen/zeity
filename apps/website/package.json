@@ -26,6 +26,6 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^24.0.12",
     "eslint": "~9.30.1",
-    "nuxt": "^3.17.6"
+    "nuxt": "^4.0.0"
   }
 }

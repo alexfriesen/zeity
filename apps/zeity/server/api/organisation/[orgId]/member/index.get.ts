@@ -27,8 +27,8 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       search: z.string().optional(),
-      team: coerceArray(z.coerce.number().int().positive()).optional(),
-      excludeTeam: coerceArray(z.coerce.number().int().positive()).optional(),
+      team: coerceArray(z.string().uuid()).optional(),
+      excludeTeam: coerceArray(z.string().uuid()).optional(),
 
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
@@ -93,7 +93,7 @@ export default defineEventHandler(async (event) => {
   return members;
 });
 
-async function getMemberIdsInTeams(teamIds: number[]) {
+async function getMemberIdsInTeams(teamIds: string[]) {
   if (teamIds.length === 0) {
     return [];
   }

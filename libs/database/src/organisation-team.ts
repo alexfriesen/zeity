@@ -1,7 +1,6 @@
 import {
   jsonb,
   pgTable,
-  serial,
   text,
   unique,
   uuid,
@@ -14,7 +13,7 @@ import { organisations } from './organisation';
 export const organisationTeams = pgTable(
   'organisation_team',
   {
-    id: serial('id').primaryKey(),
+    id: uuid('id').defaultRandom().notNull().primaryKey(),
     name: varchar('name', { length: 200 }).notNull(),
     description: text('description').notNull().default(''),
     permissions: jsonb('permissions').notNull().default('[]').$type<string[]>(),

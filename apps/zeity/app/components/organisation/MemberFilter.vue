@@ -5,7 +5,7 @@ const model = defineModel<OrganisationMemberWithUser[]>();
 
 const props = defineProps({
     teamIds: {
-        type: Array as PropType<number[]>,
+        type: Array as PropType<string[]>,
         default: () => [],
     },
 })
@@ -36,7 +36,7 @@ const sortedMembers = computed(() => {
 const selectedIds = computed(() => (model.value || []).map(member => member.id));
 const noSelected = computed(() => selectedIds.value.length === 0);
 
-function toggleSelected(id: number) {
+function toggleSelected(id: string) {
     const set = new Set(selectedIds.value);
     if (set.has(id)) {
         set.delete(id);
@@ -46,7 +46,7 @@ function toggleSelected(id: number) {
     model.value = sortedMembers.value.filter(member => set.has(member.id));
 }
 
-function isSelected(id: number) {
+function isSelected(id: string) {
     const ids = selectedIds.value;
     return ids.includes(id);
 }

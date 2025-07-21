@@ -70,7 +70,7 @@ export function useOrganisation() {
 
   function fetchOrganisationTeam(
     orgId: MaybeRef<string | null | undefined>,
-    teamId: MaybeRef<number | null | undefined>
+    teamId: MaybeRef<string | null | undefined>
   ) {
     const orgIdRef = toRef(orgId);
     const teamIdRef = toRef(teamId);
@@ -81,7 +81,7 @@ export function useOrganisation() {
 
   async function createOrganisationTeam(
     orgId: string,
-    data: NewOrganisationTeam
+    data: Partial<NewOrganisationTeam>
   ) {
     store.setLoading(true);
     return (

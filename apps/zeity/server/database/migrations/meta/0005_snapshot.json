@@ -1,5 +1,5 @@
 {
-  "id": "c581de4a-227a-421d-bf6b-ed457c82f443",
+  "id": "f9fd36da-526e-4fd9-b4a5-b6da600fed06",
   "prevId": "bae07c0f-ed09-487c-936f-939f4546cec3",
   "version": "7",
   "dialect": "postgresql",
@@ -206,9 +206,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "role": {
           "name": "role",
@@ -292,13 +293,13 @@
       "columns": {
         "team_id": {
           "name": "team_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "member_id": {
           "name": "member_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -359,9 +360,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",

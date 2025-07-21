@@ -13,8 +13,7 @@ const { organisationId } = defineProps({
 const { fetchOrganisationTeams } = useOrganisation()
 const { pending, data, refresh } = await fetchOrganisationTeams(organisationId);
 
-
-function deleteTeam(teamId: number) {
+function deleteTeam(teamId: string) {
     return $fetch(`/api/organisation/${organisationId}/team/${teamId}`, {
         method: 'DELETE'
     }).then(() => {

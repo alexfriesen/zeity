@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.string().uuid(),
-      teamId: z.coerce.number().int().positive(),
+      teamId: z.string().uuid(),
     }).safeParse
   );
   if (!params.success) {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(
     event,
     z.object({
-      memberIds: z.array(z.number()).min(1).default([]),
+      memberIds: z.array(z.string().uuid()).min(1).default([]),
     }).safeParse
   );
 

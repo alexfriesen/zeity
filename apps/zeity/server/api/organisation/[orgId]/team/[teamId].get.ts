@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.string().uuid(),
-      teamId: z.coerce.number().int().positive(),
+      teamId: z.string().uuid(),
     }).safeParse
   );
   if (!params.success) {

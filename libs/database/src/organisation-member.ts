@@ -1,4 +1,4 @@
-import { pgTable, serial, unique, uuid, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, unique, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import { timestampColumns } from './common';
@@ -8,7 +8,7 @@ import { users } from './user';
 export const organisationMembers = pgTable(
   'organisation_member',
   {
-    id: serial('id').primaryKey(),
+    id: uuid('id').defaultRandom().notNull().primaryKey(),
     role: varchar('role', { length: 10 })
       .notNull()
       .$type<OrganisationMemberRole>(),

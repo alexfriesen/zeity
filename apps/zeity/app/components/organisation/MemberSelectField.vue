@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useDebounce } from '@vueuse/core';
 
-const model = defineModel<number[]>();
+const model = defineModel<string[]>();
 const { organisationId, excludeTeam } = defineProps({
     organisationId: {
         type: String,
         required: true,
     },
     excludeTeam: {
-        type: Number,
+        type: String,
         required: false,
         default: undefined,
     },

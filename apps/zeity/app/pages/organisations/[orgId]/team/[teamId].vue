@@ -26,7 +26,7 @@ function cleanupAddMemberModal() {
 
 const route = useRoute()
 const organisationId = computed(() => route.params.orgId as string);
-const teamId = computed(() => parseInt(route.params.teamId as string, 10));
+const teamId = computed(() => route.params.teamId as string);
 
 const membersColumns: TableColumn<TeamMemberData>[] = [
     {
@@ -43,7 +43,7 @@ const team = await fetchOrganisationTeam(organisationId, teamId);
 const members = await useFetch(`/api/organisation/${organisationId.value}/team/${teamId.value}/member`);
 
 const addMemberSchema = z.object({
-    memberIds: z.array(z.number()).min(1),
+    memberIds: z.array(z.string().uuid()).min(1),
 })
 type AddMemberSchema = z.output<typeof addMemberSchema>
 const addMemberState = ref<AddMemberSchema>({
@@ -72,7 +72,7 @@ function createTeamMembers(event: FormSubmitEvent<AddMemberSchema>) {
     })
 }
 
-function deleteMembers(memberIds: number[]) {
+function deleteMembers(memberIds: string[]) {
     return $fetch(`/api/organisation/${organisationId.value}/team/${teamId.value}/member`, {
         method: 'DELETE',
         body: {

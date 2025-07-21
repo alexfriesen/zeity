@@ -11,20 +11,25 @@ const config = useRuntimeConfig();
             </div>
 
             <p class="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ui-primary)]">
-                {{ $t('about.title') }}
+                {{ config.public.appName }}
             </p>
             <p class="text-center text-pretty">
                 {{ $t('about.description') }}
             </p>
         </div>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center">
             <span>
                 Version
             </span>
-            <span class="text-[var(--ui-text-muted)]">
-                {{ config.public.version }}
-            </span>
+            <div class="flex items-center gap-2">
+                <UBadge v-if="config.public.stage !== 'production'" color="warning">
+                    {{ config.public.stage }}
+                </UBadge>
+                <span class="text-[var(--ui-text-muted)]">
+                    {{ config.public.version }}
+                </span>
+            </div>
         </div>
 
         <USeparator />

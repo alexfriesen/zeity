@@ -152,6 +152,8 @@ export default defineNuxtConfig({
     },
     jwtSecret: 'supersecret',
     public: {
+      appName: 'zeity',
+      stage: process.env.NODE_ENV || 'production',
       version: packageJson.version || '0.0.0',
     },
     nitro: {

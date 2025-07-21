@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nowWithoutMillis } from '@zeity/utils/date';
 
+const appConfig = useRuntimeConfig();
 const { loggedIn } = useUserSession();
 const timeDetail = useTimeDetail();
 function timeNew() {
@@ -17,7 +18,7 @@ function timeNew() {
             <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">
                 <UButton to="/" icon="i-zeity-logo" variant="ghost">
                     <span class="font-bold text-xl text-neutral-900 dark:text-white min-w-0">
-                        {{ $t('about.title') }}
+                        {{ appConfig.public.appName }}
                     </span>
                 </UButton>
             </div>

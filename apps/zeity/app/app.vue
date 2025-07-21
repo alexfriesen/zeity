@@ -6,29 +6,30 @@ const locales = {
   de,
 }
 
-const appConfig = useAppConfig()
 const settingsStore = useSettingsStore();
-
 const { locale, themePrimary } = storeToRefs(settingsStore);
 
 watch(themePrimary, (value) => {
-  appConfig.ui.colors.primary = value;
+  updateAppConfig({
+    ui: {
+      colors: {
+        primary: value || 'sky',
+      },
+    },
+  });
 }, { immediate: true });
 
-const uiLocale = computed(() => {
-  return locales[locale.value || 'en'];
-});
-
 const isDev = import.meta.dev;
+const uiLocale = computed(() => locales[locale.value] || en);
+const lang = computed(() => uiLocale.value.code)
+const dir = computed(() => uiLocale.value.dir)
 
-const lang = computed(() => locales[locale.value].code)
-const dir = computed(() => locales[locale.value].dir)
 useHead({
   htmlAttrs: {
     lang,
     dir
   },
-  title: 'zeity',
+  title: useRuntimeConfig().public.appName,
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     { rel: 'apple-touch-icon', href: '/icons/apple-touch-icon.png' },

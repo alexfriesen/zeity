@@ -182,7 +182,7 @@ function isSelected(filter: DateFilter) {
                 @click="changeDateFilter(filter)" />
         </div>
         <div :class="{ hidden: selectedFilterKey !== 'custom' }" class="custom">
-            <UCalendar v-model="calendarRange" range />
+            <LazyUCalendar v-model="calendarRange" range />
         </div>
     </section>
 </template>

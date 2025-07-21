@@ -24,10 +24,10 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(
     event,
     z.object({
-      name: z.string().trim().min(3).max(150),
+      name: z.string().trim().min(2).max(150),
       description: z.string().trim().optional(),
       permissions: z.array(z.string()).optional().default([]),
-      members: z.array(z.string().uuid()).optional().default([]),
+      memberIds: z.array(z.string().uuid()).optional().default([]),
     }).safeParse
   );
 
@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
       .where(
         and(
           eq(organisationMembers.organisationId, params.data.orgId),
-          inArray(organisationMembers.id, body.data.members)
+          inArray(organisationMembers.id, body.data.memberIds)
         )
       );
 

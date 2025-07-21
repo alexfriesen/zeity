@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     event,
     z
       .object({
-        name: z.string().trim().min(3).max(150),
+        name: z.string().trim().min(2).max(150),
         description: z.string().trim().optional(),
         permissions: z.array(z.string()).optional().default([]),
       })

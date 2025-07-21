@@ -6,16 +6,21 @@ const { t } = useI18n();
 const { orgId } = useRoute().params as { orgId: string };
 const { loading, createOrganisationTeam } = useOrganisation();
 
+const route = useRoute()
+const organisationId = computed(() => route.params.orgId as string);
+
 const schema = z.object({
-    name: z.string().min(3).default(''),
+    name: z.string().trim().min(2).max(150),
     description: z.string().optional().default(''),
     permissions: z.array(z.string()).default([]),
+    memberIds: z.array(z.string().uuid()).min(1),
 });
 type Schema = z.output<typeof schema>
 const state = ref<Partial<Schema>>({
     name: '',
     description: '',
     permissions: [],
+    memberIds: [],
 });
 
 function handleSubmit(event: FormSubmitEvent<Schema>) {
@@ -51,6 +56,11 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
 
             <UFormField :label="$t('organisations.teams.form.description')" name="description">
                 <UInput v-model="state.description" :placeholder="$t('organisations.teams.form.descriptionPlaceholder')"
+                    class="w-full" />
+            </UFormField>
+
+            <UFormField :label="$t('organisations.teams.members.title')" name="memberIds" size="xl">
+                <OrganisationMemberSelectField v-model="state.memberIds" :organisation-id="organisationId"
                     class="w-full" />
             </UFormField>
 

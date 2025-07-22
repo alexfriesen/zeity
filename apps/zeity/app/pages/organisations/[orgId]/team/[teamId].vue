@@ -42,13 +42,60 @@ const membersColumns: TableColumn<TeamMemberData>[] = [
 const team = await fetchOrganisationTeam(organisationId, teamId);
 const members = await useFetch(`/api/organisation/${organisationId.value}/team/${teamId.value}/member`);
 
+const saving = ref(false);
+const editing = ref(false);
+
+const schema = z.object({
+    name: z.string().trim().min(2).max(150),
+    description: z.string().optional().default(''),
+});
+type Schema = z.output<typeof schema>
+const state = ref<Partial<Schema>>({
+    name: team.data.value?.name ?? '',
+    description: team.data.value?.description ?? '',
+});
+
 const addMemberSchema = z.object({
     memberIds: z.array(z.string().uuid()).min(1),
 })
 type AddMemberSchema = z.output<typeof addMemberSchema>
 const addMemberState = ref<AddMemberSchema>({
     memberIds: [],
-})
+});
+
+function switchEditing() {
+    editing.value = !editing.value
+    state.value = {
+        name: team.data.value?.name ?? '',
+        description: team.data.value?.description ?? '',
+    }
+}
+
+function updateTeamDetails(event: FormSubmitEvent<Schema>) {
+    saving.value = true
+    return $fetch(`/api/organisation/${organisationId.value}/team/${teamId.value}`, {
+        method: 'PATCH',
+        body: {
+            name: event.data.name,
+            description: event.data.description,
+        }
+    }).then(async () => {
+        toast.add({
+            color: 'success',
+            title: t('organisations.teams.updateSuccess'),
+        })
+        await team.refresh()
+        editing.value = false
+    }).catch((error) => {
+        console.error(error)
+        toast.add({
+            color: 'error',
+            title: t('organisations.teams.updateError'),
+        })
+    }).finally(() => {
+        saving.value = false
+    })
+}
 
 function createTeamMembers(event: FormSubmitEvent<AddMemberSchema>) {
     return $fetch(`/api/organisation/${organisationId.value}/team/${teamId.value}/member`, {
@@ -98,13 +145,33 @@ function deleteMembers(memberIds: string[]) {
     <div class="my-4">
         <UBreadcrumb
             :items="[{ label: $t('organisations.title'), to: '/organisations' }, { label: $t('organisations.teams.title'), to: `/organisations/${organisationId}` }]" />
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200 mb-2">
-                {{ team?.data?.value?.name }}
-            </h2>
-        </div>
 
-        <p class="mb-4">{{ team?.data?.value?.description }}</p>
+        <div v-if="editing">
+            <UForm :schema="schema" :state="state" @submit="updateTeamDetails">
+                <div class="flex items-center justify-between mb-4 gap-2 h-[44px]">
+                    <UInput v-model="state.name" name="name" size="lg" class="w-full" />
+                    <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
+                        {{ $t('common.save') }}
+                    </UButton>
+                </div>
+
+                <UTextarea v-model="state.description" name="description" size="lg" class="w-full"
+                    placeholder="Description (optional)" />
+            </UForm>
+        </div>
+        <div v-else>
+            <div class="flex items-center justify-between mb-4">
+                <h2
+                    class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200 mb-2">
+                    {{ team?.data?.value?.name }}
+                </h2>
+                <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
+                    {{ $t('common.edit') }}
+                </UButton>
+            </div>
+
+            <p class="mb-4">{{ team?.data?.value?.description }}</p>
+        </div>
 
         <USeparator />
 

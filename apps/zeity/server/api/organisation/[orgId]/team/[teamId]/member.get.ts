@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { eq, asc, ilike, inArray, notInArray } from '@zeity/database';
+import { eq, asc, ilike } from '@zeity/database';
 import { users } from '@zeity/database/user';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.string().uuid(),
+      teamId: z.string().uuid(),
     }).safeParse
   );
 
@@ -27,8 +28,6 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       search: z.string().optional(),
-      team: coerceArray(z.string().uuid()).optional(),
-      excludeTeam: coerceArray(z.string().uuid()).optional(),
 
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
@@ -52,39 +51,26 @@ export default defineEventHandler(async (event) => {
   }
 
   const whereStatements = [
-    eq(organisationMembers.organisationId, params.data.orgId),
+    eq(organisationTeamMembers.teamId, params.data.teamId),
   ];
 
   if (query.data.search) {
     whereStatements.push(ilike(users.name, `%${query.data.search}%`));
   }
 
-  if (query.data.team) {
-    // find member ids in teams
-    const memberIds = await getMemberIdsInTeams(query.data.team);
-
-    // filter members found in teams
-    whereStatements.push(inArray(organisationMembers.id, memberIds));
-  }
-  if (query.data.excludeTeam) {
-    // find member ids in teams
-    const memberIds = await getMemberIdsInTeams(query.data.excludeTeam);
-
-    // filter out members found in excluded teams
-    whereStatements.push(notInArray(organisationMembers.id, memberIds));
-  }
-
   const members = await useDrizzle()
     .select({
-      id: organisationMembers.id,
+      memberId: organisationMembers.id,
       userId: organisationMembers.userId,
-      organisationId: organisationMembers.organisationId,
-
       role: organisationMembers.role,
       user: users,
     })
     .from(organisationMembers)
-    .innerJoin(users, eq(users.id, organisationMembers.userId))
+    .leftJoin(users, eq(organisationMembers.userId, users.id))
+    .leftJoin(
+      organisationTeamMembers,
+      eq(organisationTeamMembers.memberId, organisationMembers.id)
+    )
     .where(and(...whereStatements))
     .orderBy(asc(users.name))
     .offset(query.data.offset)
@@ -92,19 +78,3 @@ export default defineEventHandler(async (event) => {
 
   return members;
 });
-
-async function getMemberIdsInTeams(teamIds: string[]) {
-  if (teamIds.length === 0) {
-    return [];
-  }
-
-  const memberIds = await useDrizzle()
-    .select({
-      memberId: organisationTeamMembers.memberId,
-    })
-    .from(organisationTeamMembers)
-    .where(inArray(organisationTeamMembers.teamId, teamIds))
-    .then((rows) => rows.map((row) => row.memberId));
-
-  return memberIds;
-}

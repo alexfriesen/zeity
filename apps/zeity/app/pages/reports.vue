@@ -2,33 +2,32 @@
 import { isAfter, isBefore } from 'date-fns';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
+import type { OrganisationTeam } from '@zeity/database/organisation-team';
+import type { OrganisationMemberWithUser } from '~/types/organisation';
 import type { DateRange } from '~/types/date-filter';
 
 const { user } = useUser();
 const { isLoggedIn } = useAuth();
 const { loadProjects } = useProject();
 const { loadTimes, getOrganisationTimes } = useTime();
-const { fetchOrganisationMembers, currentOrganisationId } = useOrganisation();
+const { currentOrganisationId } = useOrganisation();
 
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
-const memberFilters = ref<string[]>([]);
-
-const { pending: membersPending, data: membersData, execute: membersExecute } = await fetchOrganisationMembers(currentOrganisationId!);
+const teamFilters = ref<OrganisationTeam[]>([]);
+const memberFilters = ref<OrganisationMemberWithUser[]>([]);
 
 const orgTimes = getOrganisationTimes();
+const filteredTeamIds = computed(() => {
+    return teamFilters.value.map(team => team.id);
+});
 const filteredUserIds = computed(() => {
     // user is not set if the user is not logged in
     if (!user.value) {
         return [];
     }
-    // if no filters are set, return the current user id
-    if (!memberFilters.value.length) {
-        // TODO: should the default be the current user or all users?
-        return [user.value.id];
-    }
     // if filters are set, return the filtered user ids
-    return memberFilters.value;
+    return memberFilters.value.map(member => member.userId);
 });
 const filteredTimes = computed(() => {
     const dFilter = dateFilter.value;
@@ -108,10 +107,9 @@ async function reloadAll() {
         return;
     }
 
-    await membersExecute();
     await loadAllActiveProjects();
     if (dateFilter.value) {
-        await loadAllTimes(dateFilter.value, projectFilters.value, memberFilters.value);
+        await loadAllTimes(dateFilter.value, projectFilters.value, filteredUserIds.value);
     }
 }
 
@@ -123,7 +121,7 @@ watch(currentOrganisationId, async () => {
     await reloadAll();
 });
 
-watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, users]) => {
+watch([dateFilter, projectFilters, filteredUserIds], async ([dateRange, projects, users]) => {
     if (dateRange && dateRange.start && dateRange.end) {
         await loadAllTimes(dateRange, projects, users);
     }
@@ -135,8 +133,8 @@ watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, 
         <section class="flex flex-col gap-1">
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
-            <OrganisationMemberFilter v-if="user" v-model="memberFilters" :members="membersData"
-                :pending="membersPending" />
+            <OrganisationTeamFilter v-if="user" v-model="teamFilters" />
+            <OrganisationMemberFilter v-if="user" v-model="memberFilters" :team-ids="filteredTeamIds" />
         </section>
 
         <UCard as="section">
@@ -152,7 +150,7 @@ watch([dateFilter, projectFilters, memberFilters], async ([dateRange, projects, 
                 <h2>{{ $t('reports.report') }}</h2>
             </template>
 
-            <ReportDownload :times="filteredTimes" :members="membersData" />
+            <ReportDownload :times="filteredTimes" :members="memberFilters" />
         </UCard>
     </div>
 </template>

@@ -1,3 +1,4 @@
+import type { NewOrganisationTeam } from '@zeity/database/organisation-team';
 import type { NewOrganisation, Organisation } from '@zeity/types/organisation';
 
 export function useOrganisation() {
@@ -62,6 +63,45 @@ export function useOrganisation() {
       });
   }
 
+  function fetchOrganisationTeams(orgId: MaybeRef<string | null | undefined>) {
+    const orgIdRef = toRef(orgId);
+    return useFetch(() => `/api/organisation/${orgIdRef.value}/team`);
+  }
+
+  function fetchOrganisationTeam(
+    orgId: MaybeRef<string | null | undefined>,
+    teamId: MaybeRef<string | null | undefined>
+  ) {
+    const orgIdRef = toRef(orgId);
+    const teamIdRef = toRef(teamId);
+    return useFetch(
+      () => `/api/organisation/${orgIdRef.value}/team/${teamIdRef.value}`
+    );
+  }
+
+  async function createOrganisationTeam(
+    orgId: string,
+    data: Partial<NewOrganisationTeam>
+  ) {
+    store.setLoading(true);
+    return (
+      $fetch(`/api/organisation/${orgId}/team`, {
+        method: 'POST',
+        body: data,
+      })
+        // TODO: add org team to store
+        // .then((data) => {
+        //   if (data?.id) {
+        //     store.insertOrganisation(data);
+        //   }
+        //   return data;
+        // })
+        .finally(() => {
+          store.setLoading(false);
+        })
+    );
+  }
+
   function uploadOrganisationImage(id: string, file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -76,6 +116,7 @@ export function useOrganisation() {
   }
 
   return {
+    loading: store.loading,
     currentOrganisation,
     currentOrganisationId,
     setCurrentOrganisationId: store.setCurrentOrganisationId,
@@ -87,6 +128,10 @@ export function useOrganisation() {
 
     createOrganisation,
     uploadOrganisationImage,
+
+    fetchOrganisationTeams,
+    fetchOrganisationTeam,
+    createOrganisationTeam,
 
     getAllOrganisations,
     findOrganisationById: store.findOrganisationById,

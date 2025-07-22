@@ -98,7 +98,7 @@ function handleUserImageUpload() {
             @submit.prevent="handleUpdateUser">
 
             <div class="flex flex-col items-center gap-2">
-                <UAvatar :src="user?.image || undefined" :alt="user?.name" size="3xl" />
+                <UAvatar :src="getUserImagePath(user)" :alt="user?.name" size="3xl" />
 
                 <UButton :disabled="isLoading" :label="$t('common.upload')" icon="i-lucide-camera" variant="subtle"
                     @click="handleUserImageUpload" />

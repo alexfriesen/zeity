@@ -9,17 +9,17 @@ const toast = useToast()
 definePageMeta({
     validate: async (route) => {
         // Check if the id is made up of digits
-        return typeof route.params.id === 'string'
+        return typeof route.params.orgId === 'string'
     }
 })
 
-const organisationId = route.params.id as string;
+const organisationId = route.params.orgId as string;
 
 const { fetchOrganisation, uploadOrganisationImage } = useOrganisation();
 const { status, data, refresh } = await fetchOrganisation(organisationId);
 
 const schema = z.object({
-    name: z.string().min(3).max(150).default(''),
+    name: z.string().min(2).max(150).default(''),
 })
 type Schema = z.output<typeof schema>
 const state = ref({
@@ -97,12 +97,12 @@ function changeImage() {
 function deleteOrganisation() {
     return $fetch(`/api/organisation/${organisationId}`, {
         method: 'DELETE',
-    }).then(() => {
+    }).then(async () => {
         toast.add({
             color: 'success',
             title: t('organisations.delete.success'),
         })
-        return navigateTo('/organisations')
+        await navigateTo('/organisations')
     }).catch((error) => {
         console.error(error)
         toast.add({
@@ -118,7 +118,7 @@ function deleteOrganisation() {
         <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
 
         <div class="flex flex-col items-center justify-center">
-            <UAvatar :src="data?.image || undefined" :alt="data?.name" size="3xl" class="mb-4" />
+            <UAvatar :src="getOrganisationImagePath(data)" :alt="data?.name" size="3xl" class="mb-4" />
             <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
                 {{ $t('common.upload') }}
             </UButton>
@@ -142,6 +142,10 @@ function deleteOrganisation() {
                 </UButton>
             </div>
         </div>
+
+        <USeparator class="my-4" />
+
+        <OrganisationTeamsList :organisation-id="organisationId" />
 
         <USeparator class="my-4" />
 

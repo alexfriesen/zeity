@@ -182,7 +182,7 @@ function toggleCreateModal() {
                             {{ $t('common.cancel') }}
                         </UButton>
                         <UButton type="submit">
-                            {{ $t('common.save') }}
+                            {{ $t('common.send') }}
                         </UButton>
                     </div>
                 </UForm>

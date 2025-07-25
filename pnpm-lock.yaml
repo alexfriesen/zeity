@@ -129,8 +129,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.0.10
+        version: 4.0.10
     devDependencies:
       '@iconify-json/lucide':
         specifier: ^1.2.57
@@ -146,7 +146,7 @@ importers:
         version: 3.19.2(@vue/test-utils@2.4.6)(happy-dom@18.0.1)(magicast@0.3.5)(playwright-core@1.54.1)(typescript@5.8.3)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.1.0)(happy-dom@18.0.1)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))
       '@nuxt/ui':
         specifier: ^3.2.0
-        version: 3.2.0(@babel/parser@7.28.0)(change-case@5.4.4)(db0@0.3.2(drizzle-orm@0.44.3(@types/pg@8.15.4)(pg@8.16.3)))(embla-carousel@8.6.0)(ioredis@5.6.1)(magicast@0.3.5)(typescript@5.8.3)(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))(zod@3.25.76)
+        version: 3.2.0(@babel/parser@7.28.0)(change-case@5.4.4)(db0@0.3.2(drizzle-orm@0.44.3(@types/pg@8.15.4)(pg@8.16.3)))(embla-carousel@8.6.0)(ioredis@5.6.1)(magicast@0.3.5)(typescript@5.8.3)(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))(zod@4.0.10)
       '@nuxtjs/i18n':
         specifier: ^9.5.6
         version: 9.5.6(@vue/compiler-dom@3.5.17)(eslint@9.31.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.45.1)(vue@3.5.17(typescript@5.8.3))
@@ -7977,6 +7977,9 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
+  zod@4.0.10:
+    resolution: {integrity: sha512-3vB+UU3/VmLL2lvwcY/4RV2i9z/YU0DTV/tDuYjrwmx5WeJ7hwy+rGEEx8glHp6Yxw7ibRbKSaIFBgReRPe5KA==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -9827,6 +9830,92 @@ snapshots:
     optionalDependencies:
       vue-router: 4.5.1(vue@3.5.17(typescript@5.8.3))
       zod: 3.25.76
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@babel/parser'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - '@vue/composition-api'
+      - async-validator
+      - aws4fetch
+      - axios
+      - change-case
+      - db0
+      - drauu
+      - embla-carousel
+      - encoding
+      - focus-trap
+      - idb-keyval
+      - ioredis
+      - jwt-decode
+      - magicast
+      - nprogress
+      - qrcode
+      - sortablejs
+      - supports-color
+      - universal-cookie
+      - uploadthing
+      - vite
+      - vue
+
+  '@nuxt/ui@3.2.0(@babel/parser@7.28.0)(change-case@5.4.4)(db0@0.3.2(drizzle-orm@0.44.3(@types/pg@8.15.4)(pg@8.16.3)))(embla-carousel@8.6.0)(ioredis@5.6.1)(magicast@0.3.5)(typescript@5.8.3)(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))(zod@4.0.10)':
+    dependencies:
+      '@iconify/vue': 5.0.0(vue@3.5.17(typescript@5.8.3))
+      '@internationalized/date': 3.8.2
+      '@internationalized/number': 3.6.3
+      '@nuxt/fonts': 0.11.4(db0@0.3.2(drizzle-orm@0.44.3(@types/pg@8.15.4)(pg@8.16.3)))(ioredis@5.6.1)(magicast@0.3.5)(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))
+      '@nuxt/icon': 1.15.0(magicast@0.3.5)(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
+      '@nuxt/kit': 3.17.7(magicast@0.3.5)
+      '@nuxt/schema': 3.17.7
+      '@nuxtjs/color-mode': 3.5.2(magicast@0.3.5)
+      '@standard-schema/spec': 1.0.0
+      '@tailwindcss/postcss': 4.1.11
+      '@tailwindcss/vite': 4.1.11(vite@7.0.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))
+      '@tanstack/vue-table': 8.21.3(vue@3.5.17(typescript@5.8.3))
+      '@unhead/vue': 2.0.12(vue@3.5.17(typescript@5.8.3))
+      '@vueuse/core': 13.5.0(vue@3.5.17(typescript@5.8.3))
+      '@vueuse/integrations': 13.5.0(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.17(typescript@5.8.3))
+      colortranslator: 5.0.0
+      consola: 3.4.2
+      defu: 6.1.4
+      embla-carousel-auto-height: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-auto-scroll: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-autoplay: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-class-names: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-fade: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-vue: 8.6.0(vue@3.5.17(typescript@5.8.3))
+      embla-carousel-wheel-gestures: 8.0.2(embla-carousel@8.6.0)
+      fuse.js: 7.1.0
+      hookable: 5.5.3
+      knitwork: 1.2.0
+      magic-string: 0.30.17
+      mlly: 1.7.4
+      ohash: 2.0.11
+      pathe: 2.0.3
+      reka-ui: 2.3.1(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      scule: 1.3.0
+      tailwind-variants: 1.0.0(tailwindcss@4.1.11)
+      tailwindcss: 4.1.11
+      tinyglobby: 0.2.14
+      typescript: 5.8.3
+      unplugin: 2.3.5
+      unplugin-auto-import: 19.3.0(@nuxt/kit@3.17.7(magicast@0.3.5))(@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3)))
+      unplugin-vue-components: 28.8.0(@babel/parser@7.28.0)(@nuxt/kit@3.17.7(magicast@0.3.5))(vue@3.5.17(typescript@5.8.3))
+      vaul-vue: 0.4.1(reka-ui@2.3.1(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
+      vue-component-type-helpers: 2.2.12
+    optionalDependencies:
+      vue-router: 4.5.1(vue@3.5.17(typescript@5.8.3))
+      zod: 4.0.10
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -17277,5 +17366,7 @@ snapshots:
       zod: 3.25.76
 
   zod@3.25.76: {}
+
+  zod@4.0.10: {}
 
   zwitch@2.0.4: {}

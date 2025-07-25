@@ -34,11 +34,11 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.57",
-    "@nuxt/eslint": "^1.7.0",
+    "@iconify-json/lucide": "^1.2.58",
+    "@nuxt/eslint": "^1.7.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/test-utils": "^3.19.2",
-    "@nuxt/ui": "^3.2.0",
+    "@nuxt/ui": "^3.3.0",
     "@nuxtjs/i18n": "^9.5.6",
     "@types/etag": "^1.8.4",
     "@types/nodemailer": "^6.4.17",
@@ -49,8 +49,8 @@
     "happy-dom": "^18.0.1",
     "nuxt": "^4.0.1",
     "nuxt-auth-utils": "^0.5.20",
-    "nuxt-security": "^2.2.0",
-    "vue-i18n": "^11.1.10",
-    "vue-tsc": "3.0.3"
+    "nuxt-security": "^2.3.0",
+    "vue-i18n": "^11.1.11",
+    "vue-tsc": "3.0.4"
   }
 }

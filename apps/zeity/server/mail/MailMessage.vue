@@ -2,7 +2,7 @@
 import type { PropType } from 'vue';
 import { Section, Button, Text, Heading } from '@vue-email/components';
 
-import type { MailSection } from '~~/types/mail';
+import type { MailSection } from '~~/shared/types/mail';
 import MailLayout from './MailLayout.vue';
 
 defineProps({

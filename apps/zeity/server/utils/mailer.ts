@@ -5,7 +5,7 @@ import type { EmailService } from 'unemail';
 import { createEmailService } from 'unemail';
 import smtpProvider from 'unemail/providers/smtp';
 
-import type { MailSection } from '~~/types/mail';
+import type { MailSection } from '~~/shared/types/mail';
 import { useMailTemplate } from './mail-template';
 
 type MailTo = EmailAddress | EmailAddress[];

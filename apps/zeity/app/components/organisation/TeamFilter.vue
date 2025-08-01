@@ -14,7 +14,7 @@ const { pending, data } = await useLazyAsyncData(
 );
 const teams = computed(() => data.value || []);
 
-function toggleSelected(id: number) {
+function toggleSelected(id: string) {
     const set = new Set(selectedIds.value || []);
     if (set.has(id)) {
         set.delete(id);
@@ -24,7 +24,7 @@ function toggleSelected(id: number) {
     model.value = teams.value.filter(team => set.has(team.id));
 }
 
-function isSelected(id: number) {
+function isSelected(id: string) {
     const ids = selectedIds.value || [];
     return ids.includes(id);
 }

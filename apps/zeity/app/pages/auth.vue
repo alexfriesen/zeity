@@ -53,9 +53,28 @@ async function handleRedirect() {
                 <USeparator orientation="horizontal" label="or" />
 
                 <AuthLogin @submit="auth" />
+
+                <USeparator orientation="horizontal" label="or" />
+
+                <UButton external to="/auth/google" icon="i-simple-icons-google" variant="outline" size="lg">
+                    <span class="flex-grow text-center">
+                        {{ $t('auth.loginWithGoogle') }}
+                    </span>
+                </UButton>
+                <UButton external to="/auth/apple" icon="i-simple-icons-apple" variant="outline" size="lg">
+                    <span class="flex-grow text-center">
+                        {{ $t('auth.loginWithApple') }}
+                    </span>
+                </UButton>
+                <UButton block external to="/auth/microsoft" icon="i-simple-icons-microsoft" variant="outline"
+                    size="lg">
+                    <span class="flex-grow text-center">
+                        {{ $t('auth.loginWithMicrosoft') }}
+                    </span>
+                </UButton>
             </div>
         </UCard>
-
+        ^
         <UCard v-if="user && !user?.verified" class="max-w-md m-auto">
             <template #header>
                 <h3 class="text-lg font-semibold leading-6">

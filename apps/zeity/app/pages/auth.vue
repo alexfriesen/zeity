@@ -53,7 +53,12 @@ async function handleRedirect() {
                 <USeparator orientation="horizontal" label="or" />
 
                 <AuthLogin @submit="auth" />
+
+                <USeparator orientation="horizontal" label="or" />
+
+                <AuthOauth />
             </div>
+
         </UCard>
 
         <UCard v-if="user && !user?.verified" class="max-w-md m-auto">

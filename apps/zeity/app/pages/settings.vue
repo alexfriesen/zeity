@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { Project, Time } from '@zeity/types';
-import { omit } from '@zeity/utils/object';
+import { nanoid } from 'nanoid';
+import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
+import { timeDiff } from '@zeity/utils/date';
+import { pick } from '@zeity/utils/object';
 import { downloadAs } from '~/utils/download-file';
 
 const { t } = useI18n();
@@ -109,12 +111,68 @@ async function handleImport(event: Event) {
     if (!result) return;
 
     if (json.times && Array.isArray(json.times)) {
-        timeStore.upsertTimes(json.times.map((time: Time) => omit(time, 'userId', 'organisationId')));
+        timeStore.upsertTimes(
+            json.times
+                .map(sanitizeTime)
+                .filter(Boolean)
+        );
     }
 
     if (json.projects && Array.isArray(json.projects)) {
-        projectStore.upsertProjects(json.projects.map((project: Project) => omit(project, 'userId', 'organisationId')));
+        projectStore.upsertProjects(
+            json.projects
+                .map(sanitizeProject)
+                .filter(Boolean)
+        );
     }
+}
+
+function sanitizeTime(data: unknown) {
+    if (typeof data !== 'object' || data === null) {
+        return null;
+    }
+
+    if (!('start' in data)) {
+        return null;
+    }
+
+    const time: Record<string, any> = pick(data as any, ['id', 'start', 'duration', 'notes', 'projectId']);
+
+    if (!time.id) {
+        time.id = nanoid();
+    }
+
+    if ('end' in data && !('duration' in data)) {
+        time.duration = timeDiff(data['end'] as any, data['start'] as any);
+    }
+
+    if (isNaN(time.duration)) {
+        return null;
+    }
+
+    return time;
+}
+
+function sanitizeProject(data: unknown) {
+    if (typeof data !== 'object' || data === null) {
+        return null;
+    }
+
+    const project: Record<string, any> = pick(data as any, ['id', 'name', 'status', 'notes']);
+
+    if (!project.id) {
+        project.id = nanoid();
+    }
+
+    if (!project.name) {
+        return null;
+    }
+
+    if (!project.status) {
+        project.status = PROJECT_STATUS_ACTIVE;
+    }
+
+    return project;
 }
 </script>
 

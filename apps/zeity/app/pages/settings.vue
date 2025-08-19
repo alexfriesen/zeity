@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
-import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
-import { timeDiff } from '@zeity/utils/date';
+import { PROJECT_STATUS_ACTIVE, type Project, type Time } from '@zeity/types';
+import { timeDiff, type DateLike } from '@zeity/utils/date';
 import { pick } from '@zeity/utils/object';
 import { downloadAs } from '~/utils/download-file';
 
@@ -136,14 +136,14 @@ function sanitizeTime(data: unknown) {
         return null;
     }
 
-    const time: Record<string, any> = pick(data as any, ['id', 'start', 'duration', 'notes', 'projectId']);
+    const time: Time = pick(data as Time, ['id', 'start', 'duration', 'notes', 'projectId']);
 
     if (!time.id) {
         time.id = nanoid();
     }
 
     if ('end' in data && !('duration' in data)) {
-        time.duration = timeDiff(data['end'] as any, data['start'] as any);
+        time.duration = timeDiff(data['end'] as DateLike, data['start'] as DateLike);
     }
 
     if (isNaN(time.duration)) {
@@ -158,7 +158,7 @@ function sanitizeProject(data: unknown) {
         return null;
     }
 
-    const project: Record<string, any> = pick(data as any, ['id', 'name', 'status', 'notes']);
+    const project: Project = pick(data as Project, ['id', 'name', 'status', 'notes']);
 
     if (!project.id) {
         project.id = nanoid();

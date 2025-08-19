@@ -6,10 +6,13 @@
         ":semanticCommitTypeAll(chore)",
         ":widenPeerDependencies"
     ],
-    "rangeStrategy": "bump",
     "baseBranches": [
         "main"
     ],
+    "lockFileMaintenance": {
+        "enabled": true
+    },
+    "rangeStrategy": "bump",
     "packageRules": [
         {
             "groupName": "vitest",

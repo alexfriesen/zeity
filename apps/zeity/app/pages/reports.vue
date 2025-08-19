@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAfter, isBefore } from 'date-fns';
-import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
+import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER, PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
 import type { OrganisationTeam } from '@zeity/database/organisation-team';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
@@ -10,7 +10,7 @@ const { user } = useUser();
 const { isLoggedIn } = useAuth();
 const { loadProjects } = useProject();
 const { loadTimes, getOrganisationTimes } = useTime();
-const { currentOrganisationId } = useOrganisation();
+const { currentOrganisationId, currentOrganisation } = useOrganisation();
 
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
@@ -64,6 +64,9 @@ const filteredTimes = computed(() => {
 });
 
 const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
+
+const orgRole = computed(() => currentOrganisation.value?.role);
+const showAdminControls = computed(() => orgRole.value && [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value));
 
 async function loadAllTimes(range: DateRange, projectIds: string[], userIds: string[], limit = 100) {
     let offset = 0;
@@ -133,8 +136,9 @@ watch([dateFilter, projectFilters, filteredUserIds], async ([dateRange, projects
         <section class="flex flex-col gap-1">
             <DateFilter v-model="dateFilter" />
             <ProjectFilter v-model="projectFilters" />
-            <OrganisationTeamFilter v-if="user" v-model="teamFilters" />
-            <OrganisationMemberFilter v-if="user" v-model="memberFilters" :team-ids="filteredTeamIds" />
+            <OrganisationTeamFilter v-if="user && showAdminControls" v-model="teamFilters" />
+            <OrganisationMemberFilter v-if="user && showAdminControls" v-model="memberFilters"
+                :team-ids="filteredTeamIds" />
         </section>
 
         <UCard as="section">

@@ -6,12 +6,10 @@ export default defineOAuthAppleEventHandler({
       .filter(Boolean)
       .join(' ');
 
-    const linkedUser = await handleOAuthLogin(
-      APPLE_PROVIDER_ID,
-      payload.sub,
-      payload.email,
-      name
-    );
+    const linkedUser = await handleOAuthLogin(APPLE_PROVIDER_ID, payload.sub, {
+      email: payload.email,
+      name,
+    });
     if (!linkedUser) {
       throw createError({
         statusCode: 401,

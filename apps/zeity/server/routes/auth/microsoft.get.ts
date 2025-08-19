@@ -4,12 +4,10 @@ const MICROSOFT_PROVIDER_ID = 'microsoft';
 
 export default defineOAuthMicrosoftEventHandler({
   async onSuccess(event, { user }) {
-    const linkedUser = await handleOAuthLogin(
-      MICROSOFT_PROVIDER_ID,
-      user.id,
-      user.mail,
-      user.displayName
-    );
+    const linkedUser = await handleOAuthLogin(MICROSOFT_PROVIDER_ID, user.id, {
+      email: user.mail,
+      name: user.displayName,
+    });
     if (!linkedUser) {
       throw createError({
         statusCode: 401,

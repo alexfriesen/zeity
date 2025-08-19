@@ -36,9 +36,7 @@ export function linkUserAccount(
 export async function handleOAuthLogin(
   providerId: string,
   accountId: string,
-  email: string,
-  name?: string,
-  scope?: string
+  data: { email: string; name?: string; scope?: string }
 ): Promise<User | null> {
   return useDrizzle().transaction(async (tx) => {
     const oauthAccount = await tx
@@ -60,7 +58,7 @@ export async function handleOAuthLogin(
     const dbUser = await tx
       .select()
       .from(users)
-      .where(eq(users.email, email))
+      .where(eq(users.email, data.email))
       .limit(1)
       .then((rows) => rows[0]);
     if (dbUser) {
@@ -70,7 +68,7 @@ export async function handleOAuthLogin(
           userId: dbUser.id,
           accountId,
           providerId,
-          scope,
+          scope: data.scope,
         })
         .returning()
         .then((rows) => rows[0]);
@@ -80,8 +78,8 @@ export async function handleOAuthLogin(
     const newUser = await tx
       .insert(users)
       .values({
-        name: name || email,
-        email,
+        name: data.name || data.email,
+        email: data.email,
       })
       .returning()
       .then((rows) => rows[0]);
@@ -92,7 +90,7 @@ export async function handleOAuthLogin(
           userId: newUser.id,
           accountId,
           providerId,
-          scope,
+          scope: data.scope,
         })
         .returning()
         .then((rows) => rows[0]);

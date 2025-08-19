@@ -9,13 +9,11 @@ export default defineOAuthGoogleEventHandler({
     },
   },
   async onSuccess(event, { user }) {
-    const linkedUser = await handleOAuthLogin(
-      GOOGLE_PROVIDER_ID,
-      user.sub,
-      user.email,
-      user.name,
-      user.scope
-    );
+    const linkedUser = await handleOAuthLogin(GOOGLE_PROVIDER_ID, user.sub, {
+      email: user.email,
+      name: user.name,
+      scope: user.scope,
+    });
     if (!linkedUser) {
       throw createError({
         statusCode: 401,

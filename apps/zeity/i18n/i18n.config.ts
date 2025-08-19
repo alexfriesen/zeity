@@ -202,6 +202,9 @@ export default defineI18nConfig(() => ({
         register: 'Register',
         logout: 'Logout',
         verify: 'Verify Email',
+        loginWithGoogle: 'Login with Google',
+        loginWithApple: 'Login with Apple',
+        loginWithMicrosoft: 'Login with Microsoft',
       },
       about: {
         title: 'Zeity',
@@ -380,6 +383,9 @@ export default defineI18nConfig(() => ({
         register: 'Registrieren',
         logout: 'Abmelden',
         verify: 'E-Mail verifizieren',
+        loginWithGoogle: 'Mit Google anmelden',
+        loginWithApple: 'Mit Apple anmelden',
+        loginWithMicrosoft: 'Mit Microsoft anmelden',
       },
       settings: {
         title: 'Einstellungen',

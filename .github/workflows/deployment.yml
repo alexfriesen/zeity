@@ -19,7 +19,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          pnpm --filter ./apps/website/ build
+          pnpm --filter ./apps/website/ generate
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

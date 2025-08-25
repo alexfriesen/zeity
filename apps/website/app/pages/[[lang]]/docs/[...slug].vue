@@ -18,7 +18,7 @@ const route = useRoute()
 const { locale, t } = useI18n()
 const localePath = useLocalePath();
 
-const path = computed(() => route.path.replace(/\/$/, ''))
+const path = computed(() => route.path);
 const collection = computed(() => `docs_${locale.value}`);
 const breadcrumbs = getBreadcrumbs(route.params.slug);
 

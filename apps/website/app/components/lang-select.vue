@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-const locale = useI18n().locale;
+const { locale, locales } = useI18n();
 const switchLocalePath = useSwitchLocalePath();
 
 const selected = computed(() => {
@@ -15,16 +15,11 @@ const selected = computed(() => {
 	return lang || availableLanguages.value[0]!;
 });
 
-const availableLanguages = computed(() => [{
-	value: 'en',
-	label: 'English',
-	icon: 'circle-flags:en',
-	to: switchLocalePath('en'),
-}, {
-	value: 'de',
-	label: 'Deutsch',
-	icon: 'circle-flags:de',
-	to: switchLocalePath('de'),
-}]);
+const availableLanguages = computed(() => (locales.value).map(locale => ({
+	value: locale.code,
+	label: locale.name,
+	icon: `circle-flags:${locale.code}`,
+	to: switchLocalePath(locale.code),
+})));
 
 </script>

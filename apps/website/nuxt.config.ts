@@ -35,10 +35,10 @@ export default defineNuxtConfig({
       useCookie: false,
     },
     locales: [
-      {
-        code: 'de',
-        name: 'Deutsch',
-      },
+      // {
+      //   code: 'de',
+      //   name: 'Deutsch',
+      // },
       {
         code: 'en',
         name: 'English',
@@ -79,7 +79,7 @@ export default defineNuxtConfig({
     name: 'zeity',
   },
   nitro: {
-    static: true,
+    // static: true,
     prerender: {
       routes: ['/', '/robots.txt'],
     },

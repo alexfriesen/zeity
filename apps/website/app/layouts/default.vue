@@ -22,7 +22,7 @@
 			</main>
 			<footer>
 				<AppContent class="flex flex-col md:flex-row items-center justify-evenly gap-2">
-					<LangSelect />
+					<!-- <LangSelect /> -->
 					<div>
 						<p class="text-base p-2">
 							&copy; 2025 - zeity.co

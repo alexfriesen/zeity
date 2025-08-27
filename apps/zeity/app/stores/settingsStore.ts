@@ -5,12 +5,14 @@ interface SettingsState {
   locale: Locale;
   themeMode: string;
   themePrimary: string;
+  openTimeDetailsOnStart: boolean;
 }
 
 const defaultSettings: SettingsState = {
   locale: 'en',
   themeMode: 'system',
   themePrimary: 'sky',
+  openTimeDetailsOnStart: true,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -33,10 +35,16 @@ export const useSettingsStore = defineStore('settings', () => {
     themePrimary.value = value;
   }
 
+  const openTimeDetailsOnStart = ref(defaultSettings.openTimeDetailsOnStart);
+  function setOpenTimeDetailsOnStart(value: boolean) {
+    openTimeDetailsOnStart.value = value;
+  }
+
   const settings = computed<SettingsState>(() => ({
     locale: locale.value,
     themeMode: themeMode.value,
     themePrimary: themePrimary.value,
+    openTimeDetailsOnStart: openTimeDetailsOnStart.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
@@ -85,6 +93,9 @@ export const useSettingsStore = defineStore('settings', () => {
 
     themePrimary,
     setThemePrimary,
+
+    openTimeDetailsOnStart,
+    setOpenTimeDetailsOnStart,
 
     loadFromLocalStorage,
   };

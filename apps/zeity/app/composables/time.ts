@@ -47,6 +47,7 @@ function deleteTime(id: string | number) {
 }
 
 export function useTime() {
+  const { settings } = useSettings();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
 
@@ -132,6 +133,10 @@ export function useTime() {
       ...time,
     };
     store.setDraft(newDraft);
+
+    if (toRef(settings).value.openTimeDetailsOnStart) {
+      useTimeDetail().open(newDraft);
+    }
 
     return newDraft;
   }

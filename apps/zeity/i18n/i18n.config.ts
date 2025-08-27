@@ -99,6 +99,10 @@ export default defineI18nConfig(() => ({
         data: 'Data',
         import: 'Import',
         export: 'Export',
+        time: {
+          title: 'Timer',
+          detailsOnStart: 'Open details on start',
+        },
       },
       organisations: {
         title: 'Organisations',
@@ -400,8 +404,11 @@ export default defineI18nConfig(() => ({
         data: 'Daten',
         import: 'Importieren',
         export: 'Exportieren',
+        time: {
+          title: 'Timer',
+          detailsOnStart: 'Details beim Start anzeigen',
+        },
       },
-
       about: {
         title: 'Zeity',
         description:

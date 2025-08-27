@@ -195,6 +195,11 @@ function sanitizeProject(data: unknown) {
                 <span>{{ $t('settings.time.detailsOnStart') }}</span>
                 <USwitch v-model="settingsStore.openTimeDetailsOnStart" />
             </label>
+
+            <label class="flex items-center justify-between">
+                <span>{{ $t('settings.time.detailsOnStop') }}</span>
+                <USwitch v-model="settingsStore.openTimeDetailsOnStop" />
+            </label>
         </FieldSet>
 
         <FieldSet :label="$t('settings.appearance')">

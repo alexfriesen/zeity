@@ -47,9 +47,9 @@ function deleteTime(id: string | number) {
 }
 
 export function useTime() {
-  const { settings } = useSettings();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
+  const settings = toRef(useSettings().settings);
 
   const store = useTimerStore();
 
@@ -134,7 +134,7 @@ export function useTime() {
     };
     store.setDraft(newDraft);
 
-    if (toRef(settings).value.openTimeDetailsOnStart) {
+    if (settings.value.openTimeDetailsOnStart) {
       useTimeDetail().open(newDraft);
     }
 
@@ -148,14 +148,18 @@ export function useTime() {
     const end = nowWithoutMillis();
     const duration = timeDiff(end, start);
 
-    const time = {
+    const temp = {
       id: nanoid(),
       ...draftValue,
       duration,
     };
 
-    await createTime(time);
+    const time = await createTime(temp);
     store.resetDraft();
+
+    if (settings.value.openTimeDetailsOnStop && time) {
+      useTimeDetail().open(time);
+    }
 
     return time;
   }

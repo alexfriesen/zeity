@@ -5,75 +5,104 @@ import { mockNuxtImport } from '@nuxt/test-utils/runtime';
 import { useSettingsStore } from '../../app/stores/settingsStore';
 
 const { useColorMode } = vi.hoisted(() => ({
-    useColorMode: () => ({
-        value: 'dark',
-        preference: 'system',
-    }),
+  useColorMode: () => ({
+    value: 'dark',
+    preference: 'system',
+  }),
 }));
 mockNuxtImport('useColorMode', () => useColorMode);
 
 const { useI18n } = vi.hoisted(() => ({
-    useI18n: () => {
-        const locale = ref('en');
-        return {
-            locale,
-            setLocale: (val: string) => {
-                locale.value = val;
-            },
-        };
-    },
+  useI18n: () => {
+    const locale = ref('en');
+    return {
+      locale,
+      setLocale: (val: string) => {
+        locale.value = val;
+      },
+    };
+  },
 }));
 mockNuxtImport('useI18n', () => useI18n);
 
-describe("useSettingsStore", () => {
-    beforeEach(() => {
-        vi.resetAllMocks();
-        setActivePinia(createPinia());
+describe('useSettingsStore', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    setActivePinia(createPinia());
+  });
+
+  it('should have a default state', () => {
+    const store = useSettingsStore();
+    expect(store.settings).toStrictEqual({
+      locale: 'en',
+      themeMode: 'dark',
+      themePrimary: 'sky',
+      openTimeDetailsOnStart: true,
+      openTimeDetailsOnStop: false,
+    });
+  });
+
+  describe('localStorage', () => {
+    it('should load settings from localStorage', () => {
+      vi.spyOn(localStorage, 'getItem').mockReturnValue(
+        JSON.stringify({ locale: 'fr', themeMode: 'dark', themePrimary: 'red' })
+      );
+
+      const store = useSettingsStore();
+      store.loadFromLocalStorage();
+
+      expect(store.settings).toEqual({
+        locale: 'fr',
+        themeMode: 'dark',
+        themePrimary: 'red',
+        openTimeDetailsOnStart: true,
+        openTimeDetailsOnStop: false,
+      });
     });
 
-    it('should have a default state', () => {
-        const store = useSettingsStore();
-        expect(store.settings).toStrictEqual({ locale: 'en', themeMode: 'dark', themePrimary: 'sky', openTimeDetailsOnStart: true });
+    it('should save settings to localStorage', async () => {
+      const spy = vi.spyOn(localStorage, 'setItem');
+      const store = useSettingsStore();
+
+      store.init();
+      store.updateSettings({ locale: 'de' });
+
+      await nextTick();
+
+      expect(spy).toHaveBeenCalledWith(
+        'settings',
+        JSON.stringify({
+          locale: 'de',
+          themeMode: 'dark',
+          themePrimary: 'sky',
+          openTimeDetailsOnStart: true,
+          openTimeDetailsOnStop: false,
+        })
+      );
     });
+  });
 
-    describe('localStorage', () => {
-        it('should load settings from localStorage', () => {
-            vi.spyOn(localStorage, 'getItem').mockReturnValue((JSON.stringify({ locale: 'fr', themeMode: 'dark', themePrimary: 'red' })));
+  describe('updateSettings', () => {
+    it('should update settings', () => {
+      const store = useSettingsStore();
+      store.updateSettings({ locale: 'de' });
 
-            const store = useSettingsStore();
-            store.loadFromLocalStorage();
-
-            expect(store.settings).toEqual({ locale: 'fr', themeMode: 'dark', themePrimary: 'red', openTimeDetailsOnStart: true });
-        });
-
-        it('should save settings to localStorage', async () => {
-            const spy = vi.spyOn(localStorage, 'setItem');
-            const store = useSettingsStore();
-
-            store.init();
-            store.updateSettings({ locale: 'de' });
-
-            await nextTick();
-
-            expect(spy).toHaveBeenCalledWith('settings', JSON.stringify({ locale: 'de', themeMode: 'dark', themePrimary: 'sky', openTimeDetailsOnStart: true }));
-        });
+      expect(store.settings).toStrictEqual({
+        locale: 'de',
+        themeMode: 'dark',
+        themePrimary: 'sky',
+        openTimeDetailsOnStart: true,
+        openTimeDetailsOnStop: false,
+      });
     });
+  });
 
-    describe('updateSettings', () => {
-        it('should update settings', () => {
-            const store = useSettingsStore();
-            store.updateSettings({ locale: 'de' });
+  describe('setLocale', () => {
+    it('should set the locale', () => {
+      const store = useSettingsStore();
+      store.setLocale('de');
 
-            expect(store.settings).toStrictEqual({ locale: 'de', themeMode: 'dark', themePrimary: 'sky', openTimeDetailsOnStart: true });
-        });
+      expect(store.settings.locale).toStrictEqual('de');
     });
-
-    describe('setLocale', () => {
-        it('should set the locale', () => {
-            const store = useSettingsStore();
-            store.setLocale('de');
-
-            expect(store.settings.locale).toStrictEqual('de');
-        });
-    });
+  });
 });

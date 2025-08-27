@@ -6,6 +6,7 @@ interface SettingsState {
   themeMode: string;
   themePrimary: string;
   openTimeDetailsOnStart: boolean;
+  openTimeDetailsOnStop: boolean;
 }
 
 const defaultSettings: SettingsState = {
@@ -13,6 +14,7 @@ const defaultSettings: SettingsState = {
   themeMode: 'system',
   themePrimary: 'sky',
   openTimeDetailsOnStart: true,
+  openTimeDetailsOnStop: false,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -36,15 +38,14 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   const openTimeDetailsOnStart = ref(defaultSettings.openTimeDetailsOnStart);
-  function setOpenTimeDetailsOnStart(value: boolean) {
-    openTimeDetailsOnStart.value = value;
-  }
+  const openTimeDetailsOnStop = ref(defaultSettings.openTimeDetailsOnStop);
 
   const settings = computed<SettingsState>(() => ({
     locale: locale.value,
     themeMode: themeMode.value,
     themePrimary: themePrimary.value,
     openTimeDetailsOnStart: openTimeDetailsOnStart.value,
+    openTimeDetailsOnStop: openTimeDetailsOnStop.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
@@ -56,6 +57,13 @@ export const useSettingsStore = defineStore('settings', () => {
     }
     if (data.themePrimary !== undefined) {
       setThemePrimary(data.themePrimary);
+    }
+
+    if (data.openTimeDetailsOnStart !== undefined) {
+      openTimeDetailsOnStart.value = data.openTimeDetailsOnStart;
+    }
+    if (data.openTimeDetailsOnStop !== undefined) {
+      openTimeDetailsOnStop.value = data.openTimeDetailsOnStop;
     }
   }
 
@@ -95,7 +103,7 @@ export const useSettingsStore = defineStore('settings', () => {
     setThemePrimary,
 
     openTimeDetailsOnStart,
-    setOpenTimeDetailsOnStart,
+    openTimeDetailsOnStop,
 
     loadFromLocalStorage,
   };

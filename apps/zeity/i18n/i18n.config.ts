@@ -102,6 +102,7 @@ export default defineI18nConfig(() => ({
         time: {
           title: 'Timer',
           detailsOnStart: 'Open details on start',
+          detailsOnStop: 'Open details on stop',
         },
       },
       organisations: {
@@ -406,7 +407,8 @@ export default defineI18nConfig(() => ({
         export: 'Exportieren',
         time: {
           title: 'Timer',
-          detailsOnStart: 'Details beim Start anzeigen',
+          detailsOnStart: 'Details beim Start einblenden',
+          detailsOnStop: 'Details beim Stoppen einblenden',
         },
       },
       about: {

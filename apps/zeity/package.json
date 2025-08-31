@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.2",
-    "@internationalized/date": "^3.8.2",
+    "@internationalized/date": "^3.9.0",
     "@number-flow/vue": "^0.4.8",
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^0.11.2",
@@ -23,19 +23,19 @@
     "@simplewebauthn/server": "^13.1.2",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
-    "@vueuse/core": "^13.7.0",
+    "@vueuse/core": "^13.8.0",
     "@zeity/database": "workspace:^",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "^4.1.0",
-    "drizzle-orm": "^0.44.4",
-    "jose": "^6.0.12",
+    "drizzle-orm": "^0.44.5",
+    "jose": "^6.1.0",
     "unemail": "^0.3.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.63",
-    "@iconify-json/simple-icons": "^1.2.48",
+    "@iconify-json/lucide": "^1.2.66",
+    "@iconify-json/simple-icons": "^1.2.50",
     "@nuxt/eslint": "^1.9.0",
     "@nuxt/image": "^1.11.0",
     "@nuxt/test-utils": "^3.19.2",
@@ -49,8 +49,8 @@
     "happy-dom": "^18.0.1",
     "nuxt": "^4.0.3",
     "nuxt-auth-utils": "^0.5.23",
-    "nuxt-security": "^2.3.0",
+    "nuxt-security": "^2.4.0",
     "vue-i18n": "^11.1.11",
-    "vue-tsc": "3.0.5"
+    "vue-tsc": "3.0.6"
   }
 }

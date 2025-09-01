@@ -1,11 +1,14 @@
-<template>
-    <aside :class="$attrs.class"
-        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-y-auto">
-        <UNavigationMenu :items="verticalMenu" orientation="vertical"
-            class="flex justify-between py-4 w-44 xl:w-60 h-full" />
-    </aside>
-</template>
-
 <script setup lang="ts">
+const { loggedIn } = useUserSession();
 const { verticalMenu } = useNavigation();
 </script>
+
+<template>
+    <div class="flex flex-col gap-3 h-full py-4">
+        <OrganisationMenu v-if="loggedIn" />
+
+        <UNavigationMenu :items="verticalMenu" orientation="vertical" class="flex justify-between w-full" />
+
+        <UserMenu v-if="loggedIn" class="mt-auto" />
+    </div>
+</template>

@@ -2,7 +2,6 @@
 import { nowWithoutMillis } from '@zeity/utils/date';
 
 const appConfig = useRuntimeConfig();
-const { loggedIn } = useUserSession();
 const timeDetail = useTimeDetail();
 function timeNew() {
     const now = nowWithoutMillis().toISOString();
@@ -29,8 +28,6 @@ function timeNew() {
                         {{ $t('common.add') }}
                     </span>
                 </UButton>
-
-                <UserMenu v-if="loggedIn" />
             </div>
         </div>
     </header>

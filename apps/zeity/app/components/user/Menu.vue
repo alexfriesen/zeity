@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui';
 
+defineProps({
+    collapsed: {
+        type: Boolean,
+        default: false
+    }
+})
+
 const { t } = useI18n();
 const { logout } = useAuth();
 const { fetchUser } = useUser();
 
-const { currentOrganisationId, setCurrentOrganisationId, getAllOrganisations } = useOrganisation();
-const organisations = getAllOrganisations();
-
 const { data } = await fetchUser();
 
-const userMenu = computed(() => [
+const userItem = computed(() => ({
+    label: data.value?.user.name,
+    avatar: {
+        src: getUserImagePath(data.value?.user),
+        alt: data.value?.user.name,
+    },
+}));
+
+const items = computed(() => [
     [
 
         {
@@ -26,15 +38,6 @@ const userMenu = computed(() => [
             to: '/organisations',
             icon: 'i-lucide-store',
         },
-        ...organisations.value.map((organisation) => ({
-            label: organisation.name,
-            avatar: {
-                src: getOrganisationImagePath(organisation),
-                alt: organisation.name,
-            },
-            slot: currentOrganisationId.value === organisation.id ? 'selectedOrg' as const : undefined,
-            onSelect: () => setCurrentOrganisationId(organisation.id),
-        })),
     ],
     [
         {
@@ -47,9 +50,8 @@ const userMenu = computed(() => [
 </script>
 
 <template>
-    <UDropdownMenu :items="userMenu" size="xl">
-        <UAvatar :src="getUserImagePath(data?.user)" :alt="data?.user.name" as="button"
-            class="ring ring-inset ring-primary/50 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:bg-primary/10" />
+    <UDropdownMenu :items="items" :content="{ align: 'center', collisionPadding: 12 }"
+        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }">
         <template #profile>
             <UAvatar :src="getUserImagePath(data?.user)" :alt="data?.user.name" size="xl" />
             <div class="flex flex-col">
@@ -64,5 +66,12 @@ const userMenu = computed(() => [
         <template #selectedOrg-trailing>
             <UIcon name="i-lucide-circle-check" class="shrink-0 size-5 text-primary" />
         </template>
+
+        <UButton v-bind="{
+            ...userItem,
+            label: collapsed ? undefined : userItem?.label,
+            trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
+        }" :ui="{ trailingIcon: 'text-dimmed' }" :square="collapsed" :class="[!collapsed && 'py-2']" color="neutral"
+            variant="ghost" block class="data-[state=open]:bg-elevated" />
     </UDropdownMenu>
 </template>

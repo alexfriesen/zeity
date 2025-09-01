@@ -7,9 +7,7 @@
 
         <USlideover v-model:open="openMoreMenu" title="Menu" side="right">
             <template #body>
-                <div class="flex flex-col justify-center h-full">
-                    <UNavigationMenu :items="verticalMenu" orientation="vertical" class="full-w" />
-                </div>
+                <AppAsideNavigation />
             </template>
         </USlideover>
     </div>

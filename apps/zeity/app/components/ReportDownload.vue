@@ -100,10 +100,10 @@ function generateCSVReport(data: EnhancedTime[]) {
 
 <template>
     <div class="text-center">
-        <UButtonGroup>
-            <UButton :label="$t('common.download')" variant="subtle" color="neutral" size="lg" icon="i-lucide-download"
+        <UFieldGroup size="lg">
+            <UButton :label="$t('common.download')" variant="subtle" color="neutral" icon="i-lucide-download"
                 @click="downloadReport(format)" />
-            <USelectMenu v-model="format" :items="formatOptions" value-key="value" class="w-22" />
-        </UButtonGroup>
+            <USelect v-model="format" :items="formatOptions" value-key="value" class="w-24" />
+        </UFieldGroup>
     </div>
 </template>

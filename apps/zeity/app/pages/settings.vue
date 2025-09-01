@@ -217,11 +217,11 @@ function sanitizeProject(data: unknown) {
                 <span>{{ $t('settings.theme') }}</span>
 
                 <ClientOnly>
-                    <UButtonGroup v-model="settingsStore.themeMode" class="min-w-60">
+                    <UFieldGroup v-model="settingsStore.themeMode" class="min-w-60">
                         <UButton v-for="mode in themeModes" :key="mode.label" :label="mode.label" :icon="mode.icon"
                             :color="settingsStore.themeMode === mode.value ? 'primary' : 'neutral'" variant="outline"
                             block class="w-full" @click="settingsStore.themeMode = mode.value" />
-                    </UButtonGroup>
+                    </UFieldGroup>
                 </ClientOnly>
             </label>
         </FieldSet>

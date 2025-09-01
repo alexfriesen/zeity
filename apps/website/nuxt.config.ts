@@ -16,9 +16,9 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     'nuxt-og-image',
     'nuxt-schema-org',
-    '@nuxt/content',
-    '@nuxt/image',
     '@nuxt/ui',
+    '@nuxt/image',
+    '@nuxt/content',
     'nuxt-security',
   ],
   css: ['~/assets/css/main.css'],
@@ -45,9 +45,6 @@ export default defineNuxtConfig({
       },
     ],
     defaultLocale: 'en',
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
   },
   icon: {
     customCollections: [
@@ -79,7 +76,6 @@ export default defineNuxtConfig({
     name: 'zeity',
   },
   nitro: {
-    // static: true,
     prerender: {
       routes: ['/', '/robots.txt'],
     },

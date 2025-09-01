@@ -63,7 +63,7 @@ function deleteTeam(teamId: string) {
                         </p>
                     </div>
 
-                    <UButtonGroup orientation="vertical">
+                    <UFieldGroup orientation="vertical">
                         <UButton :to="`/organisations/${organisationId}/team/${team.id}`" icon="i-lucide-eye"
                             color="neutral" variant="subtle">
                             {{ $t('common.view') }}
@@ -71,7 +71,7 @@ function deleteTeam(teamId: string) {
                         <UButton icon="i-lucide-trash" color="error" variant="subtle" @click="deleteTeam(team.id)">
                             {{ $t('common.delete') }}
                         </UButton>
-                    </UButtonGroup>
+                    </UFieldGroup>
                 </div>
             </UCard>
         </div>

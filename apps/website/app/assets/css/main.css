@@ -1,7 +1,7 @@
-@import 'tailwindcss' theme(static);
+@import 'tailwindcss';
 @import '@nuxt/ui';
 
-@plugin "@tailwindcss/typography";
+@source "../../../content/**/*";
 
 @theme static {
   --color-red-50: oklch(94.92% 0.021 17.52);

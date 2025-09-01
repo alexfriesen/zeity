@@ -113,56 +113,58 @@ function deleteOrganisation() {
 </script>
 
 <template>
-    <UPageCard>
-        <div class="flex flex-col items-center justify-center">
-            <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
-            <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
-                {{ $t('common.upload') }}
-            </UButton>
-        </div>
-        <UForm v-if="editing" :schema="schema" :state="state"
-            class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
-            <UInput v-model="state.name" name="name" size="lg" class="w-full" />
-            <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
-                {{ $t('common.save') }}
-            </UButton>
-        </UForm>
-        <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
-            <h2
-                class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                {{ org?.name }}
-            </h2>
-            <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
-                {{ $t('common.edit') }}
-            </UButton>
-        </div>
-    </UPageCard>
+    <div>
+        <UPageCard>
+            <div class="flex flex-col items-center justify-center">
+                <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
+                <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
+                    {{ $t('common.upload') }}
+                </UButton>
+            </div>
+            <UForm v-if="editing" :schema="schema" :state="state"
+                class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
+                <UInput v-model="state.name" name="name" size="lg" class="w-full" />
+                <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
+                    {{ $t('common.save') }}
+                </UButton>
+            </UForm>
+            <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
+                <h2
+                    class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                    {{ org?.name }}
+                </h2>
+                <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
+                    {{ $t('common.edit') }}
+                </UButton>
+            </div>
+        </UPageCard>
 
-    <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
-        <h3
-            class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-            {{ $t('organisations.delete.title') }}
-        </h3>
+        <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
+            <h3
+                class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                {{ $t('organisations.delete.title') }}
+            </h3>
 
-        <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
-            :description="$t('organisations.delete.description')">
-            <UButton size="lg" variant="subtle" color="error" icon="i-lucide-trash" @click="deleteModalOpen = true">
-                {{ $t('common.delete') }}
-            </UButton>
+            <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
+                :description="$t('organisations.delete.description')">
+                <UButton size="lg" variant="subtle" color="error" icon="i-lucide-trash" @click="deleteModalOpen = true">
+                    {{ $t('common.delete') }}
+                </UButton>
 
-            <template #footer>
-                <div class="flex justify-between w-full">
-                    <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
-                        {{ $t('common.cancel') }}
-                    </UButton>
+                <template #footer>
+                    <div class="flex justify-between w-full">
+                        <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
+                            {{ $t('common.cancel') }}
+                        </UButton>
 
-                    <UButton color="error" @click="deleteOrganisation">
-                        {{ $t('common.delete') }}
-                    </UButton>
-                </div>
-            </template>
+                        <UButton color="error" @click="deleteOrganisation">
+                            {{ $t('common.delete') }}
+                        </UButton>
+                    </div>
+                </template>
 
 
-        </UModal>
-    </UPageCard>
+            </UModal>
+        </UPageCard>
+    </div>
 </template>

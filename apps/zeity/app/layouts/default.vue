@@ -1,8 +1,3 @@
-<script setup lang="ts">
-const open = ref(false)
-const { verticalMenu } = useNavigation();
-</script>
-
 <template>
     <div class="isolate">
         <AppHeader />

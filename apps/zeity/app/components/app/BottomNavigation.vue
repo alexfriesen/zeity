@@ -1,3 +1,12 @@
+<script setup lang="ts">
+const { openMoreMenu, horizontalMenu } = useNavigation();
+
+const route = useRoute();
+watch(() => route.path, () => {
+    openMoreMenu.value = false;
+});
+</script>
+
 <template>
     <div class="fixed bottom-0 inset-x-0 flex justify-center pointer-events-none" :class="$attrs.class">
         <div class="pointer-events-auto rounded-t-xl bg-(--ui-bg) border border-(--ui-border) shadow-md">
@@ -12,12 +21,3 @@
         </USlideover>
     </div>
 </template>
-
-<script setup lang="ts">
-const { openMoreMenu, horizontalMenu, verticalMenu } = useNavigation();
-
-const route = useRoute();
-watch(() => route.path, () => {
-    openMoreMenu.value = false;
-});
-</script>

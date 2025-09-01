@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Organisation } from '@zeity/database/organisation';
 
-const props = defineProps({
+defineProps({
     org: {
         type: Object as PropType<Organisation>,
         required: true

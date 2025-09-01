@@ -30,28 +30,43 @@ const items = computed<DropdownMenuItem[][]>(() => {
             avatar: {
                 src: getOrganisationImagePath(organisation),
                 alt: organisation.name,
+                size: 'lg',
             },
+            active: currentOrganisation.value?.id === organisation.id,
+            slot: 'org',
             onSelect() {
                 setCurrentOrganisationId(organisation.id)
             }
         })),
-        [{
-            label: t('organisations.create'),
-            icon: 'i-lucide-circle-plus',
-            to: '/organisations/create'
-        }]
+        [
+            {
+                label: t('organisations.manage'),
+                icon: 'i-lucide-settings',
+                to: '/organisations'
+            },
+            {
+                label: t('organisations.create'),
+                icon: 'i-lucide-circle-plus',
+                to: '/organisations/create'
+            }
+        ]
     ]
 })
 </script>
 
 <template>
     <UDropdownMenu :items="items" :content="{ align: 'center', collisionPadding: 12 }"
-        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }">
+        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
+
+        <template #org-trailing="{ active }">
+            <UIcon v-if="active" name="i-lucide-circle-check" class="shrink-0 size-5 text-primary" />
+        </template>
+
         <UButton v-bind="{
             ...currentItem,
             label: collapsed ? undefined : currentItem?.label,
             trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
         }" :ui="{ trailingIcon: 'text-dimmed' }" :square="collapsed" :class="[!collapsed && 'py-2']" color="neutral"
-            variant="ghost" block class="data-[state=open]:bg-elevated" />
+            variant="ghost" block class="data-[state=open]:bg-elevated" size="xl" />
     </UDropdownMenu>
 </template>

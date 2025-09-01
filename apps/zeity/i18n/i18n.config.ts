@@ -111,6 +111,7 @@ export default defineI18nConfig(() => ({
         create: 'Create Organisation',
         createSuccess: 'Organisation created successfully',
         createError: 'Error creating organisation',
+        manage: 'Manage Organisation',
         updateSuccess: 'Organisation updated successfully',
         updateError: 'Error updating organisation',
         form: {
@@ -294,6 +295,7 @@ export default defineI18nConfig(() => ({
         create: 'Organisation erstellen',
         createSuccess: 'Organisation erfolgreich erstellt',
         createError: 'Fehler beim Erstellen der Organisation',
+        manage: 'Organisation verwalten',
         updateSuccess: 'Organisation erfolgreich aktualisiert',
         updateError: 'Fehler beim Aktualisieren der Organisation',
         form: {

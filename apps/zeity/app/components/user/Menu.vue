@@ -34,13 +34,6 @@ const items = computed(() => [
     ],
     [
         {
-            label: t('organisations.title'),
-            to: '/organisations',
-            icon: 'i-lucide-store',
-        },
-    ],
-    [
-        {
             label: t('auth.logout'),
             icon: 'i-lucide-arrow-left-from-line',
             onSelect: () => logout(),
@@ -51,7 +44,7 @@ const items = computed(() => [
 
 <template>
     <UDropdownMenu :items="items" :content="{ align: 'center', collisionPadding: 12 }"
-        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }">
+        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
         <template #profile>
             <UAvatar :src="getUserImagePath(data?.user)" :alt="data?.user.name" size="xl" />
             <div class="flex flex-col">
@@ -63,15 +56,12 @@ const items = computed(() => [
                 </p>
             </div>
         </template>
-        <template #selectedOrg-trailing>
-            <UIcon name="i-lucide-circle-check" class="shrink-0 size-5 text-primary" />
-        </template>
 
         <UButton v-bind="{
             ...userItem,
             label: collapsed ? undefined : userItem?.label,
             trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
         }" :ui="{ trailingIcon: 'text-dimmed' }" :square="collapsed" :class="[!collapsed && 'py-2']" color="neutral"
-            variant="ghost" block class="data-[state=open]:bg-elevated" />
+            variant="ghost" block class="data-[state=open]:bg-elevated" size="lg" />
     </UDropdownMenu>
 </template>

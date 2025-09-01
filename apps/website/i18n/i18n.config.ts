@@ -10,6 +10,10 @@ export default defineI18nConfig(() => ({
         title: 'zeity',
         description: 'Next Generation time tracking',
         openDocs: 'Open Documentation',
+        features: {
+          title: 'Features',
+          description: 'Discover the powerful features of zeity.',
+        },
       },
       docs: {
         title: 'Documentation',
@@ -45,6 +49,10 @@ export default defineI18nConfig(() => ({
         title: 'zeity',
         description: 'Nächste Generation der Zeiterfassung',
         openDocs: 'Dokumentation öffnen',
+        features: {
+          title: 'Funktionen',
+          description: 'Entdecken Sie die leistungsstarken Funktionen von zeity.',
+        },
       },
       docs: {
         title: 'Dokumentation',

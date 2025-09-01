@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calculateDiffSum, formatDuration } from '@zeity/utils/date';
+import { calculateDiffSum, formatDuration, sortDatesDescending } from '@zeity/utils/date';
 import type { ProjectStatus } from '@zeity/types/project';
 
 const route = useRoute()
@@ -25,6 +25,7 @@ const orgTimes = getOrganisationTimes();
 // show all times of the current user and offline times
 const userTimes = computed(() => orgTimes.value.filter((item) => !item.userId || item.userId === user.value?.id));
 const projectTimes = computed(() => userTimes.value.filter((time) => time.projectId === projectId));
+const sortedProjectTimes = computed(() => projectTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
 const isProjectOffline = computed(() => loggedIn.value && project.value && !isOnlineProject(project.value));
 
@@ -123,7 +124,7 @@ async function handleSync() {
                 </p>
             </div>
             <div>
-                <TimeList :times="projectTimes" />
+                <TimeList :times="sortedProjectTimes" />
                 <UButton v-if="!timeEndReached" block class="mt-2" variant="subtle" :loading="isLoading"
                     :disabled="isLoading" @click="loadMoreTimes">
                     {{ $t('common.loadMore') }}

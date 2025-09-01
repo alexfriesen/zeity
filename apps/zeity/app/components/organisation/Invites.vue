@@ -197,6 +197,6 @@ function toggleCreateModal() {
                 {{ $t('organisations.invites.create') }}
             </UButton>
         </div>
-        <UTable :data="invites" :columns="invitesColumns" />
+        <UTable :data="invites" :columns="invitesColumns" :empty="$t('organisations.invites.empty')" />
     </div>
 </template>

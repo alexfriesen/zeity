@@ -28,6 +28,7 @@ export default defineI18nConfig(() => ({
         download: 'Download',
         edit: 'Edit',
         error: 'Error',
+        general: 'General',
         loadMore: 'Load more',
         save: 'Save',
         send: 'Send',
@@ -166,6 +167,7 @@ export default defineI18nConfig(() => ({
           resendError: 'Error resending invitation',
           deleteSuccess: 'Invitation deleted successfully',
           deleteError: 'Error deleting invitation',
+          empty: 'No pending invitations',
         },
         join: {
           title: 'Join Organisation',
@@ -177,7 +179,7 @@ export default defineI18nConfig(() => ({
         },
         delete: {
           title: 'Delete Organisation',
-          description: 'Are you sure you want to delete this organisation?',
+          description: 'Are you sure you want to delete this organisation? This action cannot be undone.',
           success: 'Organisation deleted successfully',
           error: 'Error deleting organisation',
         },
@@ -228,6 +230,7 @@ export default defineI18nConfig(() => ({
         download: 'Herunterladen',
         edit: 'Bearbeiten',
         error: 'Fehler',
+        general: 'Allgemein',
         loadMore: 'Mehr laden',
         save: 'Speichern',
         send: 'Senden',
@@ -347,6 +350,7 @@ export default defineI18nConfig(() => ({
           resendError: 'Fehler beim Senden der Einladung',
           deleteSuccess: 'Einladung erfolgreich gelöscht',
           deleteError: 'Fehler beim Löschen der Einladung',
+          empty: 'Keine ausstehenden Einladungen',
         },
         join: {
           title: 'Organisation beitreten',
@@ -358,7 +362,7 @@ export default defineI18nConfig(() => ({
         },
         delete: {
           title: 'Organisation löschen',
-          description: 'Möchten Sie diese Organisation wirklich löschen?',
+          description: 'Möchten Sie diese Organisation wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
           success: 'Organisation erfolgreich gelöscht',
           error: 'Fehler beim Löschen der Organisation',
         },

@@ -42,7 +42,6 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
     <div as="section" class="page my-3">
-        <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
         <h2
             class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
             {{ $t('organisations.teams.create') }}

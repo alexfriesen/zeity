@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import type { Organisation } from '@zeity/database/organisation';
 
 const { t } = useI18n()
-const route = useRoute()
 const toast = useToast()
 
-definePageMeta({
-    validate: async (route) => {
-        // Check if the id is made up of digits
-        return typeof route.params.orgId === 'string'
+const { uploadOrganisationImage } = useOrganisation();
+const organisationId = useRoute().params.orgId as string;
+
+const props = defineProps({
+    org: {
+        type: Object as PropType<Organisation>,
+        required: true
     }
 })
-
-const organisationId = route.params.orgId as string;
-
-const { fetchOrganisation, uploadOrganisationImage } = useOrganisation();
-const { status, data, refresh } = await fetchOrganisation(organisationId);
+const emit = defineEmits(['refresh'])
 
 const schema = z.object({
     name: z.string().min(2).max(150).default(''),
 })
 type Schema = z.output<typeof schema>
 const state = ref({
-    name: data.value?.name ?? '',
+    name: props.org?.name ?? '',
 })
 
 const saving = ref(false);
@@ -32,7 +31,7 @@ const deleteModalOpen = ref(false);
 
 function switchEditing() {
     editing.value = !editing.value
-    state.value = { name: data.value?.name ?? '' }
+    state.value = { name: props.org?.name ?? '' }
 }
 
 function changeName(event: FormSubmitEvent<Schema>) {
@@ -47,7 +46,7 @@ function changeName(event: FormSubmitEvent<Schema>) {
             color: 'success',
             title: t('organisations.updateSuccess'),
         })
-        await refresh()
+        await emit('refresh')
         editing.value = false
     }).catch((error) => {
         console.error(error)
@@ -78,7 +77,7 @@ function changeImage() {
                     color: 'success',
                     title: t('user.saveSuccess'),
                 });
-                await refresh();
+                await emit('refresh');
                 reloadNuxtApp();
             })
             .catch((error) => {
@@ -114,75 +113,56 @@ function deleteOrganisation() {
 </script>
 
 <template>
-    <div v-if="status === 'success'" class="my-4">
-        <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
-
+    <UPageCard>
         <div class="flex flex-col items-center justify-center">
-            <UAvatar :src="getOrganisationImagePath(data)" :alt="data?.name" size="3xl" class="mb-4" />
+            <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
             <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
                 {{ $t('common.upload') }}
             </UButton>
         </div>
-
-        <div>
-            <UForm v-if="editing" :schema="schema" :state="state"
-                class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
-                <UInput v-model="state.name" name="name" size="lg" class="w-full" />
-                <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
-                    {{ $t('common.save') }}
-                </UButton>
-            </UForm>
-            <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
-                <h2
-                    class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                    {{ data?.name }}
-                </h2>
-                <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
-                    {{ $t('common.edit') }}
-                </UButton>
-            </div>
+        <UForm v-if="editing" :schema="schema" :state="state"
+            class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
+            <UInput v-model="state.name" name="name" size="lg" class="w-full" />
+            <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
+                {{ $t('common.save') }}
+            </UButton>
+        </UForm>
+        <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
+            <h2
+                class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+                {{ org?.name }}
+            </h2>
+            <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
+                {{ $t('common.edit') }}
+            </UButton>
         </div>
+    </UPageCard>
 
-        <USeparator class="my-4" />
+    <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
+        <h3
+            class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
+            {{ $t('organisations.delete.title') }}
+        </h3>
 
-        <OrganisationTeamsList :organisation-id="organisationId" />
+        <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
+            :description="$t('organisations.delete.description')">
+            <UButton size="lg" variant="subtle" color="error" icon="i-lucide-trash" @click="deleteModalOpen = true">
+                {{ $t('common.delete') }}
+            </UButton>
 
-        <USeparator class="my-4" />
+            <template #footer>
+                <div class="flex justify-between w-full">
+                    <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
+                        {{ $t('common.cancel') }}
+                    </UButton>
 
-        <OrganisationMembers :organisation-id="organisationId" :members="data?.members || []" @refresh="refresh" />
+                    <UButton color="error" @click="deleteOrganisation">
+                        {{ $t('common.delete') }}
+                    </UButton>
+                </div>
+            </template>
 
-        <USeparator class="my-4" />
 
-        <OrganisationInvites :organisation-id="organisationId" :invites="data?.invites || []" @refresh="refresh" />
-
-        <USeparator class="my-4" />
-
-        <section class="flex flex-wrap items-center justify-between gap-2">
-            <h3
-                class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                {{ $t('organisations.delete.title') }}
-            </h3>
-
-            <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
-                :description="$t('organisations.delete.description')">
-                <UButton size="lg" variant="subtle" color="error" icon="i-lucide-trash" @click="deleteModalOpen = true">
-                    {{ $t('common.delete') }}
-                </UButton>
-
-                <template #footer>
-                    <div class="flex justify-between w-full">
-                        <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
-                            {{ $t('common.cancel') }}
-                        </UButton>
-
-                        <UButton color="error" @click="deleteOrganisation">
-                            {{ $t('common.delete') }}
-                        </UButton>
-                    </div>
-                </template>
-
-            </UModal>
-        </section>
-
-    </div>
+        </UModal>
+    </UPageCard>
 </template>

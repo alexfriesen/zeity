@@ -143,9 +143,6 @@ function deleteMembers(memberIds: string[]) {
 
 <template>
     <div class="my-4">
-        <UBreadcrumb
-            :items="[{ label: $t('organisations.title'), to: '/organisations' }, { label: $t('organisations.teams.title'), to: `/organisations/${organisationId}` }]" />
-
         <div v-if="editing">
             <UForm :schema="schema" :state="state" @submit="updateTeamDetails">
                 <div class="flex items-center justify-between mb-4 gap-2 h-[44px]">

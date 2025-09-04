@@ -59,7 +59,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
         :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
 
         <template #org-trailing="{ active }">
-            <UIcon v-if="active" name="i-lucide-circle-check" class="shrink-0 size-5 text-primary" />
+            <UIcon :name="active ? 'i-lucide-circle-check' : 'i-lucide-circle'" class="shrink-0 size-5" />
         </template>
 
         <UButton v-bind="{

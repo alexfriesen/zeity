@@ -5,10 +5,16 @@ const { verticalMenu } = useNavigation();
 
 <template>
     <div class="flex flex-col gap-3 h-full py-4">
-        <OrganisationMenu v-if="loggedIn" />
+        <ClientOnly>
+            <OrganisationMenu v-if="loggedIn" />
+        </ClientOnly>
 
-        <UNavigationMenu :items="verticalMenu" orientation="vertical" class="flex justify-between w-full" />
+        <UNavigationMenu :items="verticalMenu[0]" orientation="vertical" class="flex justify-between w-full" />
 
-        <UserMenu v-if="loggedIn" class="mt-auto" />
+        <UNavigationMenu :items="verticalMenu[1]" orientation="vertical" class="flex justify-between w-full mt-auto" />
+
+        <USeparator />
+
+        <UserMenu />
     </div>
 </template>

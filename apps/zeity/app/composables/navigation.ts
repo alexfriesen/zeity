@@ -1,43 +1,7 @@
 export function useNavigation() {
   const { t } = useI18n();
-  const { isLoggedIn, logout } = useAuth();
 
   const openMoreMenu = ref(false);
-
-  const userMenu = computed(() =>
-    isLoggedIn.value
-      ? [
-          {
-            label: t('navigation.user'),
-            icon: 'i-lucide-circle-user',
-            children: [
-              {
-                label: t('navigation.profile'),
-                icon: 'i-lucide-user',
-                to: '/user',
-              },
-              {
-                label: t('organisations.title'),
-                icon: 'i-lucide-store',
-                to: '/organisations',
-              },
-              {
-                label: t('auth.logout'),
-                icon: 'i-lucide-arrow-left-from-line',
-                onSelect: () => logout(),
-              },
-            ],
-          },
-        ]
-      : [
-          {
-            label: t('navigation.login'),
-            to: '/auth',
-            icon: 'i-lucide-user',
-          },
-        ]
-  );
-
   const verticalMenu = computed(() => [
     [
       {
@@ -65,7 +29,6 @@ export function useNavigation() {
         to: '/settings',
         icon: 'i-lucide-settings',
       },
-      ...userMenu.value,
     ],
     [
       {

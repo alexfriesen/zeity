@@ -48,13 +48,6 @@ export default defineWebAuthnAuthenticateEventHandler({
   },
 
   async onSuccess(event, { credential }) {
-    await setUserSession(event, {
-      user: {
-        id: credential.user.id,
-        name: credential.user.name,
-        email: credential.user.email,
-        verified: Boolean(credential.user.emailVerified),
-      },
-    });
+    await storeUserSession(event, credential.user);
   },
 });

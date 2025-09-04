@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
     .returning({
       id: users.id,
       name: users.name,
+      image: users.image,
       email: users.email,
       emailVerified: users.emailVerified,
     })

@@ -1,19 +1,6 @@
-import type { H3Event } from 'h3';
-
 import { eq } from '@zeity/database';
 import { users, type User } from '@zeity/database/user';
 import { userAccounts } from '@zeity/database/user-account';
-
-export function storeUserSession(event: H3Event, user: User) {
-  return setUserSession(event, {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      verified: Boolean(user.emailVerified),
-    },
-  });
-}
 
 export function linkUserAccount(
   userId: string,

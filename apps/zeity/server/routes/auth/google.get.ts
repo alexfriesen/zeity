@@ -1,4 +1,4 @@
-import { handleOAuthLogin, storeUserSession } from '~~/server/utils/auth';
+import { handleOAuthLogin } from '~~/server/utils/auth';
 
 const GOOGLE_PROVIDER_ID = 'google';
 

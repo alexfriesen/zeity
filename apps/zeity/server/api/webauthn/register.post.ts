@@ -36,6 +36,7 @@ export default defineWebAuthnRegisterEventHandler({
         name: users.name,
         email: users.email,
         emailVerified: users.emailVerified,
+        image: users.image,
       })
       .then((rows) => rows[0])
       .catch((e) => {
@@ -63,14 +64,7 @@ export default defineWebAuthnRegisterEventHandler({
       transports: credential.transports || [],
     });
 
-    await setUserSession(event, {
-      user: {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        verified: Boolean(dbUser.emailVerified),
-      },
-    });
+    await storeUserSession(event, dbUser);
 
     const otp = await createOTP(dbUser.id);
 

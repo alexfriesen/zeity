@@ -9,16 +9,14 @@ defineProps({
 })
 
 const { t } = useI18n();
+const { user } = useUserSession();
 const { isLoggedIn, logout } = useAuth();
-const { fetchUser } = useUser();
-
-const { data } = await fetchUser();
 
 const userItem = computed(() => ({
-    label: data.value?.user.name,
+    label: user.value?.name,
     avatar: {
-        src: getUserImagePath(data.value?.user),
-        alt: data.value?.user.name,
+        src: getUserImagePath(user.value),
+        alt: user.value?.name,
     },
 }));
 
@@ -44,16 +42,16 @@ const items = computed(() => [
 
 <template>
     <div>
-        <UDropdownMenu v-if="isLoggedIn" :items="items" :content="{ align: 'center', collisionPadding: 12 }"
+        <UDropdownMenu v-if="isLoggedIn && user" :items="items" :content="{ align: 'center', collisionPadding: 12 }"
             :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
             <template #profile>
-                <UAvatar :src="getUserImagePath(data?.user)" :alt="data?.user.name" size="xl" />
+                <UAvatar :src="getUserImagePath(user)" :alt="user?.name" size="xl" />
                 <div class="flex flex-col">
                     <h3 class="text-base font-semibold">
-                        {{ data?.user.name }}
+                        {{ user.name }}
                     </h3>
                     <p class="text-xs text-muted">
-                        {{ data?.user.email }}
+                        {{ user.email }}
                     </p>
                 </div>
             </template>

@@ -3,9 +3,21 @@ import type { H3Event } from 'h3';
 import type { User } from '@zeity/database/user';
 import { users } from '@zeity/database/user';
 
+export function storeUserSession(event: H3Event, user: Pick<User, 'id' | 'email' | 'name' | 'emailVerified' | 'image'>) {
+  return setUserSession(event, {
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      verified: Boolean(user.emailVerified),
+      image: user.image,
+    },
+  });
+}
+
 export async function refreshUserSession(
   event: H3Event,
-  user?: Pick<User, 'id' | 'email' | 'name' | 'emailVerified'> | null
+  user?: Pick<User, 'id' | 'email' | 'name' | 'emailVerified' | 'image'> | null
 ) {
   const session = await getUserSession(event);
 
@@ -28,6 +40,7 @@ export async function refreshUserSession(
       name: user.name,
       email: user.email,
       verified: Boolean(user.emailVerified),
+      image: user.image,
     },
   });
 }
@@ -39,6 +52,7 @@ function getUser(userId: string) {
       email: users.email,
       name: users.name,
       emailVerified: users.emailVerified,
+      image: users.image,
     })
     .from(users)
     .where(eq(users.id, userId))

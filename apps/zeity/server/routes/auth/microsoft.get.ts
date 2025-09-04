@@ -1,4 +1,4 @@
-import { handleOAuthLogin, storeUserSession } from '~~/server/utils/auth';
+import { handleOAuthLogin } from '~~/server/utils/auth';
 
 const MICROSOFT_PROVIDER_ID = 'microsoft';
 

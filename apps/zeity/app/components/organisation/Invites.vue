@@ -10,6 +10,7 @@ const NuxtTime = resolveComponent('NuxtTime')
 
 const { t, locale } = useI18n()
 const toast = useToast()
+const { isOrganisationAdmin } = useOrganisation()
 
 const params = defineProps({
     organisationId: {
@@ -193,7 +194,8 @@ function toggleCreateModal() {
             <h3 class="text-lg font-semibold leading-6">
                 {{ $t('organisations.invites.title') }}
             </h3>
-            <UButton color="primary" variant="ghost" icon="i-lucide-plus" @click="toggleCreateModal">
+            <UButton :disabled="!isOrganisationAdmin(organisationId)" color="primary" variant="ghost" icon="i-lucide-plus"
+                @click="toggleCreateModal">
                 {{ $t('organisations.invites.create') }}
             </UButton>
         </div>

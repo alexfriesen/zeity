@@ -1,35 +1,32 @@
 <script setup lang="ts">
-const { currentOrganisationId, setCurrentOrganisationId, fetchOrganisations } = useOrganisation();
+const { currentOrganisationId, setCurrentOrganisationId } = useOrganisation();
 
-const { data: organisations, pending } = await fetchOrganisations();
+const { data, pending } = await useFetch('/api/organisation', { cache: 'reload' });
 const isEmpty = computed(() => {
     if (pending.value) {
         return false;
     }
-    return (organisations.value?.length ?? 0) < 1
+    return (data.value?.length ?? 0) < 1
 });
 </script>
 
 <template>
-
-    <div class="page my-3">
+    <div>
+        <UDashboardNavbar :title="$t('organisations.title')">
+            <template #right>
+                <UButton to="/organisations/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
+            </template>
+        </UDashboardNavbar>
 
         <section class="flex flex-col my-3 space-y-4">
-            <div class="flex items-center justify-between flex-wrap gap-4">
-                <h2
-                    class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                    {{ $t('organisations.title') }}
-                </h2>
-                <UButton to="/organisations/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
-            </div>
-
-            <UCard v-for="organisation in organisations" :key="organisation.id">
+            <UCard v-for="organisation in data" :key="organisation.id">
                 <template #header>
                     <div class="flex items-center justify-between gap-4 flex-shrink">
                         <UButton :to="`/organisations/${encodeURIComponent(organisation.id)}`" variant="link" size="lg"
                             class="flex items-center justify-between -mx-3 truncate">
                             <UAvatar :src="getOrganisationImagePath(organisation)" :alt="organisation.name" size="lg"
                                 class="mr-2" />
+
                             <div class="truncate">
                                 <span class="text-lg">
                                     {{ organisation.name }}
@@ -42,6 +39,7 @@ const isEmpty = computed(() => {
                                 </p>
                             </div>
                         </UButton>
+
                         <UButton variant="ghost" size="lg" square class="rounded-full"
                             :color="currentOrganisationId === organisation.id ? 'primary' : 'neutral'"
                             :icon="currentOrganisationId === organisation.id ? 'i-lucide-circle-check' : 'i-lucide-circle'"

@@ -6,7 +6,7 @@ import type { Organisation } from '@zeity/database/organisation';
 const { t } = useI18n()
 const toast = useToast()
 
-const { uploadOrganisationImage } = useOrganisation();
+const { uploadOrganisationImage, refreshOrganisations, isOrganisationAdmin } = useOrganisation();
 const organisationId = useRoute().params.orgId as string;
 
 const props = defineProps({
@@ -59,7 +59,6 @@ function changeName(event: FormSubmitEvent<Schema>) {
     })
 }
 
-
 function changeImage() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -96,54 +95,54 @@ function changeImage() {
 function deleteOrganisation() {
     return $fetch(`/api/organisation/${organisationId}`, {
         method: 'DELETE',
-    }).then(async () => {
-        toast.add({
-            color: 'success',
-            title: t('organisations.delete.success'),
-        })
-        await navigateTo('/organisations')
-    }).catch((error) => {
-        console.error(error)
-        toast.add({
-            color: 'error',
-            title: t('organisations.delete.error'),
-        })
     })
+        .then(async () => {
+            toast.add({
+                color: 'success',
+                title: t('organisations.delete.success'),
+            })
+            await refreshOrganisations();
+            await navigateTo('/organisations')
+        }).catch((error) => {
+            console.error(error)
+            toast.add({
+                color: 'error',
+                title: t('organisations.delete.error'),
+            })
+        })
 }
 </script>
 
 <template>
-    <div>
+    <div class="space-y-6">
         <UPageCard>
             <div class="flex flex-col items-center justify-center">
-                <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
-                <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
+                <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" />
+                <UButton v-if="isOrganisationAdmin(org.id)" :loading="saving" icon="i-lucide-camera" variant="subtle"
+                    class="mt-4" @click="changeImage">
                     {{ $t('common.upload') }}
                 </UButton>
             </div>
             <UForm v-if="editing" :schema="schema" :state="state"
-                class="my-4 flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
+                class="flex items-center justify-between gap-2 h-[44px]" @submit="changeName">
                 <UInput v-model="state.name" name="name" size="lg" class="w-full" />
                 <UButton :loading="saving" type="submit" size="lg" icon="i-lucide-check">
                     {{ $t('common.save') }}
                 </UButton>
             </UForm>
-            <div v-else class="my-4 flex flex-wrap items-center justify-between gap-2">
+            <div v-else class="flex flex-wrap items-center justify-between gap-2">
                 <h2
                     class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                     {{ org?.name }}
                 </h2>
-                <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
+                <UButton v-if="isOrganisationAdmin(org.id)" size="lg" icon="i-lucide-pencil" @click="switchEditing">
                     {{ $t('common.edit') }}
                 </UButton>
             </div>
         </UPageCard>
 
-        <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
-            <h3
-                class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
-                {{ $t('organisations.delete.title') }}
-            </h3>
+        <UPageCard v-if="isOrganisationAdmin(org.id)" :title="$t('organisations.delete.title')"
+            class="bg-gradient-to-tl from-error/10 from-5% to-default">
 
             <UModal v-model:open="deleteModalOpen" :title="$t('organisations.delete.title')"
                 :description="$t('organisations.delete.description')">
@@ -153,7 +152,7 @@ function deleteOrganisation() {
 
                 <template #footer>
                     <div class="flex justify-between w-full">
-                        <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
+                        <UButton type="button" variant="subtle" color="neutral" @click="deleteModalOpen = false">
                             {{ $t('common.cancel') }}
                         </UButton>
 

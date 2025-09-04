@@ -12,7 +12,6 @@ interface TeamMemberData {
 
 const { t } = useI18n()
 const toast = useToast()
-const { fetchOrganisationTeam } = useOrganisation()
 
 const addMemberModalOpen = ref(false);
 function toggleAddMemberModal() {
@@ -39,7 +38,7 @@ const membersColumns: TableColumn<TeamMemberData>[] = [
     }
 ];
 
-const team = await fetchOrganisationTeam(organisationId, teamId);
+const team = await useFetch(`/api/organisation/${organisationId.value}/team/${teamId.value}`);
 const members = await useFetch(`/api/organisation/${organisationId.value}/team/${teamId.value}/member`);
 
 const saving = ref(false);

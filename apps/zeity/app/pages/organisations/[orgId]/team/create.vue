@@ -4,7 +4,7 @@ import type { FormSubmitEvent } from '@nuxt/ui';
 
 const { t } = useI18n();
 const { orgId } = useRoute().params as { orgId: string };
-const { loading, createOrganisationTeam } = useOrganisation();
+const { loading } = useOrganisation();
 
 const route = useRoute()
 const organisationId = computed(() => route.params.orgId as string);
@@ -24,7 +24,10 @@ const state = ref<Partial<Schema>>({
 });
 
 function handleSubmit(event: FormSubmitEvent<Schema>) {
-    return createOrganisationTeam(orgId, event.data).then(async (data) => {
+    return $fetch(`/api/organisation/${orgId}/team`, {
+        method: 'POST',
+        body: event.data,
+    }).then(async (data) => {
         useToast().add({
             color: 'success',
             title: t('organisations.teams.createSuccess'),

@@ -6,10 +6,15 @@ definePageMeta({
 const { t } = useI18n();
 const toast = useToast();
 const { deleteUser, fetchUser } = useUser();
-const { currentOrganisationId, fetchOrganisations } = useOrganisation();
+const { currentOrganisationId } = useOrganisation();
 
-const { pending, data } = await fetchUser();
-const { pending: loadingOrganisations, data: organisations } = await fetchOrganisations();
+const [
+    { pending, data },
+    { pending: loadingOrganisations, data: organisations }
+] = await Promise.all([
+    fetchUser(),
+    useFetch('/api/organisation'),
+]);
 
 const noOrganisations = computed(() => {
     if (loadingOrganisations) {

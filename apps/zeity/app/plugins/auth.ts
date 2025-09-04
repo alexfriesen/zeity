@@ -14,7 +14,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     watch(
       loggedIn,
       async (value) => {
-        if (value) {
+        if (value === true) {
           await fetchUser();
           await fetchOrganisations();
           const orgId = currentOrganisationId.value;

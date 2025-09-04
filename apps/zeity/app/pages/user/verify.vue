@@ -1,13 +1,13 @@
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'guest'
+    middleware: 'auth'
 })
 
 const toast = useToast()
 const { fetch, user } = useUserSession()
 const { refreshOrganisations } = useOrganisation()
 
-async function auth() {
+async function refresh() {
     await fetch()
         .then(handleRedirect)
         .catch((error) => {
@@ -21,7 +21,7 @@ async function auth() {
 
 async function handleRedirect() {
     if (!user.value?.verified) {
-        return navigateTo('/user/verify');
+        return;
     }
 
     if (useAuthRedirect().has()) {
@@ -40,24 +40,10 @@ async function handleRedirect() {
 
 <template>
     <div class="my-3 space-y-6">
-        <UCard v-if="!user" class="max-w-md m-auto">
-            <template #header>
-                <h3 class="text-lg font-semibold leading-6">
-                    {{ $t('auth.title') }}
-                </h3>
-            </template>
-
+        <UPageCard :title="$t('auth.verify')">
             <div class="flex flex-col gap-2 justify-between">
-                <AuthRegister @submit="auth" />
-
-                <USeparator orientation="horizontal" label="or" />
-
-                <AuthLogin @submit="auth" />
-
-                <USeparator orientation="horizontal" label="or" />
-
-                <AuthOauth />
+                <AuthVerify @submit="refresh" />
             </div>
-        </UCard>
+        </UPageCard>
     </div>
 </template>

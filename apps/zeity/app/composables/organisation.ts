@@ -23,18 +23,12 @@ export function useOrganisation() {
   }
 
   function fetchOrganisations() {
-    console.log('fetchOrganisations');
-    return $fetch('/api/organisation', { cache: 'reload' })
-      .then((result) => {
-        const orgs = result || [];
-        store.setOrganisations(orgs);
+    return $fetch('/api/organisation').then((result) => {
+      const orgs = result || [];
+      store.setOrganisations(orgs);
 
-        return result;
-      })
-      .catch((error) => {
-        console.error('Error fetching organisations:', error);
-        return [];
-      });
+      return result;
+    });
   }
 
   async function refreshOrganisations() {

@@ -47,10 +47,10 @@
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.4",
     "happy-dom": "^18.0.1",
-    "nuxt": "^4.1.0",
-    "nuxt-auth-utils": "^0.5.23",
+    "nuxt": "^4.1.1",
+    "nuxt-auth-utils": "^0.5.24",
     "nuxt-security": "^2.4.0",
-    "vue-i18n": "^11.1.11",
+    "vue-i18n": "^11.1.12",
     "vue-tsc": "3.0.6"
   }
 }

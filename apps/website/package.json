@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@iconify-json/circle-flags": "^1.2.8",
-    "@iconify-json/lucide": "^1.2.66",
+    "@iconify-json/lucide": "^1.2.67",
     "@iconify-json/ri": "^1.2.5",
     "@nuxt/content": "^3.6.3",
     "@nuxt/eslint": "^1.9.0",

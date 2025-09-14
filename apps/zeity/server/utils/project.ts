@@ -22,7 +22,10 @@ export function doesProjectsBelongsToOrganisation(
   projectIds: string | string[],
   organisationId: string
 ) {
-  const ids = Array.isArray(projectIds) ? projectIds : [projectIds];
+  const ids = Array.isArray(projectIds)
+    ? // deduplicate ids
+      [...new Set(projectIds)]
+    : [projectIds];
   return useDrizzle()
     .select({ id: projects.id })
     .from(projects)

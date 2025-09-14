@@ -7,7 +7,8 @@ const { user } = useUser()
 const { loggedIn } = useUserSession();
 const { findProjectById } = useProject()
 const { loadTimes, getOrganisationTimes } = useTime();
-const { loadProject, updateProject, syncOfflineProject, isOnlineProject } = useProject();
+const { loadProject, updateProject, isOnlineProject } = useProject();
+const { syncOfflineProjects } = useSync();
 
 const timeStore = useTimerStore();
 
@@ -70,7 +71,8 @@ async function handleSync() {
     if (!project.value) return;
 
     const offlineProject = project.value;
-    const newProject = await syncOfflineProject(offlineProject.id);
+    const newProjects = await syncOfflineProjects([offlineProject.id]);
+    const newProject = newProjects?.[0];
     if (!newProject) return;
 
     // offline project are only linked to offline times therefore it is safe to update store items

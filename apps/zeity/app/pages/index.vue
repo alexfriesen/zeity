@@ -58,6 +58,7 @@ watch(toRef(currentOrganisationId), () => {
 <template>
     <div class="flex flex-col h-full">
 
+        <SyncAlert v-if="!!user" />
         <TimeDrawer />
 
         <section class="grow py-3 my-3">

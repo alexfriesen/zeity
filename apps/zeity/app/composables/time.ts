@@ -75,6 +75,11 @@ export function useTime() {
     return computed(() => ref.value);
   }
 
+  function getOfflineTimes() {
+    const ref = store.findTimes((time) => !time.userId);
+    return computed(() => ref.value);
+  }
+
   async function createTime(data: Time) {
     try {
       if (loggedIn.value) {
@@ -105,6 +110,7 @@ export function useTime() {
 
     return store.updateTime(id, data);
   }
+
   async function removeTime(id: string | number) {
     try {
       if (loggedIn.value && isOnlineTime(id)) {
@@ -172,31 +178,18 @@ export function useTime() {
     return !!time?.userId;
   }
 
-  async function syncOfflineTime(id: string | number) {
-    const offlineTime = store.findTimeById(id).value;
-    if (!offlineTime) return;
-    if (isOnlineTime(offlineTime)) return;
-
-    const newTime = await createTime(offlineTime);
-    if (!newTime || !isOnlineTime(newTime)) return;
-
-    await removeTime(offlineTime.id);
-
-    return newTime;
-  }
-
   return {
     loadTimes,
     loadTime,
 
     getOrganisationTimes,
+    getOfflineTimes,
 
     createTime,
     updateTime,
     removeTime,
 
     isOnlineTime,
-    syncOfflineTime,
 
     toggleDraft,
     startDraft,

@@ -28,7 +28,8 @@ const projectItems = computed(() => {
     ];
 })
 
-const { createTime, updateTime, removeTime, stopDraft, syncOfflineTime, isOnlineTime } = useTime();
+const { syncOfflineTimes } = useSync();
+const { createTime, updateTime, removeTime, stopDraft, isOnlineTime } = useTime();
 const timeStore = useTimerStore();
 
 const {
@@ -185,7 +186,8 @@ async function handleSync() {
     if (!currentTime.value) return;
 
     const offlineTime = currentTime.value as Time;
-    const newTime = await syncOfflineTime(offlineTime.id);
+    const newTimes = await syncOfflineTimes([offlineTime.id]);
+    const newTime = newTimes?.[0];
     if (!newTime) return;
 
     currentTime.value = newTime;

@@ -50,6 +50,27 @@ export default defineI18nConfig(() => ({
         about: 'About',
         more: 'More',
       },
+      sync: {
+        title: 'Sync',
+        description:
+          'You have offline {timeCount} times and {projectCount} projects that needs to be synced.',
+        button: 'Sync Now',
+        times: {
+          successTitle: 'Times Synced',
+          successMessage:
+            '{n} of your time entries have been synced successfully.',
+          errorTitle: 'Error Syncing Times',
+          errorMessage:
+            'There was an error syncing your time entries. Please try again.',
+        },
+        projects: {
+          successTitle: 'Projects Synced',
+          successMessage: '{n} of your projects have been synced successfully.',
+          errorTitle: 'Error Syncing Projects',
+          errorMessage:
+            'There was an error syncing your projects. Please try again.',
+        },
+      },
       times: {
         title: 'Times',
         form: {
@@ -180,7 +201,8 @@ export default defineI18nConfig(() => ({
         },
         delete: {
           title: 'Delete Organisation',
-          description: 'Are you sure you want to delete this organisation? This action cannot be undone.',
+          description:
+            'Are you sure you want to delete this organisation? This action cannot be undone.',
           success: 'Organisation deleted successfully',
           error: 'Error deleting organisation',
         },
@@ -252,6 +274,27 @@ export default defineI18nConfig(() => ({
         profile: 'Profil',
         about: 'Über',
         more: 'Mehr',
+      },
+      sync: {
+        title: 'Synchronisieren',
+        description:
+          'Sie haben Offline {timeCount} Zeiten und {projectCount} Projekte, die synchronisiert werden müssen.',
+        button: 'Jetzt synchronisieren',
+        times: {
+          successTitle: 'Zeiten synchronisiert',
+          successMessage: '{n} Ihrer Zeiten wurden erfolgreich synchronisiert.',
+          errorTitle: 'Fehler beim Synchronisieren der Zeiten',
+          errorMessage:
+            'Beim Synchronisieren Ihrer Zeiten ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+        },
+        projects: {
+          successTitle: 'Projekte synchronisiert',
+          successMessage:
+            '{n} Ihrer Projekte wurden erfolgreich synchronisiert.',
+          errorTitle: 'Fehler beim Synchronisieren der Projekte',
+          errorMessage:
+            'Beim Synchronisieren Ihrer Projekte ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+        },
       },
       times: {
         title: 'Zeiten',
@@ -364,7 +407,8 @@ export default defineI18nConfig(() => ({
         },
         delete: {
           title: 'Organisation löschen',
-          description: 'Möchten Sie diese Organisation wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
+          description:
+            'Möchten Sie diese Organisation wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
           success: 'Organisation erfolgreich gelöscht',
           error: 'Fehler beim Löschen der Organisation',
         },

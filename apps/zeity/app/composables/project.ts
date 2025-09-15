@@ -70,6 +70,11 @@ export function useProject() {
     return computed(() => ref.value);
   }
 
+  function getOfflineProjects() {
+    const ref = store.findProjects((project) => !project.userId);
+    return computed(() => ref.value);
+  }
+
   function findProjectById(id: string | number) {
     const ref = store.findProjectById(id);
     return computed(() => ref.value);
@@ -128,30 +133,18 @@ export function useProject() {
     return !!project?.userId;
   }
 
-  async function syncOfflineProject(id: string | number) {
-    const offlineProject = findProjectById(id).value;
-    if (!offlineProject || isOnlineProject(offlineProject)) return;
-
-    const newProject = await createProject(offlineProject);
-    if (!newProject || !isOnlineProject(newProject)) return;
-
-    await removeProject(offlineProject.id);
-
-    return newProject;
-  }
-
   return {
     loadProjects,
     loadProject,
 
     findProjectById,
     getOrganisationProjects,
+    getOfflineProjects,
 
     createProject,
     updateProject,
     removeProject,
 
     isOnlineProject,
-    syncOfflineProject,
   };
 }

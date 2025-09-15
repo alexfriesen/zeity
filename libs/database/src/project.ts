@@ -1,6 +1,6 @@
 import { index, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
 
-import { PROJECT_STATUS_ACTIVE } from '@zeity/types';
+import { type ProjectStatus, PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { timestampColumns } from './common';
 import { organisations } from './organisation';
 import { users } from './user';
@@ -11,7 +11,10 @@ export const projects = pgTable(
     id: uuid('id').defaultRandom().notNull().primaryKey(),
 
     name: varchar('name', { length: 150 }).notNull(),
-    status: text('status').notNull().default(PROJECT_STATUS_ACTIVE),
+    status: text('status')
+      .notNull()
+      .default(PROJECT_STATUS_ACTIVE)
+      .$type<ProjectStatus>(),
     notes: text('notes').notNull().default(''),
 
     organisationId: uuid('organisation_id')

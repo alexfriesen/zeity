@@ -1,7 +1,7 @@
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
 
-export function doesTimeExist(timeId: number): Promise<boolean> {
+export function doesTimeExist(timeId: string): Promise<boolean> {
   return useDrizzle()
     .select({ id: times.id })
     .from(times)
@@ -9,7 +9,7 @@ export function doesTimeExist(timeId: number): Promise<boolean> {
     .then((res) => res[0]?.id === timeId);
 }
 
-export function findTimeById(timeId: number) {
+export function findTimeById(timeId: string) {
   return useDrizzle()
     .select()
     .from(times)

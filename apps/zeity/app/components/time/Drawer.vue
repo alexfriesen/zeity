@@ -103,7 +103,7 @@ const diff = computed(() => {
 });
 
 const timeSchema = z.object({
-    id: z.any().default(nanoid()),
+    id: z.string().default(nanoid()),
     start: z.coerce.string().date(),
     end: z.coerce.string().date(),
     notes: z.string().default(''),

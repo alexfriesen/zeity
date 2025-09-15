@@ -1,5 +1,5 @@
 export interface Time {
-  id: string | number;
+  id: string;
 
   start: string;
   duration: number;

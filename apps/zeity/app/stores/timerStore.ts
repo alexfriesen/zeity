@@ -47,7 +47,7 @@ export const useTimerStore = defineStore('timer', () => {
     return timesStore.insert(time);
   }
 
-  function updateTime(id: string | number, time: Partial<Time>) {
+  function updateTime(id: string, time: Partial<Time>) {
     return timesStore.update(id, time);
   }
 

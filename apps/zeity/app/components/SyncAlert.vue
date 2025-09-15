@@ -66,10 +66,9 @@ async function handleSyncOffline() {
 </script>
 
 <template>
-    <UAlert v-if="hasOfflineData" :title="$t('sync.title')" :description="$t('sync.description')"
+    <UAlert v-if="hasOfflineData" :title="$t('sync.title')"
+        :description="$t('sync.description', { timeCount: times.length, projectCount: projects.length })"
         icon="i-lucide-cloud-upload" :actions="[
             { label: $t('sync.button'), onClick: handleSyncOffline, loading: loading, disabled: loading },
         ]" />
-
-    {{ times.length }}
 </template>

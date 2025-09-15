@@ -52,7 +52,8 @@ export default defineI18nConfig(() => ({
       },
       sync: {
         title: 'Sync',
-        description: 'You have offline data that needs to be synced.',
+        description:
+          'You have offline {timeCount} times and {projectCount} projects that needs to be synced.',
         button: 'Sync Now',
         times: {
           successTitle: 'Times Synced',
@@ -277,7 +278,7 @@ export default defineI18nConfig(() => ({
       sync: {
         title: 'Synchronisieren',
         description:
-          'Sie haben Offline-Daten, die synchronisiert werden müssen.',
+          'Sie haben Offline {timeCount} Zeiten und {projectCount} Projekte, die synchronisiert werden müssen.',
         button: 'Jetzt synchronisieren',
         times: {
           successTitle: 'Zeiten synchronisiert',

@@ -22,6 +22,18 @@ services:
     volumes:
       - minio-data:/data
 
+  minio-init:
+    image: minio/mc
+    restart: "no"
+    depends_on:
+      - minio
+    entrypoint: >
+      sh -c "
+        sleep 10 &&
+        mc alias set local http://minio:9000 minio minio123 &&
+        mc mb local/zeity || true
+      "
+
   maildev:
     image: maildev/maildev
     ports:

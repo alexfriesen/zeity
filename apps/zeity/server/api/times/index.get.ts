@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { eq, asc, inArray } from '@zeity/database';
+import { eq, desc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';

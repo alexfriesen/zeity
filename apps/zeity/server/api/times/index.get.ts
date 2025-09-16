@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(times)
     .where(and(...whereStatements))
-    .orderBy(asc(times.start))
+    .orderBy(desc(times.start))
     .limit(query.data.limit)
     .offset(query.data.offset);
 

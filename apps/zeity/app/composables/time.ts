@@ -20,7 +20,7 @@ function fetchTimes(options?: FetchTimesOptions): Promise<Time[]> {
   });
 }
 
-function fetchTime(id: string | number): Promise<Time> {
+function fetchTime(id: string): Promise<Time> {
   return $fetch(`/api/times/${id}`, {
     method: 'GET',
   });
@@ -33,14 +33,14 @@ function postTime(data: Time): Promise<Time> {
   });
 }
 
-function patchTime(id: string | number, data: Partial<Time>): Promise<Time> {
+function patchTime(id: string, data: Partial<Time>): Promise<Time> {
   return $fetch(`/api/times/${id}`, {
     method: 'PATCH',
     body: data,
   });
 }
 
-function deleteTime(id: string | number) {
+function deleteTime(id: string) {
   return $fetch(`/api/times/${id}`, {
     method: 'DELETE',
   });
@@ -111,7 +111,7 @@ export function useTime() {
     return store.updateTime(id, data);
   }
 
-  async function removeTime(id: string | number) {
+  async function removeTime(id: string) {
     try {
       if (loggedIn.value && isOnlineTime(id)) {
         await deleteTime(id);
@@ -170,7 +170,7 @@ export function useTime() {
     return time;
   }
 
-  function isOnlineTime(idOrTime: string | number | Time) {
+  function isOnlineTime(idOrTime: string | Time) {
     const time =
       typeof idOrTime === 'object'
         ? idOrTime

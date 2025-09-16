@@ -2,7 +2,6 @@ import {
   index,
   integer,
   pgTable,
-  serial,
   text,
   timestamp,
   uuid,
@@ -15,7 +14,7 @@ import { organisations } from './organisation';
 export const times = pgTable(
   'time',
   {
-    id: serial('id').primaryKey(),
+    id: uuid('id').defaultRandom().notNull().primaryKey(),
 
     start: timestamp('start', {
       withTimezone: true,

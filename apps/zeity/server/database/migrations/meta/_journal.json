@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1736866383439,
+      "when": 1757963263340,
       "tag": "0000_initial",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1738143590413,
-      "tag": "0001_hesitant_skrulls",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1743257714383,
-      "tag": "0002_clever_gambit",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1744915802428,
-      "tag": "0003_overconfident_sandman",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1746792963867,
-      "tag": "0004_curvy_mentor",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1753114473694,
-      "tag": "0005_far_miek",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1754913949161,
-      "tag": "0006_material_chronomancer",
       "breakpoints": true
     }
   ]

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      id: z.coerce.number(),
+      id: z.string().uuid(),
     }).safeParse
   );
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { eq, asc, inArray } from '@zeity/database';
+import { eq, desc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(times)
     .where(and(...whereStatements))
-    .orderBy(asc(times.start))
+    .orderBy(desc(times.start))
     .limit(query.data.limit)
     .offset(query.data.offset);
 

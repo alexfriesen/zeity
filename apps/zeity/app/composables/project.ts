@@ -75,7 +75,7 @@ export function useProject() {
     return computed(() => ref.value);
   }
 
-  function findProjectById(id: string | number) {
+  function findProjectById(id: string) {
     const ref = store.findProjectById(id);
     return computed(() => ref.value);
   }

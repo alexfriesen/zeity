@@ -2,7 +2,7 @@ export function useSync() {
   const timeStore = useTimerStore();
   const projectStore = useProjectStore();
 
-  async function syncOfflineTimes(ids: (string | number)[]) {
+  async function syncOfflineTimes(ids: string[]) {
     const offlineTimes = timeStore.findTimes((time) =>
       ids.includes(time.id)
     ).value;
@@ -23,7 +23,7 @@ export function useSync() {
     return newTimes;
   }
 
-  async function syncOfflineProjects(ids: (string | number)[]) {
+  async function syncOfflineProjects(ids: string[]) {
     const offlineProjects = projectStore.findProjects((project) =>
       ids.includes(project.id)
     ).value;

@@ -113,7 +113,7 @@ function deleteOrganisation() {
 </script>
 
 <template>
-    <div>
+    <div class="space-y-6">
         <UPageCard>
             <div class="flex flex-col items-center justify-center">
                 <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />

@@ -1,6 +1,6 @@
 import { utils, writeXLSX } from 'xlsx';
 
-export function toXLSXBlob(content: any) {
+export function toXLSXBlob(content: Buffer) {
   return new Blob([content], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });

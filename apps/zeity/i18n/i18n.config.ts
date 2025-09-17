@@ -107,6 +107,14 @@ export default defineI18nConfig(() => ({
       reports: {
         summary: 'Summary',
         report: 'Report',
+        downloadError: 'Error generating report',
+        fields: {
+          user: 'User',
+          start: 'Start',
+          duration: 'Duration',
+          project: 'Project',
+          notes: 'Notes',
+        },
       },
       settings: {
         title: 'Settings',
@@ -332,6 +340,14 @@ export default defineI18nConfig(() => ({
       reports: {
         summary: 'Zusammenfassung',
         report: 'Bericht',
+        downloadError: 'Fehler beim Generieren des Berichts',
+        fields: {
+          user: 'Benutzer',
+          start: 'Start',
+          duration: 'Dauer',
+          project: 'Projekt',
+          notes: 'Notizen',
+        },
       },
       organisations: {
         title: 'Organisationen',

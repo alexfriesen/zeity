@@ -16,10 +16,10 @@
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.6"
   },
   "devDependencies": {
-    "@types/node": "^24.4.0",
+    "@types/node": "^24.5.2",
     "@vitest/coverage-v8": "^3.2.4",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
@@ -33,5 +33,5 @@
       "@netlify/blobs": "-"
     }
   },
-  "packageManager": "pnpm@10.16.1"
+  "packageManager": "pnpm@10.17.1"
 }

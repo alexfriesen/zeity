@@ -21,7 +21,7 @@
     "@eslint/js": "^9.36.0",
     "@types/node": "^24.5.2",
     "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.31.4",
+    "drizzle-kit": "^0.31.5",
     "eslint": "~9.36.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.1"

@@ -46,7 +46,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.5",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "^20.0.0",
     "nuxt": "^4.1.3",
     "nuxt-auth-utils": "^0.5.25",
     "nuxt-security": "^2.4.0",

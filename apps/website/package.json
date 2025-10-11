@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@iconify-json/circle-flags": "^1.2.8",
-    "@iconify-json/lucide": "^1.2.68",
-    "@iconify-json/ri": "^1.2.5",
+    "@iconify-json/lucide": "^1.2.69",
+    "@iconify-json/ri": "^1.2.6",
     "@nuxt/content": "^3.7.1",
     "@nuxt/eslint": "^1.9.0",
     "@nuxt/icon": "^2.0.0",
@@ -23,7 +23,7 @@
     "@nuxt/ui": "4.0.1",
     "@nuxtjs/i18n": "^10.1.0",
     "@nuxtjs/seo": "^3.2.2",
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.2",
     "eslint": "~9.37.0",
     "nuxt": "^4.1.3"
   }

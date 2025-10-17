@@ -17,7 +17,17 @@ const links = computed(() => [
     { label: t('organisations.teams.title'), to: `/organisations/${organisationId}/team` },
 ])
 
-const { data, refresh } = await useFetch(() => `/api/organisation/${organisationId}`);
+const { data, refresh, error } = await useFetch(() => `/api/organisation/${organisationId}`);
+
+switch (error.value?.statusCode) {
+    case 401:
+        await navigateTo('/auth/login');
+        break;
+    case 403:
+    case 404:
+        await navigateTo('/organisations');
+        break;
+}
 
 async function refreshOrganisation() {
     await useUser().reloadUser();
@@ -26,7 +36,7 @@ async function refreshOrganisation() {
 </script>
 
 <template>
-    <UDashboardPanel :id="`organisation-${organisationId}`">
+    <UDashboardPanel v-if="data" :id="`organisation-${organisationId}`">
         <template #header>
             <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
             <UDashboardNavbar :title="data?.name" />

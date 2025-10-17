@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { refreshOrganisations } = useOrganisation()
+const { reloadUser } = useUser()
 const token = useRoute().query.token as string
 
 const { status, data } = await useLazyAsyncData('organisation/join',
@@ -33,7 +33,7 @@ async function acceptInvite() {
                 color: 'success'
             })
         })
-        .then(refreshOrganisations)
+        .then(reloadUser)
         .then(async () => await navigateTo('/user'))
         .catch((error) => {
             console.error(error)

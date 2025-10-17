@@ -1,17 +1,35 @@
 import type { User } from '@zeity/database/user';
+import type { LocalOrganisation, LocalUser } from '~/types/local-user';
 
 export function useUser() {
   const { clear } = useUserSession();
   const userStore = useUserStore();
-  const { user, loading } = storeToRefs(userStore);
+  const organisationsStore = useOrganisationStore();
+  const userStoreRefs = storeToRefs(useUserStore());
+
+  function updateUserAndOrganisations(
+    user: LocalUser | null = null,
+    organisations: LocalOrganisation[] = []
+  ) {
+    userStore.setUser(user || null);
+    organisationsStore.setOrganisations(organisations || []);
+  }
+
+  function reset() {
+    updateUserAndOrganisations(null, []);
+  }
 
   function fetchUser() {
-    return useFetch('/api/user/current').then((result) => {
+    return useFetch('/api/user/current', { lazy: true }).then((result) => {
       userStore.setLoading(result.pending.value);
 
       if (result.status.value === 'success') {
-        const user = result?.data.value?.user ?? null;
-        userStore.setUser(user as User | null);
+        const { user, organisations } = result?.data.value || {};
+        updateUserAndOrganisations(
+          user as LocalUser,
+          organisations as LocalOrganisation[]
+        );
+        return result;
       }
 
       if (result.error.value?.data.statusCode === 401) {
@@ -20,6 +38,29 @@ export function useUser() {
 
       return result;
     });
+  }
+
+  async function reloadUser() {
+    userStore.setLoading(true);
+    return $fetch('/api/user/current')
+      .then((result) => {
+        const { user, organisations } = result || {};
+        updateUserAndOrganisations(
+          user as LocalUser,
+          organisations as LocalOrganisation[]
+        );
+        return result;
+      })
+      .catch((error) => {
+        console.error('fetchUser error', error);
+        if (error?.statusCode === 401) {
+          clear();
+        }
+        throw error;
+      })
+      .finally(() => {
+        userStore.setLoading(false);
+      });
   }
 
   async function deleteUser() {
@@ -50,11 +91,13 @@ export function useUser() {
   }
 
   return {
-    loading,
-    user,
+    loading: userStoreRefs.loading,
+    user: userStoreRefs.user,
     setUser: userStore.setUser,
+    reset,
 
     fetchUser,
+    reloadUser,
     updateUser,
     uploadImage,
     deleteUser,

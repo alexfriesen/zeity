@@ -18,6 +18,11 @@ const links = computed(() => [
 ])
 
 const { data, refresh } = await useFetch(() => `/api/organisation/${organisationId}`);
+
+async function refreshOrganisation() {
+    await useUser().reloadUser();
+    return refresh();
+}
 </script>
 
 <template>
@@ -32,7 +37,7 @@ const { data, refresh } = await useFetch(() => `/api/organisation/${organisation
         </template>
 
         <template #body>
-            <NuxtPage :org="data" @refresh="refresh" />
+            <NuxtPage :org="data" @refresh="refreshOrganisation" />
         </template>
     </UDashboardPanel>
 </template>

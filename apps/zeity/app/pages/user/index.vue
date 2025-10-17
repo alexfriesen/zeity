@@ -6,16 +6,15 @@ definePageMeta({
 const { t } = useI18n();
 const toast = useToast();
 const { deleteUser, fetchUser } = useUser();
-const { currentOrganisationId, fetchOrganisations } = useOrganisation();
+const { currentOrganisationId } = useOrganisation();
 
 const { pending, data } = await fetchUser();
-const { pending: loadingOrganisations, data: organisations } = await fetchOrganisations();
 
 const noOrganisations = computed(() => {
-    if (loadingOrganisations) {
+    if (pending) {
         return false;
     }
-    return (organisations.value?.length ?? 0) < 1
+    return (data.value?.organisations.length ?? 0) < 1
 });
 
 function logout() {
@@ -67,11 +66,11 @@ async function handleDeleteUser() {
                 <USeparator />
 
                 <UFormField :label="$t('user.organisation')" size="lg">
-                    <template v-if="loadingOrganisations">
+                    <template v-if="pending">
                         <USkeleton class="h-13.5 w-full" />
                     </template>
                     <template v-else>
-                        <URadioGroup v-model="currentOrganisationId" :items="organisations" value-key="id"
+                        <URadioGroup v-model="currentOrganisationId" :items="data?.organisations" value-key="id"
                             label-key="name" variant="card" />
                     </template>
                 </UFormField>

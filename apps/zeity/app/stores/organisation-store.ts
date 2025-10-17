@@ -26,7 +26,7 @@ export const useOrganisationStore = defineStore('organisation', () => {
   const currentOrganisationId = computed({
     get() {
       if (loggedIn.value) {
-        return currentOrganisationCookie.value;
+        return currentOrganisationCookie.value ?? undefined;
       }
       return undefined;
     },

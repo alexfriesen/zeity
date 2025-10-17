@@ -101,6 +101,7 @@ function deleteOrganisation() {
             color: 'success',
             title: t('organisations.delete.success'),
         })
+        await useUser().reloadUser()
         await navigateTo('/organisations')
     }).catch((error) => {
         console.error(error)

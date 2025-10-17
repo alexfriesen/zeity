@@ -5,7 +5,7 @@ definePageMeta({
 
 const toast = useToast()
 const { fetch, user } = useUserSession()
-const { refreshOrganisations } = useOrganisation()
+const { reloadUser } = useUser()
 
 async function auth() {
     await fetch()
@@ -20,7 +20,8 @@ async function auth() {
 }
 
 async function handleRedirect() {
-    if (!user.value?.verified) {
+    const { user, organisations } = await reloadUser();
+    if (!user.emailVerified) {
         return navigateTo('/user/verify');
     }
 
@@ -28,8 +29,7 @@ async function handleRedirect() {
         return useAuthRedirect().redirect();
     }
 
-    const orgs = await refreshOrganisations();
-    if ((orgs?.length ?? 0) < 1) {
+    if ((organisations?.length ?? 0) < 1) {
         console.log('No organisations found, redirecting to create organisation');
         return navigateTo('/organisations/create');
     }

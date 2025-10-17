@@ -20,7 +20,7 @@ export function useUser() {
   }
 
   function fetchUser() {
-    return useFetch('/api/user/current', { lazy: true }).then((result) => {
+    return useLazyFetch('/api/user/current').then((result) => {
       userStore.setLoading(result.pending.value);
 
       if (result.status.value === 'success') {

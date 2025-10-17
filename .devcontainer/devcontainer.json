@@ -6,6 +6,18 @@
   "postCreateCommand": "pnpm install",
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          }
+        }
+      },
       "extensions": [
         "streetsidesoftware.code-spell-checker",
         "Vue.volar",

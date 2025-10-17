@@ -7,6 +7,10 @@ services:
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
+    environment:
+      - ZEITY_DATABASE_URL=postgresql://postgres:postgres@postgres:5432/zeity
+      - ZEITY_S3_END_POINT=http://minio:9000
+      - ZEITY_MAILER_SMTP_HOST=maildev
 
   postgres:
     image: postgres:17

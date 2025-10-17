@@ -23,6 +23,7 @@ switch (error.value?.statusCode) {
     case 401:
         await navigateTo('/auth/login');
         break;
+    case 400:
     case 403:
     case 404:
         await navigateTo('/organisations');
@@ -36,7 +37,7 @@ async function refreshOrganisation() {
 </script>
 
 <template>
-    <UDashboardPanel v-if="data" :id="`organisation-${organisationId}`">
+    <UDashboardPanel :id="`organisation-${organisationId}`">
         <template #header>
             <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
             <UDashboardNavbar :title="data?.name" />
@@ -47,7 +48,7 @@ async function refreshOrganisation() {
         </template>
 
         <template #body>
-            <NuxtPage :org="data" @refresh="refreshOrganisation" />
+            <NuxtPage v-if="data" :org="data" @refresh="refreshOrganisation" />
         </template>
     </UDashboardPanel>
 </template>

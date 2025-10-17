@@ -1,5 +1,9 @@
 import type { NewOrganisationTeam } from '@zeity/database/organisation-team';
-import type { NewOrganisation, Organisation } from '@zeity/types/organisation';
+import type {
+  NewOrganisation,
+  Organisation,
+  OrganisationMemberRole,
+} from '@zeity/types/organisation';
 
 export function useOrganisation() {
   const store = useOrganisationStore();
@@ -83,6 +87,18 @@ export function useOrganisation() {
     return store.getAllOrganisations();
   }
 
+  function userHasOrganisationRole(
+    orgId: string | number,
+    roles: OrganisationMemberRole[]
+  ) {
+    const organisation = store.findOrganisationById(orgId);
+    return computed(() => {
+      if (!organisation.value) return false;
+
+      return roles.includes(organisation.value.role);
+    });
+  }
+
   return {
     loading: store.loading,
     currentOrganisation,
@@ -100,5 +116,7 @@ export function useOrganisation() {
 
     getAllOrganisations,
     findOrganisationById: store.findOrganisationById,
+
+    userHasOrganisationRole,
   };
 }

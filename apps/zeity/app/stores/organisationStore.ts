@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { useEntityStore } from './entityStore';
-import type { Organisation } from '@zeity/types/organisation';
+import type { LocalOrganisation } from '~/types/local-user';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 
@@ -14,7 +14,7 @@ export const useOrganisationStore = defineStore('organisation', () => {
   }
 
   // Organisations
-  const organisationsStore = useEntityStore<Organisation>('organisations');
+  const organisationsStore = useEntityStore<LocalOrganisation>('organisations');
 
   const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
@@ -39,13 +39,13 @@ export const useOrganisationStore = defineStore('organisation', () => {
     return id ? organisationsStore.findById(id).value : undefined;
   });
 
-  function setOrganisations(organisations: Organisation[] = []) {
+  function setOrganisations(organisations: LocalOrganisation[] = []) {
     organisationsStore.setEntities(organisations);
     // If no current organisation is set, set the first one
     autoSelectFirstOrganisation();
   }
 
-  function upsertOrganisations(organisations: Organisation[] = []) {
+  function upsertOrganisations(organisations: LocalOrganisation[] = []) {
     organisationsStore.upsertMany(organisations);
     // If no current organisation is set, set the first one
     autoSelectFirstOrganisation();

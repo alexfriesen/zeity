@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui';
+import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types';
+
 definePageMeta({
     validate: async (route) => {
         // Check if the id is made up of digits
@@ -7,15 +10,25 @@ definePageMeta({
 })
 
 const organisationId = useRoute().params.orgId as string;
+const isOrgAdmin = useOrganisation().userHasOrganisationRole(organisationId, [ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER]);
 
 const { t } = useI18n()
 
-const links = computed(() => [
-    { label: t('common.general'), to: `/organisations/${organisationId}`, exact: true },
-    { label: t('organisations.invites.title'), to: `/organisations/${organisationId}/invite` },
-    { label: t('organisations.members.title'), to: `/organisations/${organisationId}/member` },
-    { label: t('organisations.teams.title'), to: `/organisations/${organisationId}/team` },
-])
+const links = computed(() => {
+    const links: NavigationMenuItem[] = [
+        { label: t('common.general'), to: `/organisations/${organisationId}`, exact: true },
+    ];
+
+    if (isOrgAdmin.value) {
+        links.push(
+            { label: t('organisations.invites.title'), to: `/organisations/${organisationId}/invite` },
+            { label: t('organisations.members.title'), to: `/organisations/${organisationId}/member` },
+            { label: t('organisations.teams.title'), to: `/organisations/${organisationId}/team` },
+        );
+    }
+
+    return links;
+})
 
 const { data, refresh, error } = await useFetch(() => `/api/organisation/${organisationId}`);
 
@@ -39,8 +52,8 @@ async function refreshOrganisation() {
 <template>
     <UDashboardPanel :id="`organisation-${organisationId}`">
         <template #header>
-            <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" />
-            <UDashboardNavbar :title="data?.name" />
+            <UBreadcrumb :items="[{ label: $t('organisations.title'), to: '/organisations' }]" class="mt-4" />
+            <UDashboardNavbar :title="data?.name" :toggle="false" />
 
             <UDashboardToolbar>
                 <UNavigationMenu :items="links" highlight class="-mx-1 flex-1" />

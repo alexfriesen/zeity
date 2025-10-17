@@ -2,12 +2,14 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type { Organisation } from '@zeity/database/organisation';
+import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types';
 
 const { t } = useI18n()
 const toast = useToast()
 
 const { uploadOrganisationImage } = useOrganisation();
 const organisationId = useRoute().params.orgId as string;
+const isOrgAdmin = useOrganisation().userHasOrganisationRole(organisationId, [ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER]);
 
 const props = defineProps({
     org: {
@@ -58,7 +60,6 @@ function changeName(event: FormSubmitEvent<Schema>) {
         saving.value = false
     })
 }
-
 
 function changeImage() {
     const input = document.createElement('input');
@@ -118,7 +119,8 @@ function deleteOrganisation() {
         <UPageCard>
             <div class="flex flex-col items-center justify-center">
                 <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
-                <UButton :loading="saving" icon="i-lucide-camera" variant="subtle" @click="changeImage">
+                <UButton v-if="isOrgAdmin" :loading="saving" icon="i-lucide-camera" variant="subtle"
+                    @click="changeImage">
                     {{ $t('common.upload') }}
                 </UButton>
             </div>
@@ -134,13 +136,13 @@ function deleteOrganisation() {
                     class="mb-2 inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                     {{ org?.name }}
                 </h2>
-                <UButton size="lg" icon="i-lucide-pencil" @click="switchEditing">
+                <UButton v-if="isOrgAdmin" size="lg" icon="i-lucide-pencil" @click="switchEditing">
                     {{ $t('common.edit') }}
                 </UButton>
             </div>
         </UPageCard>
 
-        <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
+        <UPageCard v-if="isOrgAdmin" class="bg-gradient-to-tl from-error/10 from-5% to-default">
             <h3
                 class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                 {{ $t('organisations.delete.title') }}

@@ -5,57 +5,14 @@ export function useOrganisation() {
   const store = useOrganisationStore();
   const { currentOrganisation, currentOrganisationId } = storeToRefs(store);
 
-  function fetchOrganisations() {
-    return useFetch('/api/organisation').then((result) => {
-      store.setLoading(result.pending.value);
-
-      if (result.status.value === 'success') {
-        const orgs = result.data.value || [];
-        store.setOrganisations(orgs);
-      }
-
-      return result;
-    });
-  }
-
-  function fetchOrganisation(orgId: MaybeRef<string | null | undefined>) {
-    const id = toRef(orgId);
-    return useFetch(() => `/api/organisation/${id.value}`);
-  }
-
-  function fetchOrganisationMembers(
-    orgId: MaybeRef<string | null | undefined>
-  ) {
-    const id = toRef(orgId);
-    return useFetch(() => `/api/organisation/${id.value}/member`, {
-      lazy: true,
-      watch: [id],
-      default: () => [],
-    });
-  }
-
-  async function refreshOrganisations() {
-    const { data } = await fetchOrganisations();
-    const orgs = data.value || [];
-
-    const orgId = currentOrganisationId.value;
-    if (!orgId || !orgs.map((org) => org.id).includes(orgId)) {
-      store.setCurrentOrganisationId(orgs[0]?.id ?? null);
-    }
-
-    return orgs;
-  }
-
   async function createOrganisation(data: Organisation | NewOrganisation) {
     store.setLoading(true);
     return $fetch('/api/organisation', {
       method: 'POST',
       body: data,
     })
-      .then((data) => {
-        if (data?.id) {
-          store.insertOrganisation(data);
-        }
+      .then(async (data) => {
+        await useUser().reloadUser();
         return data;
       })
       .finally(() => {
@@ -77,6 +34,17 @@ export function useOrganisation() {
     return useFetch(
       () => `/api/organisation/${orgIdRef.value}/team/${teamIdRef.value}`
     );
+  }
+
+  function fetchOrganisationMembers(
+    orgId: MaybeRef<string | null | undefined>
+  ) {
+    const id = toRef(orgId);
+    return useFetch(() => `/api/organisation/${id.value}/member`, {
+      lazy: true,
+      watch: [id],
+      default: () => [],
+    });
   }
 
   async function createOrganisationTeam(
@@ -121,17 +89,14 @@ export function useOrganisation() {
     currentOrganisationId,
     setCurrentOrganisationId: store.setCurrentOrganisationId,
 
-    fetchOrganisation,
-    fetchOrganisations,
-    refreshOrganisations,
-    fetchOrganisationMembers,
-
     createOrganisation,
     uploadOrganisationImage,
 
     fetchOrganisationTeams,
     fetchOrganisationTeam,
     createOrganisationTeam,
+
+    fetchOrganisationMembers,
 
     getAllOrganisations,
     findOrganisationById: store.findOrganisationById,

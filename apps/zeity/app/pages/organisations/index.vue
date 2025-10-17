@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const { currentOrganisationId, setCurrentOrganisationId, fetchOrganisations } = useOrganisation();
+const { currentOrganisationId, setCurrentOrganisationId } = useOrganisation();
 
-const { data: organisations, pending } = await fetchOrganisations();
+const { data: organisations, pending } = await useFetch('/api/organisation');
 const isEmpty = computed(() => {
     if (pending.value) {
         return false;

@@ -17,7 +17,23 @@ const links = computed(() => [
     { label: t('organisations.teams.title'), to: `/organisations/${organisationId}/team` },
 ])
 
-const { data, refresh } = await useFetch(() => `/api/organisation/${organisationId}`);
+const { data, refresh, error } = await useFetch(() => `/api/organisation/${organisationId}`);
+
+switch (error.value?.statusCode) {
+    case 401:
+        await navigateTo('/auth/login');
+        break;
+    case 400:
+    case 403:
+    case 404:
+        await navigateTo('/organisations');
+        break;
+}
+
+async function refreshOrganisation() {
+    await useUser().reloadUser();
+    return refresh();
+}
 </script>
 
 <template>
@@ -32,7 +48,7 @@ const { data, refresh } = await useFetch(() => `/api/organisation/${organisation
         </template>
 
         <template #body>
-            <NuxtPage :org="data" @refresh="refresh" />
+            <NuxtPage v-if="data" :org="data" @refresh="refreshOrganisation" />
         </template>
     </UDashboardPanel>
 </template>

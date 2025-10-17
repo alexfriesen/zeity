@@ -26,7 +26,7 @@ export const useOrganisationStore = defineStore('organisation', () => {
   const currentOrganisationId = computed({
     get() {
       if (loggedIn.value) {
-        return currentOrganisationCookie.value;
+        return currentOrganisationCookie.value ?? undefined;
       }
       return undefined;
     },
@@ -39,13 +39,32 @@ export const useOrganisationStore = defineStore('organisation', () => {
     return id ? organisationsStore.findById(id).value : undefined;
   });
 
+  function setOrganisations(organisations: Organisation[] = []) {
+    organisationsStore.setEntities(organisations);
+    // If no current organisation is set, set the first one
+    autoSelectFirstOrganisation();
+  }
+
+  function upsertOrganisations(organisations: Organisation[] = []) {
+    organisationsStore.upsertMany(organisations);
+    // If no current organisation is set, set the first one
+    autoSelectFirstOrganisation();
+  }
+
+  function autoSelectFirstOrganisation() {
+    const allOrgs = organisationsStore.getAll().value;
+    if (!currentOrganisationId.value && allOrgs.length > 0) {
+      setCurrentOrganisationId(allOrgs[0]?.id);
+    }
+  }
+
   return {
     currentOrganisation,
     currentOrganisationId,
     setCurrentOrganisationId,
-    setOrganisations: organisationsStore.setEntities,
 
-    upsertOrganisations: organisationsStore.upsertMany,
+    setOrganisations,
+    upsertOrganisations,
 
     getAllOrganisations: organisationsStore.getAll,
     findOrganisationById: organisationsStore.findById,

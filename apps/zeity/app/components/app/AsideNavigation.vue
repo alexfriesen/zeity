@@ -5,9 +5,7 @@ const { verticalMenu } = useNavigation();
 
 <template>
     <div class="flex flex-col gap-3 h-full py-4">
-        <ClientOnly>
-            <OrganisationMenu v-if="loggedIn" />
-        </ClientOnly>
+        <OrganisationMenu v-if="loggedIn" />
 
         <UNavigationMenu :items="verticalMenu[0]" orientation="vertical" class="flex justify-between w-full" />
 

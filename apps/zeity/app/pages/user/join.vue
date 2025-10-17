@@ -4,19 +4,14 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { refreshOrganisations } = useOrganisation()
 const token = useRoute().query.token as string
 
-const { status, data } = await useLazyAsyncData('organisation/join',
-    () => $fetch('/api/organisation/join', {
-        query: {
-            token
-        }
-    }),
-    {
-        server: false
-    }
-);
+const { status, data } = await useLazyFetch('/api/organisation/join', {
+    query: {
+        token
+    },
+    server: false,
+});
 const isLoading = computed(() => ['pending', 'idle'].includes(status.value))
 
 async function acceptInvite() {
@@ -33,7 +28,6 @@ async function acceptInvite() {
                 color: 'success'
             })
         })
-        .then(refreshOrganisations)
         .then(async () => await navigateTo('/user'))
         .catch((error) => {
             console.error(error)

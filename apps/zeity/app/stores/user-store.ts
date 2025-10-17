@@ -1,8 +1,8 @@
-import type { User } from '@zeity/database/user';
+import type { LocalUser } from '~/types/local-user';
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<User | null>(null);
-  function setUser(value: User | null) {
+  const user = ref<LocalUser | null>(null);
+  function setUser(value: LocalUser | null) {
     user.value = value;
   }
 

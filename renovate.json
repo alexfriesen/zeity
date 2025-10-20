@@ -6,7 +6,7 @@
         ":semanticCommitTypeAll(chore)",
         ":widenPeerDependencies"
     ],
-    "baseBranches": [
+    "baseBranchPatterns": [
         "main"
     ],
     "lockFileMaintenance": {
@@ -18,10 +18,8 @@
             "groupName": "vitest",
             "matchPackageNames": [
                 "vite-node",
-                "vitest"
-            ],
-            "matchPackagePatterns": [
-                "^@vitest/"
+                "vitest",
+                "/^@vitest//"
             ]
         }
     ]

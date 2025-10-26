@@ -14,16 +14,16 @@
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
-    "drizzle-orm": "^0.44.6",
+    "drizzle-orm": "^0.44.7",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
-    "@types/node": "^24.9.0",
+    "@types/node": "^24.9.1",
     "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.31.5",
     "eslint": "~9.38.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.2"
   }
 }

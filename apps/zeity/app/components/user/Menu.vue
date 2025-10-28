@@ -43,7 +43,7 @@ const items = computed(() => [
 <template>
     <div>
         <UDropdownMenu v-if="isLoggedIn && user" :items="items" :content="{ align: 'center', collisionPadding: 12 }"
-            :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" class="w-56" size="lg">
+            :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
             <template #profile>
                 <UAvatar :src="getUserImagePath(user)" :alt="user?.name" size="xl" />
                 <div class="flex flex-col overflow-hidden">

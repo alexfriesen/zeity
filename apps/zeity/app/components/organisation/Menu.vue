@@ -55,7 +55,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
 
 <template>
     <UDropdownMenu :items="items" :content="{ align: 'center', collisionPadding: 12 }"
-        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" size="lg">
+        :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }" class="w-56" size="lg">
 
         <template #org-trailing="{ active }">
             <UIcon :name="active ? 'i-lucide-circle-check' : 'i-lucide-circle'" class="shrink-0 size-5" />

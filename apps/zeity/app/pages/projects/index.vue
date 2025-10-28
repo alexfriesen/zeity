@@ -98,7 +98,8 @@ onMounted(() => {
                     </div>
                 </template>
 
-                <p class="line-clamp-3">{{ project.notes }}</p>
+                <p v-if="project.notes" class="line-clamp-3">{{ project.notes }}</p>
+                <p v-else class="text-sm text-muted">{{ $t('projects.noProjectNotes') }}</p>
             </UCard>
 
             <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"

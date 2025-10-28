@@ -102,6 +102,7 @@ export default defineI18nConfig(() => ({
           active: 'Active',
           closed: 'Closed',
         },
+        noProjectNotes: 'No notes for this project',
         offline: 'Project is not synced',
       },
       reports: {
@@ -335,6 +336,7 @@ export default defineI18nConfig(() => ({
           active: 'Aktiv',
           closed: 'Geschlossen',
         },
+        noProjectNotes: 'Keine Notizen für dieses Projekt',
         offline: 'Projekt ist nicht synchronisiert',
       },
       reports: {

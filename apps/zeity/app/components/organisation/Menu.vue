@@ -30,7 +30,6 @@ const items = computed<DropdownMenuItem[][]>(() => {
             avatar: {
                 src: getOrganisationImagePath(organisation),
                 alt: organisation.name,
-                size: 'lg',
             },
             active: currentOrganisation.value?.id === organisation.id,
             slot: 'org',

@@ -5,6 +5,14 @@ import { organisationMembers } from '@zeity/database/organisation-member';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
 
 export default defineEventHandler(async (event) => {
+  const allowed = useRuntimeConfig(event).public.allow.organisation.create;
+  if (!allowed) {
+    throw createError({
+      statusCode: 403,
+      message: 'Organisation creation is disabled',
+    });
+  }
+
   const session = await requireUserSession(event);
 
   const body = await readValidatedBody(

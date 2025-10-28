@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const config = useRuntimeConfig();
+const config = useSystemStore();
 </script>
 
 <template>
@@ -11,7 +11,7 @@ const config = useRuntimeConfig();
             </div>
 
             <p class="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--ui-primary)]">
-                {{ config.public.appName }}
+                {{ config.appName }}
             </p>
             <p class="text-center text-pretty">
                 {{ $t('about.description') }}
@@ -23,11 +23,11 @@ const config = useRuntimeConfig();
                 Version
             </span>
             <div class="flex items-center gap-2">
-                <UBadge v-if="config.public.stage !== 'production'" color="warning">
-                    {{ config.public.stage }}
+                <UBadge v-if="config.stage !== 'production'" color="warning">
+                    {{ config.stage }}
                 </UBadge>
                 <span class="text-[var(--ui-text-muted)]">
-                    {{ config.public.version }}
+                    {{ config.version }}
                 </span>
             </div>
         </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const systemStore = useSystemStore();
 const { currentOrganisationId, setCurrentOrganisationId } = useOrganisation();
 
 const { data: organisations, pending } = await useFetch('/api/organisation');
@@ -20,7 +21,9 @@ const isEmpty = computed(() => {
                     class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200">
                     {{ $t('organisations.title') }}
                 </h2>
-                <UButton to="/organisations/create" icon="i-lucide-plus">{{ $t('common.add') }}</UButton>
+                <UButton v-if="systemStore.allowOrganisationCreate" to="/organisations/create" icon="i-lucide-plus">
+                    {{ $t('common.add') }}
+                </UButton>
             </div>
 
             <UCard v-for="organisation in organisations" :key="organisation.id">

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { NewOrganisation, Organisation } from '@zeity/types/organisation';
 
+const systemStore = useSystemStore();
+if (!systemStore.allowOrganisationCreate) {
+    await navigateTo('/organisations');
+}
+
 const { t } = useI18n();
 const toast = useToast();
 const { createOrganisation, setCurrentOrganisationId } = useOrganisation();

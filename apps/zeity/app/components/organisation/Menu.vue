@@ -8,6 +8,8 @@ defineProps({
     }
 })
 
+const systemStore = useSystemStore();
+
 const { t } = useI18n();
 const { currentOrganisation, setCurrentOrganisationId, getAllOrganisations } = useOrganisation();
 const organisations = getAllOrganisations();
@@ -21,6 +23,25 @@ const currentItem = computed(() => {
             alt: currentOrganisation.value.name,
         },
     };
+});
+
+const userActions = computed(() => {
+    const actions: DropdownMenuItem[] = [
+        {
+            label: t('organisations.manage'),
+            icon: 'i-lucide-settings',
+            to: '/organisations'
+        },
+
+    ];
+    if (systemStore.allowOrganisationCreate) {
+        actions.push({
+            label: t('organisations.create'),
+            icon: 'i-lucide-circle-plus',
+            to: '/organisations/create',
+        });
+    }
+    return actions;
 });
 
 const items = computed<DropdownMenuItem[][]>(() => {
@@ -37,18 +58,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
                 setCurrentOrganisationId(organisation.id)
             }
         })),
-        [
-            {
-                label: t('organisations.manage'),
-                icon: 'i-lucide-settings',
-                to: '/organisations'
-            },
-            {
-                label: t('organisations.create'),
-                icon: 'i-lucide-circle-plus',
-                to: '/organisations/create'
-            }
-        ]
+        userActions.value
     ]
 })
 </script>

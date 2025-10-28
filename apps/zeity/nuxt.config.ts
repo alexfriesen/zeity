@@ -11,6 +11,10 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
     typescriptBundlerResolution: true,
   },
+  experimental: {
+    asyncContext: true,
+    typescriptPlugin: true,
+  },
   modules: [
     '@nuxt/test-utils/module',
     '@nuxt/eslint',
@@ -93,12 +97,6 @@ export default defineNuxtConfig({
       },
     ],
     defaultLocale: 'en',
-    experimental: {
-      generatedLocaleFilePathFormat: 'relative',
-    },
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
   },
   icon: {
     customCollections: [
@@ -155,6 +153,11 @@ export default defineNuxtConfig({
       appName: 'zeity',
       stage: process.env.NODE_ENV || 'production',
       version: packageJson.version || '0.0.0',
+      allow: {
+        organisation: {
+          create: booleanEnv(process.env.ZEITY_ALLOW_ORGANISATION_CREATE, true),
+        },
+      },
     },
     nitro: {
       envPrefix: 'ZEITY_',
@@ -181,3 +184,10 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
 });
+
+function booleanEnv(value: string | undefined, defaultValue = false) {
+  if (value === undefined) {
+    return defaultValue;
+  }
+  return value.toLowerCase() === 'true';
+}

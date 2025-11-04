@@ -34,23 +34,23 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.71",
-    "@iconify-json/simple-icons": "^1.2.55",
-    "@nuxt/eslint": "^1.9.0",
+    "@iconify-json/lucide": "^1.2.72",
+    "@iconify-json/simple-icons": "^1.2.57",
+    "@nuxt/eslint": "^1.10.0",
     "@nuxt/image": "^1.11.0",
     "@nuxt/test-utils": "^3.20.1",
     "@nuxt/ui": "4.1.0",
-    "@nuxtjs/i18n": "^10.1.1",
+    "@nuxtjs/i18n": "^10.2.0",
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.0.7",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
-    "drizzle-kit": "^0.31.5",
-    "happy-dom": "^20.0.8",
+    "drizzle-kit": "^0.31.6",
+    "happy-dom": "^20.0.10",
     "nuxt": "^4.2.0",
     "nuxt-auth-utils": "^0.5.25",
     "nuxt-security": "^2.4.0",
     "vue-i18n": "^11.1.12",
-    "vue-tsc": "3.1.2"
+    "vue-tsc": "3.1.3"
   }
 }

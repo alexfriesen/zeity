@@ -18,12 +18,12 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.38.0",
-    "@types/node": "^24.9.1",
-    "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.31.5",
-    "eslint": "~9.38.0",
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.15.6",
+    "drizzle-kit": "^0.31.6",
+    "eslint": "~9.39.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.46.3"
   }
 }

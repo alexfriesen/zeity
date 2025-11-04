@@ -15,7 +15,7 @@ const { currentOrganisation, setCurrentOrganisationId, getAllOrganisations } = u
 const organisations = getAllOrganisations();
 
 const currentItem = computed(() => {
-    if (!currentOrganisation.value) return undefined;
+    if (!currentOrganisation.value) return { label: t('organisations.empty.title') };
     return {
         label: currentOrganisation.value.name,
         avatar: {
@@ -44,20 +44,35 @@ const userActions = computed(() => {
     return actions;
 });
 
+const organisationItems = computed<DropdownMenuItem[]>(() => {
+    const orgs = organisations.value
+
+    if (!orgs.length) {
+        return [{
+            label: t('organisations.empty.title'),
+            icon: 'i-lucide-alert-circle',
+            disabled: true,
+
+        }]
+    }
+
+    return orgs.map(organisation => ({
+        label: organisation.name,
+        avatar: {
+            src: getOrganisationImagePath(organisation),
+            alt: organisation.name,
+        },
+        active: currentOrganisation.value?.id === organisation.id,
+        slot: 'org',
+        onSelect() {
+            setCurrentOrganisationId(organisation.id)
+        }
+    }))
+})
+
 const items = computed<DropdownMenuItem[][]>(() => {
     return [
-        organisations.value.map(organisation => ({
-            label: organisation.name,
-            avatar: {
-                src: getOrganisationImagePath(organisation),
-                alt: organisation.name,
-            },
-            active: currentOrganisation.value?.id === organisation.id,
-            slot: 'org',
-            onSelect() {
-                setCurrentOrganisationId(organisation.id)
-            }
-        })),
+        organisationItems.value,
         userActions.value
     ]
 })

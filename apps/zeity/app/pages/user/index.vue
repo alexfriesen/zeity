@@ -69,9 +69,14 @@ async function handleDeleteUser() {
                     <template v-if="pending">
                         <USkeleton class="h-13.5 w-full" />
                     </template>
-                    <template v-else>
+                    <template v-else-if="data?.organisations.length">
                         <URadioGroup v-model="currentOrganisationId" :items="data?.organisations" value-key="id"
                             label-key="name" variant="card" />
+                    </template>
+                    <template v-else>
+                        <p class="text-dimmed">
+                            {{ $t('organisations.empty.title') }}
+                        </p>
                     </template>
                 </UFormField>
                 <USeparator />

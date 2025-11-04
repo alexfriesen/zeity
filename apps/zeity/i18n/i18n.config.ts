@@ -30,6 +30,7 @@ export default defineI18nConfig(() => ({
         error: 'Error',
         general: 'General',
         loadMore: 'Load more',
+        refresh: 'Refresh',
         save: 'Save',
         send: 'Send',
         start: 'Start',
@@ -148,6 +149,11 @@ export default defineI18nConfig(() => ({
           name: 'Name',
           namePlaceholder: 'Enter organisation name',
         },
+        empty: {
+          title: 'No Organisations',
+          description:
+            'You are not a member of any organisations yet. Create or join one to collaborate with others.',
+        },
         teams: {
           title: 'Teams',
           create: 'Create Team',
@@ -264,6 +270,7 @@ export default defineI18nConfig(() => ({
         error: 'Fehler',
         general: 'Allgemein',
         loadMore: 'Mehr laden',
+        refresh: 'Aktualisieren',
         save: 'Speichern',
         send: 'Senden',
         start: 'Start',
@@ -362,6 +369,11 @@ export default defineI18nConfig(() => ({
         form: {
           name: 'Name',
           namePlaceholder: 'Organisationsname eingeben',
+        },
+        empty: {
+          title: 'Keine Organisationen',
+          description:
+            'Sie sind noch kein Mitglied einer Organisation. Erstellen oder treten Sie einer Organisation bei, um mit anderen zusammenzuarbeiten.',
         },
         teams: {
           title: 'Teams',

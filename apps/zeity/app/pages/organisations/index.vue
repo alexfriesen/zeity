@@ -1,13 +1,37 @@
 <script setup lang="ts">
+import type { ButtonProps } from '@nuxt/ui';
+
+const { t } = useI18n();
 const systemStore = useSystemStore();
 const { currentOrganisationId, setCurrentOrganisationId } = useOrganisation();
 
-const { data: organisations, pending } = await useFetch('/api/organisation');
+const { data: organisations, pending, refresh } = await useFetch('/api/organisation');
 const isEmpty = computed(() => {
     if (pending.value) {
         return false;
     }
     return (organisations.value?.length ?? 0) < 1
+});
+
+const emptyActions = computed(() => {
+    const actions: ButtonProps[] = [];
+
+    if (systemStore.allowOrganisationCreate) {
+        actions.push({
+            label: t('common.add'),
+            icon: 'i-lucide-plus',
+            to: '/organisations/create'
+        });
+    }
+
+    actions.push({
+        label: t('common.refresh'),
+        icon: 'i-lucide-refresh-cw',
+        color: 'neutral',
+        onClick: () => refresh(),
+    });
+
+    return actions;
 });
 </script>
 
@@ -53,11 +77,9 @@ const isEmpty = computed(() => {
                 </template>
             </UCard>
 
-            <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
-                description="It looks like you don't have any organisation yet. Why not create one?"
-                icon="i-lucide-info" :ui="{ icon: 'size-20' }" :actions="[
-                    { label: $t('common.add'), icon: 'i-lucide-plus', to: '/organisations/create' }
-                ]" />
+            <UEmpty v-if="isEmpty" :title="$t('organisations.empty.title')"
+                :description="$t('organisations.empty.description')" :actions="emptyActions" size="lg" variant="subtle"
+                icon="i-lucide-info" />
         </section>
     </div>
 </template>

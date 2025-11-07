@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  ipx: ^3.1.1
   '@netlify/functions': '-'
   '@netlify/blobs': '-'
 

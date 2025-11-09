@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
 
   if (!body.success) {
     throw createError({
+      data: body.error,
       statusCode: 400,
       message: 'Invalid request body',
     });

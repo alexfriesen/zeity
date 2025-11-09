@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
   if (!query.success) {
     console.log('Invalid request query', query.error);
     throw createError({
+      data: query.error,
       statusCode: 400,
       message: 'Invalid request query',
     });

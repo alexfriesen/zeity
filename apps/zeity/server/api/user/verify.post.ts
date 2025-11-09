@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
   );
   if (!query.success) {
     throw createError({
+      data: query.error,
       statusCode: 400,
       message: 'Invalid request query',
     });

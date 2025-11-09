@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid request params',
+      statusCode: 404,
+      message: 'Not Found',
     });
   }
 
@@ -31,14 +31,14 @@ export default defineEventHandler(async (event) => {
   if (!organisation) {
     throw createError({
       statusCode: 404,
-      message: 'Organisation not found',
+      message: 'Not Found',
     });
   }
 
   if (!organisation.image) {
     throw createError({
       statusCode: 404,
-      message: 'Organisation image not found',
+      message: 'Not Found',
     });
   }
 
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
   if (!file || !file.ok) {
     throw createError({
       statusCode: 404,
-      message: 'File not found',
+      message: 'Not Found',
     });
   }
 

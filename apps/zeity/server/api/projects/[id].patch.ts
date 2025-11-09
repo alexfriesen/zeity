@@ -19,8 +19,8 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid request params',
+      statusCode: 404,
+      message: 'Not Found',
     });
   }
 
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
   if (!existing) {
     throw createError({
       statusCode: 404,
-      message: 'project not found',
+      message: 'Not Found',
     });
   }
 

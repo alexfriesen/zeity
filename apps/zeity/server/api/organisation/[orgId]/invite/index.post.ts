@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      orgId: z.string().uuid(),
+      orgId: z.uuid(),
     }).safeParse
   );
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(
     event,
     z.object({
-      email: z.string().email(),
+      email: z.email(),
     }).safeParse
   );
 

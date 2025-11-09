@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         start: z.coerce.date(),
         duration: z.coerce.number().nonnegative().default(0),
         // tags: z.array(z.number()).optional(),
-        projectId: z.string().uuid().optional(),
+        projectId: z.uuid().optional(),
         notes: z.string().optional(),
       })
     ).safeParse

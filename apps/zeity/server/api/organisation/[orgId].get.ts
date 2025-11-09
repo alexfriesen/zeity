@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      orgId: z.string().uuid(),
+      orgId: z.uuid(),
     }).safeParse
   );
 

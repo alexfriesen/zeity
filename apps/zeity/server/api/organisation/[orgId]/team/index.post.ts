@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const params = await getValidatedRouterParams(
     event,
     z.object({
-      orgId: z.string().uuid(),
+      orgId: z.uuid(),
     }).safeParse
   );
   if (!params.success) {
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       name: z.string().trim().min(2).max(150),
       description: z.string().trim().optional(),
       permissions: z.array(z.string()).optional().default([]),
-      memberIds: z.array(z.string().uuid()).optional().default([]),
+      memberIds: z.array(z.uuid()).optional().default([]),
     }).safeParse
   );
 

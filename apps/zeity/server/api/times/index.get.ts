@@ -16,8 +16,8 @@ export default defineEventHandler(async (event) => {
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
 
-      userId: coerceArray(z.string().uuid()).optional(),
-      projectId: coerceArray(z.string().uuid()).optional(),
+      userId: coerceArray(z.uuid()).optional(),
+      projectId: coerceArray(z.uuid()).optional(),
       rangeStart: z.coerce.date().optional(),
       rangeEnd: z.coerce.date().optional(),
     }).safeParse

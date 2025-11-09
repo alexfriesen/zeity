@@ -17,7 +17,7 @@ export default defineWebAuthnRegisterEventHandler({
   validateUser: (user) =>
     z
       .object({
-        userName: z.string().email().min(1).toLowerCase().trim(),
+        userName: z.email().min(1).toLowerCase().trim(),
         displayName: z.string().min(1).trim(),
       })
       .parseAsync(user),

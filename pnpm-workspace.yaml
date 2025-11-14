@@ -3,3 +3,10 @@ packages:
   # all packages in sub dirs of packages/ and apps/
   - "libs/**"
   - "apps/**"
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3
+  - nuxt-component-meta@0.14.2
+  - undici-types@6.21.0
+  - semver@6.3.1

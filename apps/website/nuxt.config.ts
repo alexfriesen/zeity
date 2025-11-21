@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     viewTransition: true,
   },
   modules: [
+    '@nuxt/hints',
     '@nuxt/eslint',
     '@nuxtjs/seo',
     '@nuxtjs/i18n',

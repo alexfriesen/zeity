@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { FormSubmitEvent } from '@nuxt/ui';
-import { useIntervalFn } from '@vueuse/core'
+import { useIntervalFn, watchDebounced } from '@vueuse/core';
 import { addMilliseconds } from 'date-fns';
 import { nanoid } from 'nanoid';
 import z from 'zod';
 
+import { omit } from '@zeity/utils/object';
 import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '@zeity/types/time';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
@@ -104,8 +104,8 @@ const diff = computed(() => {
 
 const timeSchema = z.object({
     id: z.string().default(nanoid()),
-    start: z.coerce.string().date(),
-    end: z.coerce.string().date(),
+    start: z.iso.datetime(),
+    end: z.iso.datetime(),
     notes: z.string().default(''),
 
     projectId: z.string().optional(),
@@ -115,6 +115,38 @@ const schema = z.union([timeSchema, draftSchema]);
 
 type Schema = z.infer<typeof schema>
 const state = ref<Schema>();
+const loading = ref(false);
+
+watchDebounced(
+    state,
+    (data) => {
+        if (data) {
+            handleSave(data);
+        }
+    },
+    { debounce: 500, maxWait: 1000, deep: true },
+)
+
+async function handleSave(data: Schema) {
+    return showLoading(async () => {
+        const validated = schema.safeParse(data);
+        if (!validated.success) {
+            return;
+        }
+        const time = parseSchema(validated.data);
+
+        if (isDraftValue(time)) {
+            timeStore.updateDraft(time);
+        }
+        if (isTimeValue(time)) {
+            if (time.id === 'new') {
+                await createTime({ ...time, id: nanoid() });
+            } else {
+                await updateTime(time.id, time);
+            }
+        }
+    });
+}
 
 function handleTimeDetailOpenUpdate(state: boolean) {
     if (!state) {
@@ -122,21 +154,22 @@ function handleTimeDetailOpenUpdate(state: boolean) {
     }
 }
 
-function parseFormData(event: FormSubmitEvent<Schema>) {
+function parseSchema(data: Schema) {
     let duration: number | undefined;
-    if ('end' in event.data) {
-        duration = timeDiff(event.data.end, event.data.start);
+    if ('end' in data) {
+        duration = timeDiff(data.end, data.start);
+        data = omit(data, 'end');
     }
 
     let id: string | undefined;
-    if ('id' in event.data) {
-        id = event.data.id;
+    if ('id' in data) {
+        id = data.id;
     }
 
     // Time contain id and duration
     if (id && duration) {
         return {
-            ...event.data,
+            ...data,
             duration,
             id,
         } satisfies Time;
@@ -144,53 +177,41 @@ function parseFormData(event: FormSubmitEvent<Schema>) {
 
     // otherwise, it's a draft
     return {
-        ...event.data,
+        ...data,
     } satisfies DraftTime;
 }
 
-async function handleSave(event: FormSubmitEvent<Schema>) {
-    const time = parseFormData(event);
-
-    if (isDraftValue(time)) {
-        timeStore.updateDraft(time);
-    }
-    if (isTimeValue(time)) {
-        if (time.id === 'new') {
-            await createTime({ ...time, id: nanoid() });
-        } else {
-            await updateTime(time.id, time);
-        }
-    }
-
-    close();
-}
 
 async function handleStop() {
-    await stopDraft();
+    await showLoading(stopDraft);
     close();
 }
 
 async function handleRemove() {
-    if (isDraft.value) {
-        timeStore.resetDraft();
-    }
+    await showLoading(async () => {
+        if (isDraft.value) {
+            timeStore.resetDraft();
+        }
 
-    if (isTimeValue(currentTime?.value)) {
-        await removeTime(currentTime.value.id);
-    }
+        if (isTimeValue(currentTime?.value)) {
+            await removeTime(currentTime.value.id);
+        }
+    });
 
     close();
 }
 
 async function handleSync() {
-    if (!currentTime.value) return;
+    return showLoading(async () => {
+        if (!currentTime.value) return;
 
-    const offlineTime = currentTime.value as Time;
-    const newTimes = await syncOfflineTimes([offlineTime.id]);
-    const newTime = newTimes?.[0];
-    if (!newTime) return;
+        const offlineTime = currentTime.value as Time;
+        const newTimes = await syncOfflineTimes([offlineTime.id]);
+        const newTime = newTimes?.[0];
+        if (!newTime) return;
 
-    currentTime.value = newTime;
+        currentTime.value = newTime;
+    });
 }
 
 function isDraftValue(value: Time | DraftTime | Schema | undefined | null): value is DraftTime {
@@ -199,17 +220,37 @@ function isDraftValue(value: Time | DraftTime | Schema | undefined | null): valu
 function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): value is Time {
     return !!value && (('duration' in value) || ('end' in value));
 }
+
+function showLoading<T>(fn: () => Promise<T>): Promise<T> {
+    loading.value = true;
+    return fn().finally(() => {
+        loading.value = false;
+    });
+}
 </script>
 
 <template>
     <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
-            <TimeDurationFlowing v-model="diff"
-                class="flex justify-center font-mono text-2xl tabular-nums lining-nums tracking-wide" />
+            <div class="flex items-center justify-around">
+                <div class="flex justify-center w-8">
+                    <UIcon v-if="loading" name="i-lucide-loader-2" class="animate-spin text-xl" />
+                </div>
+                <div>
+                    <TimeDurationFlowing v-model="diff"
+                        class="flex justify-center font-mono text-2xl tabular-nums lining-nums tracking-wide" />
+                </div>
+                <div class="w-8">
+                    <UTooltip :text="$t('common.sync')">
+                        <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
+                            icon="i-lucide-cloud-upload" @click="handleSync" />
+                    </UTooltip>
+                </div>
+            </div>
         </template>
         <template #body>
-            <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4" @submit="handleSave">
+            <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4">
                 <UFormField :label="$t('times.form.start')" name="start">
                     <DateTimeField v-model="state.start" />
                 </UFormField>
@@ -236,13 +277,8 @@ function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): valu
                         {{ $t('common.stop') }}
                     </UButton>
 
-                    <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
-                        icon="i-lucide-cloud-upload" @click="handleSync">
-                        {{ $t('common.sync') }}
-                    </UButton>
-
-                    <UButton type="submit" variant="subtle" icon="i-lucide-save">
-                        {{ $t('common.save') }}
+                    <UButton color="neutral" variant="subtle" icon="i-lucide-x" @click="close">
+                        {{ $t('common.close') }}
                     </UButton>
                 </div>
             </UForm>

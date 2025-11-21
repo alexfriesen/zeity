@@ -18,6 +18,7 @@
     "@iconify-json/ri": "^1.2.6",
     "@nuxt/content": "^3.8.1",
     "@nuxt/eslint": "^1.10.0",
+    "@nuxt/hints": "^1.0.0-alpha.1",
     "@nuxt/icon": "^2.1.0",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "4.1.0",

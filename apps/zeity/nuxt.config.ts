@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     typescriptPlugin: true,
   },
   modules: [
+    '@nuxt/hints',
     '@nuxt/test-utils/module',
     '@nuxt/eslint',
     '@nuxtjs/i18n',

@@ -3,7 +3,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "corepack install && pnpm install",
   "customizations": {
     "vscode": {
       "settings": {

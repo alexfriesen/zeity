@@ -14,10 +14,10 @@
   },
   "devDependencies": {
     "@iconify-json/circle-flags": "^1.2.10",
-    "@iconify-json/lucide": "^1.2.74",
+    "@iconify-json/lucide": "^1.2.77",
     "@iconify-json/ri": "^1.2.6",
     "@nuxt/content": "^3.8.2",
-    "@nuxt/eslint": "^1.10.0",
+    "@nuxt/eslint": "^1.11.0",
     "@nuxt/hints": "1.0.0-alpha.2",
     "@nuxt/icon": "^2.1.0",
     "@nuxt/image": "^2.0.0",

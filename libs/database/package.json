@@ -24,6 +24,6 @@
     "drizzle-kit": "^0.31.7",
     "eslint": "~9.39.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.47.0"
+    "typescript-eslint": "^8.48.0"
   }
 }

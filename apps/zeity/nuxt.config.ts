@@ -29,11 +29,9 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   pwa: {
-    mode: isProd ? 'production' : 'development',
-    disable: !isProd,
-    strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
+      scope: '/',
       name: 'zeity Time Tracker',
       short_name: 'zeity',
       description: 'Time tracking app app with excellent user experience',
@@ -65,15 +63,9 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
-      navigateFallback: undefined,
-    },
-    includeAssets: ['**/*.{js,css,html,jpg,png,svg,ico}'],
-    injectManifest: {
-      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico}'],
-    },
-    client: {
-      installPrompt: true,
+      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico,json}'],
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
     },
     devOptions: {
       enabled: !isProd,

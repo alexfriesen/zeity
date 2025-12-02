@@ -66,6 +66,26 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico,json}'],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
+      runtimeCaching: [
+        {
+          urlPattern: '/api/*',
+          handler: 'NetworkFirst',
+          method: 'GET',
+          options: {
+            cacheName: 'api-cache',
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60, // 1 hour
+            },
+            networkTimeoutSeconds: 10,
+          },
+        },
+        {
+          urlPattern: '/auth/*',
+          handler: 'NetworkOnly',
+          method: 'GET',
+        },
+      ],
     },
     devOptions: {
       enabled: !isProd,

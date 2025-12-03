@@ -181,6 +181,9 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    prerender: {
+      routes: ["/"], // required for PWA offline support
+    },
     compressPublicAssets: true,
     experimental: {
       tasks: true,

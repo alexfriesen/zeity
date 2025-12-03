@@ -32,6 +32,27 @@ const config = useSystemStore();
             </div>
         </div>
 
+        <ClientOnly>
+            <div v-if="$pwa?.isPWAInstalled || $pwa?.showInstallPrompt" class="flex justify-between items-center">
+                <span>
+                    Web App:
+                </span>
+                <div class="flex items-center gap-2">
+                    <UBadge v-if="$pwa?.offlineReady" color="neutral">
+                        Offline Ready
+                    </UBadge>
+                    <UBadge v-if="$pwa?.isPWAInstalled" color="success">
+                        Installed
+                    </UBadge>
+                    <UButton v-if="$pwa?.needRefresh" variant="soft" color="primary" icon="i-lucide-refresh-cw"
+                        label="Update" @click="$pwa.updateServiceWorker()" />
+
+                    <UButton v-if="$pwa?.showInstallPrompt && !$pwa?.needRefresh" variant="soft" color="primary"
+                        icon="i-lucide-package-plus" label="Install" class="w-full" @click="$pwa.install()" />
+                </div>
+            </div>
+        </ClientOnly>
+
         <USeparator />
 
         <div>

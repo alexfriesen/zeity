@@ -87,6 +87,10 @@ export default defineNuxtConfig({
         },
       ],
     },
+    client: {
+      installPrompt: true,
+      periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
+    },
     devOptions: {
       enabled: !isProd,
       suppressWarnings: true,

@@ -80,11 +80,6 @@ export default defineNuxtConfig({
             networkTimeoutSeconds: 10,
           },
         },
-        {
-          urlPattern: '/auth/*',
-          handler: 'NetworkOnly',
-          method: 'GET',
-        },
       ],
     },
     client: {
@@ -182,7 +177,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ["/"], // required for PWA offline support
+      routes: ['/'], // required for PWA offline support
     },
     compressPublicAssets: true,
     experimental: {
@@ -202,6 +197,7 @@ export default defineNuxtConfig({
       inline: ['@bradenmacdonald/s3-lite-client'],
     },
   },
+  ssr: false,
   devtools: { enabled: true },
 });
 

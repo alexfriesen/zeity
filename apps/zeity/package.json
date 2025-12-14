@@ -34,8 +34,8 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.80",
-    "@iconify-json/simple-icons": "^1.2.62",
+    "@iconify-json/lucide": "^1.2.81",
+    "@iconify-json/simple-icons": "^1.2.63",
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/hints": "1.0.0-alpha.3",
     "@nuxt/image": "^2.0.0",
@@ -44,7 +44,7 @@
     "@nuxtjs/i18n": "^10.2.1",
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.1.0",
-    "@vitejs/plugin-vue": "^6.0.2",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.8",
     "happy-dom": "^20.0.11",

@@ -197,7 +197,6 @@ export default defineNuxtConfig({
       inline: ['@bradenmacdonald/s3-lite-client'],
     },
   },
-  ssr: false,
   devtools: { enabled: true },
 });
 

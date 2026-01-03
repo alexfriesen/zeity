@@ -30,6 +30,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
+    strategies: 'generateSW',
+    injectRegister: 'auto',
+    client: {
+      periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
+    },
     manifest: {
       scope: '/',
       name: 'zeity Time Tracker',
@@ -63,16 +68,23 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,jpg,png,svg,ico,json}'],
+      maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
+      globPatterns: ['**/*.{css,webp,png,svg,webmanifest,ico,js,mjs,cjs,txt}'],
+      globIgnores: [
+        '/_payload.json',
+        '/node_modules',
+      ],
+      navigateFallback: null,
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [
         {
-          urlPattern: '/api/*',
+          urlPattern: /^\/api(\/.*)?$/,
           handler: 'NetworkFirst',
           method: 'GET',
           options: {
             cacheName: 'api-cache',
+            cacheableResponse: { statuses: [0, 200] },
             expiration: {
               maxEntries: 100,
               maxAgeSeconds: 60 * 60, // 1 hour
@@ -81,10 +93,6 @@ export default defineNuxtConfig({
           },
         },
       ],
-    },
-    client: {
-      installPrompt: true,
-      periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
     },
     devOptions: {
       enabled: !isProd,
@@ -176,9 +184,6 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    prerender: {
-      routes: ['/'], // required for PWA offline support
-    },
     compressPublicAssets: true,
     experimental: {
       tasks: true,

@@ -70,11 +70,8 @@ export default defineNuxtConfig({
     workbox: {
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{css,webp,png,svg,webmanifest,ico,js,mjs,cjs,txt}'],
-      globIgnores: [
-        '/_payload.json',
-        '/node_modules',
-      ],
-      navigateFallback: null,
+      globIgnores: ['/_payload.json', '/node_modules'],
+      navigateFallback: '/offline',
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [
@@ -91,6 +88,10 @@ export default defineNuxtConfig({
             },
             networkTimeoutSeconds: 10,
           },
+        },
+        {
+          urlPattern: /^\/auth(\/.*)?$/,
+          handler: 'NetworkOnly',
         },
       ],
     },

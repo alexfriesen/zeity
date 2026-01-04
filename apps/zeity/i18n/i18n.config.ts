@@ -22,6 +22,7 @@ export default defineI18nConfig(() => ({
         actions: 'Actions',
         add: 'Add',
         all: 'All',
+        back: 'Back',
         cancel: 'Cancel',
         close: 'Close',
         custom: 'Custom',
@@ -137,6 +138,11 @@ export default defineI18nConfig(() => ({
           detailsOnStart: 'Open details on start',
           detailsOnStop: 'Open details on stop',
         },
+      },
+      offline: {
+        title: 'Offline',
+        description:
+          'You are currently offline. Some features may be unavailable.',
       },
       organisations: {
         title: 'Organisations',
@@ -263,6 +269,7 @@ export default defineI18nConfig(() => ({
         actions: 'Aktionen',
         add: 'Hinzufügen',
         all: 'Alle',
+        back: 'Zurück',
         cancel: 'Abbrechen',
         close: 'Schließen',
         custom: 'Benutzerdefiniert',
@@ -359,6 +366,11 @@ export default defineI18nConfig(() => ({
           project: 'Projekt',
           notes: 'Notizen',
         },
+      },
+      offline: {
+        title: 'Offline',
+        description:
+          'Sie sind derzeit offline. Einige Funktionen sind möglicherweise nicht verfügbar.',
       },
       organisations: {
         title: 'Organisationen',

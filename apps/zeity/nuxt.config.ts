@@ -77,31 +77,31 @@ export default defineNuxtConfig({
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       globIgnores: ['/_payload.json', '/node_modules'],
-      navigateFallback: '/offline',
+      // navigateFallback: '/offline',
       cleanupOutdatedCaches: true,
       clientsClaim: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
-      runtimeCaching: [
-        {
-          urlPattern: /^\/api(\/.*)?$/,
-          handler: 'NetworkFirst',
-          method: 'GET',
-          options: {
-            cacheName: 'api-cache',
-            cacheableResponse: { statuses: [0, 200] },
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60, // 1 hour
-            },
-            networkTimeoutSeconds: 10,
-          },
-        },
-        {
-          urlPattern: /^\/auth(\/.*)?$/,
-          handler: 'NetworkOnly',
-        },
-      ],
+      // navigateFallbackAllowlist: [/^\/$/],
+      // navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
+      // runtimeCaching: [
+      //   {
+      //     urlPattern: /^\/api(\/.*)?$/,
+      //     handler: 'NetworkFirst',
+      //     method: 'GET',
+      //     options: {
+      //       cacheName: 'api-cache',
+      //       cacheableResponse: { statuses: [0, 200] },
+      //       expiration: {
+      //         maxEntries: 100,
+      //         maxAgeSeconds: 60 * 60, // 1 hour
+      //       },
+      //       networkTimeoutSeconds: 10,
+      //     },
+      //   },
+      //   {
+      //     urlPattern: /^\/auth(\/.*)?$/,
+      //     handler: 'NetworkOnly',
+      //   },
+      // ],
     },
     devOptions: {
       enabled: !isProd,
@@ -137,7 +137,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    provider: 'iconify',
+    // provider: 'iconify',
   },
   colorMode: {
     storageKey: 'zeity-color-mode',
@@ -154,12 +154,19 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    '/': { prerender: true },
     '/offline': { prerender: true },
     '/user/**': {
       appMiddleware: ['auth'],
     },
     '/organisations/**': {
       appMiddleware: ['auth'],
+    },
+    '/manifest.webmanifest': {
+      headers: {
+        'Content-Type': 'application/manifest+json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
     },
   },
   runtimeConfig: {
@@ -194,9 +201,6 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    prerender: {
-      routes: ['/', '/offline'],
-    },
     compressPublicAssets: true,
     experimental: {
       tasks: true,

@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     strategies: 'injectManifest',
     srcDir: '../service-worker',
     filename: 'sw.ts',
-    injectRegister: 'auto',
+    // injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
     },
@@ -73,11 +73,12 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
     },
     workbox: {
+      sourcemap: true,
       disableDevLogs: false,
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       globIgnores: ['/_payload.json', '/node_modules'],
-      // navigateFallback: '/offline',
+      navigateFallback: '/',
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       // navigateFallbackAllowlist: [/^\/$/],

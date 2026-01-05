@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     strategies: 'injectManifest',
     srcDir: '../service-worker',
     filename: 'sw.ts',
-    // injectRegister: 'auto',
+    injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
     },
@@ -73,36 +73,9 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
     },
     workbox: {
-      sourcemap: true,
-      disableDevLogs: false,
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
-      globIgnores: ['/_payload.json', '/node_modules'],
-      navigateFallback: '/',
-      cleanupOutdatedCaches: true,
-      clientsClaim: true,
-      // navigateFallbackAllowlist: [/^\/$/],
-      // navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
-      // runtimeCaching: [
-      //   {
-      //     urlPattern: /^\/api(\/.*)?$/,
-      //     handler: 'NetworkFirst',
-      //     method: 'GET',
-      //     options: {
-      //       cacheName: 'api-cache',
-      //       cacheableResponse: { statuses: [0, 200] },
-      //       expiration: {
-      //         maxEntries: 100,
-      //         maxAgeSeconds: 60 * 60, // 1 hour
-      //       },
-      //       networkTimeoutSeconds: 10,
-      //     },
-      //   },
-      //   {
-      //     urlPattern: /^\/auth(\/.*)?$/,
-      //     handler: 'NetworkOnly',
-      //   },
-      // ],
+      navigateFallback: null,
     },
     devOptions: {
       enabled: !isProd,

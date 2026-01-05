@@ -26,7 +26,7 @@ let denylist: RegExp[] | undefined;
 if (import.meta.env.DEV) allowlist = [/^\/$/];
 
 if (import.meta.env.PROD) {
-  const auth = /^\/auth(\/.*)?$/;
+  const auth = /^\/auth\//;
   const api = /^\/api\//;
   denylist = [api, auth];
 

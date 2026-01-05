@@ -80,6 +80,8 @@ export default defineNuxtConfig({
       navigateFallback: '/offline',
       cleanupOutdatedCaches: true,
       clientsClaim: true,
+      navigateFallbackAllowlist: [/^\/$/],
+      navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
       runtimeCaching: [
         {
           urlPattern: /^\/api(\/.*)?$/,

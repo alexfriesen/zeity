@@ -30,7 +30,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    strategies: 'generateSW',
+    strategies: 'injectManifest',
+    srcDir: '../service-worker',
+    filename: 'sw.ts',
     injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
@@ -71,6 +73,7 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
     },
     workbox: {
+      disableDevLogs: false,
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       globIgnores: ['/_payload.json', '/node_modules'],
@@ -189,6 +192,9 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    prerender: {
+      routes: ['/', '/offline'],
+    },
     compressPublicAssets: true,
     experimental: {
       tasks: true,

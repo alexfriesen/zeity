@@ -9,6 +9,7 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
+import * as navigationPreload from 'workbox-navigation-preload';
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -30,53 +31,57 @@ if (import.meta.env.PROD) {
   const api = /^\/api\//;
   denylist = [api, auth];
 
-  registerRoute(
-    ({ sameOrigin, request }) => {
-      const url = new URL(request.url, self.origin);
-      const result =
-        sameOrigin &&
-        ((request.destination === 'document' && auth.test(url.pathname)) ||
-          api.test(url.pathname));
+  navigationPreload.enable();
 
-      console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);
-
-      return result;
+  const strategy = new NetworkFirst({
+    cacheName: 'ssr-pages-caches',
+    matchOptions: {
+      ignoreVary: true,
+      ignoreSearch: true,
     },
-    new NetworkFirst({
-      cacheName: 'ssr-pages-caches',
-      matchOptions: {
-        ignoreVary: true,
-        ignoreSearch: true,
-      },
-      plugins: [
-        new CacheableResponsePlugin({ statuses: [200] }),
-        // we only need a few entries
-        new ExpirationPlugin({ maxEntries: 100 }),
-        {
-          cachedResponseWillBeUsed: async (params) => {
-            // When handlerDidError is invoked, then we can prevent redirecting if there is an entry in the cache.
-            // To check the behavior, navigate to a product page, then disable the network and refresh the page.
-            params.state ??= {};
-            params.state.noRedirect = params.cachedResponse;
-            console.log(
-              `[SW] cachedResponseWillBeUsed ${params.request.url}, ${params.state ? JSON.stringify(params.state) : ''}`
-            );
-          },
-          // This callback will be called when the fetch call fails.
-          // Beware of the logic, will be also invoked if the server is down.
-          handlerDidError: async ({ request, state, error }) => {
-            if (state?.noRedirect) return state.noRedirect;
-
-            console.log(
-              `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`
-            );
-            return error && 'name' in error && error.name === 'no-response'
-              ? Response.redirect('/offline', 302)
-              : undefined;
-          },
+    plugins: [
+      new CacheableResponsePlugin({ statuses: [200] }),
+      // we only need a few entries
+      new ExpirationPlugin({ maxEntries: 100 }),
+      {
+        cachedResponseWillBeUsed: async (params) => {
+          // When handlerDidError is invoked, then we can prevent redirecting if there is an entry in the cache.
+          // To check the behavior, navigate to a product page, then disable the network and refresh the page.
+          params.state ??= {};
+          params.state.noRedirect = params.cachedResponse;
+          console.log(
+            `[SW] cachedResponseWillBeUsed ${params.request.url}, ${params.state ? JSON.stringify(params.state) : ''}`
+          );
         },
-      ],
-    })
+        // This callback will be called when the fetch call fails.
+        // Beware of the logic, will be also invoked if the server is down.
+        handlerDidError: async ({ request, state, error }) => {
+          if (state?.noRedirect) return state.noRedirect;
+
+          console.log(
+            `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`
+          );
+          return error && 'name' in error && error.name === 'no-response'
+            ? Response.redirect('/offline', 302)
+            : undefined;
+        },
+      },
+    ],
+  });
+
+  registerRoute(
+    // ({ sameOrigin, request }) => {
+    //   const url = new URL(request.url, self.origin);
+    //   const result =
+    //     sameOrigin &&
+    //     ((request.destination === 'document' && auth.test(url.pathname)) ||
+    //       api.test(url.pathname));
+
+    //   console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);
+
+    //   return result;
+    // },
+    new NavigationRoute(strategy, { allowlist, denylist })
   );
 }
 

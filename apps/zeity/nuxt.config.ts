@@ -30,10 +30,10 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    strategies: 'generateSW',
-    // strategies: 'injectManifest',
-    // srcDir: '../service-worker',
-    // filename: 'sw.ts',
+    // strategies: 'generateSW',
+    strategies: 'injectManifest',
+    srcDir: '../service-worker',
+    filename: 'sw.ts',
     injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes

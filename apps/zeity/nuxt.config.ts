@@ -67,9 +67,12 @@ export default defineNuxtConfig({
         },
       ],
     },
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
+    },
     workbox: {
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
-      globPatterns: ['**/*.{css,webp,png,svg,webmanifest,ico,js,mjs,cjs,txt}'],
+      globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       globIgnores: ['/_payload.json', '/node_modules'],
       navigateFallback: '/offline',
       cleanupOutdatedCaches: true,
@@ -146,6 +149,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    '/offline': { prerender: true },
     '/user/**': {
       appMiddleware: ['auth'],
     },

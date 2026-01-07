@@ -74,7 +74,7 @@ export default defineNuxtConfig({
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       globIgnores: ['/_payload.json', '/node_modules'],
-      navigateFallback: '/',
+      navigateFallback: null,
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [

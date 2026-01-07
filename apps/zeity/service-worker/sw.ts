@@ -9,7 +9,6 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
-import * as navigationPreload from 'workbox-navigation-preload';
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -24,14 +23,14 @@ cleanupOutdatedCaches();
 let allowlist: RegExp[] | undefined;
 let denylist: RegExp[] | undefined;
 // in dev mode, we disable precaching to avoid caching issues
-if (import.meta.env.DEV) allowlist = [/^\/$/];
+if (import.meta.env.DEV) {
+  allowlist = [/^\/$/];
+}
 
 if (import.meta.env.PROD) {
   const auth = /^\/auth\//;
   const api = /^\/api\//;
   denylist = [api, auth];
-
-  navigationPreload.enable();
 
   const strategy = new NetworkFirst({
     cacheName: 'ssr-pages-caches',
@@ -69,20 +68,17 @@ if (import.meta.env.PROD) {
     ],
   });
 
-  registerRoute(
-    // ({ sameOrigin, request }) => {
-    //   const url = new URL(request.url, self.origin);
-    //   const result =
-    //     sameOrigin &&
-    //     ((request.destination === 'document' && auth.test(url.pathname)) ||
-    //       api.test(url.pathname));
+  registerRoute(({ sameOrigin, request }) => {
+    const url = new URL(request.url, self.origin);
+    const result =
+      sameOrigin &&
+      ((request.destination === 'document' && auth.test(url.pathname)) ||
+        api.test(url.pathname));
 
-    //   console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);
+    console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);
 
-    //   return result;
-    // },
-    new NavigationRoute(strategy, { allowlist, denylist })
-  );
+    return result;
+  }, strategy);
 }
 
 // to allow work offline

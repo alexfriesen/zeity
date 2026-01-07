@@ -30,7 +30,6 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    // strategies: 'generateSW',
     strategies: 'injectManifest',
     srcDir: '../service-worker',
     filename: 'sw.ts',
@@ -138,12 +137,6 @@ export default defineNuxtConfig({
     },
     '/organisations/**': {
       appMiddleware: ['auth'],
-    },
-    '/manifest.webmanifest': {
-      headers: {
-        'Content-Type': 'application/manifest+json',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
-      },
     },
   },
   runtimeConfig: {

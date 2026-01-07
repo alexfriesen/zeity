@@ -3,9 +3,10 @@
 //     middleware: 'page-root',
 // })
 onMounted(() => {
+    console.log('route', useRoute())
     const path = useRoute().path
     if (path === '/') {
-        navigateTo('/home')
+        navigateTo('/timer')
     } else {
         navigateTo(path)
     }

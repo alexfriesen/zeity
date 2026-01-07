@@ -81,7 +81,7 @@ if (import.meta.env.PROD) {
   }, strategy);
 }
 
-// to allow work offline
+// register prerendered app shell for navigation requests
 registerRoute(
   new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist })
 );

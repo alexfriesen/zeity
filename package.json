@@ -30,5 +30,8 @@
       "@netlify/blobs": "-"
     }
   },
+  "resolutions": {
+    "vite": "npm:rolldown-vite@latest"
+  },
   "packageManager": "pnpm@10.27.0"
 }

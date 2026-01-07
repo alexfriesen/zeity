@@ -11,6 +11,10 @@ onMounted(() => {
         navigateTo(path)
     }
 })
+useNuxtApp().hook('app:suspense:resolve', async () => {
+    console.log('route', useRoute())
+})
+
 </script>
 
 <template>

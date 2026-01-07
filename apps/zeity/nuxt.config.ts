@@ -80,6 +80,9 @@ export default defineNuxtConfig({
       cleanupOutdatedCaches: true,
       clientsClaim: true,
     },
+    experimental: {
+      enableWorkboxPayloadQueryParams: true,
+    },
     devOptions: {
       enabled: !isProd,
       suppressWarnings: true,

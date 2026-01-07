@@ -131,7 +131,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    // '/': { prerender: true },
+    '/': { prerender: true },
     '/offline': { prerender: true },
     '/user/**': {
       appMiddleware: ['auth'],

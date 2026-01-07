@@ -86,6 +86,16 @@ export default defineI18nConfig(() => ({
         noProject: 'No project',
         offline: 'Time is not synced',
         dateFilter: 'Date',
+        empty: {
+          title: 'No Times',
+          description:
+            "It looks like you haven't tracked any time yet. Start tracking time by clicking the button below.",
+          actions: {
+            start: 'Start time tracker',
+            stop: 'Stop time tracker',
+            addTime: 'Add time',
+          },
+        },
       },
       projects: {
         title: 'Projects',
@@ -333,6 +343,16 @@ export default defineI18nConfig(() => ({
         noProject: 'Kein Projekt',
         offline: 'Zeit is nicht synchronisiert',
         dateFilter: 'Datum',
+        empty: {
+          title: 'Keine Zeiten',
+          description:
+            'Es sieht so aus, als hätten Sie noch keine Zeit erfasst. Beginnen Sie mit der Zeiterfassung, indem Sie unten auf die Schaltfläche klicken.',
+          actions: {
+            start: 'Zeiterfassung starten',
+            stop: 'Zeiterfassung stoppen',
+            addTime: 'Zeit hinzufügen',
+          },
+        },
       },
       projects: {
         title: 'Projekte',

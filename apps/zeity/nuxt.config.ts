@@ -30,10 +30,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    strategies: 'generateSW',
-    // strategies: 'injectManifest',
-    // srcDir: '../service-worker',
-    // filename: 'sw.ts',
+    strategies: 'injectManifest',
+    srcDir: '../service-worker',
+    filename: 'sw.ts',
     injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
@@ -72,15 +71,6 @@ export default defineNuxtConfig({
     },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
-    },
-    workbox: {
-      maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
-      globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
-      navigateFallback: '/',
-      navigateFallbackAllowlist: [/^\/$/],
-      navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
-      cleanupOutdatedCaches: true,
-      clientsClaim: true,
     },
     experimental: {
       enableWorkboxPayloadQueryParams: true,

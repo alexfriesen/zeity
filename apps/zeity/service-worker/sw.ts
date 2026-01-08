@@ -28,9 +28,8 @@ if (import.meta.env.DEV) {
 }
 
 if (import.meta.env.PROD) {
-  const auth = /^\/auth\//;
   const api = /^\/api\//;
-  denylist = [api, auth];
+  denylist = [api, /^\/auth\//];
 
   const strategy = new NetworkFirst({
     cacheName: 'ssr-pages-caches',
@@ -67,12 +66,20 @@ if (import.meta.env.PROD) {
       },
     ],
   });
-
   registerRoute(({ sameOrigin, request }) => {
     const url = new URL(request.url, self.origin);
+    const allowedPages = [
+      /^\/timer/,
+      /^\/projects/,
+      /^\/settings/,
+      /^\/about/,
+      /^\/organisations/,
+      /^\/user/,
+    ];
     const result =
       sameOrigin &&
-      ((request.destination === 'document' && auth.test(url.pathname)) ||
+      ((request.destination === 'document' &&
+        allowedPages.some((path) => path.test(url.pathname))) ||
         api.test(url.pathname));
 
     console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);

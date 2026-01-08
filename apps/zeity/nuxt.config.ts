@@ -149,6 +149,8 @@ export default defineNuxtConfig({
       smtp: {
         host: 'localhost',
         port: 1025,
+        user: undefined,
+        password: undefined,
       },
     },
     jwtSecret: 'supersecret',

@@ -77,6 +77,8 @@ export default defineNuxtConfig({
       maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
       navigateFallback: '/',
+      navigateFallbackAllowlist: [/^\/$/],
+      navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
     },

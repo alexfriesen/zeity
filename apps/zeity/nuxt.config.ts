@@ -30,7 +30,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    strategies: 'generateSW',
+    strategies: 'injectManifest',
+    srcDir: '../service-worker',
+    filename: 'sw.ts',
     injectRegister: 'auto',
     client: {
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
@@ -70,33 +72,8 @@ export default defineNuxtConfig({
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
     },
-    workbox: {
-      maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
-      globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
-      globIgnores: ['/_payload.json', '/node_modules'],
-      navigateFallback: null,
-      cleanupOutdatedCaches: true,
-      clientsClaim: true,
-      runtimeCaching: [
-        {
-          urlPattern: /^\/api(\/.*)?$/,
-          handler: 'NetworkFirst',
-          method: 'GET',
-          options: {
-            cacheName: 'api-cache',
-            cacheableResponse: { statuses: [0, 200] },
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60, // 1 hour
-            },
-            networkTimeoutSeconds: 10,
-          },
-        },
-        {
-          urlPattern: /^\/auth(\/.*)?$/,
-          handler: 'NetworkOnly',
-        },
-      ],
+    experimental: {
+      enableWorkboxPayloadQueryParams: true,
     },
     devOptions: {
       enabled: !isProd,
@@ -132,7 +109,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    provider: 'iconify',
+    // provider: 'iconify',
   },
   colorMode: {
     storageKey: 'zeity-color-mode',

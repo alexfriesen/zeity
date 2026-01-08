@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Project, Time } from '@zeity/types';
+
 const loading = ref(false);
 
 const toast = useToast();
@@ -16,12 +18,25 @@ const hasOfflineProjects = computed(() => projects.value.length > 0);
 
 const hasOfflineData = computed(() => hasOfflineTimes.value || hasOfflineProjects.value);
 
-async function handleSyncOffline() {
+async function handleSyncOfflineData() {
     if (loading.value) return;
     loading.value = true;
 
     const projectsToSync = projects.value;
-    await syncOfflineProjects(projectsToSync.map(p => p.id))
+    if (projectsToSync.length > 0) {
+        await handleSyncOfflineProjects(projectsToSync);
+    }
+
+    const timesToSync = times.value;
+    if (timesToSync.length > 0) {
+        await handleSyncOfflineTimes(timesToSync);
+    }
+
+    loading.value = false;
+}
+
+function handleSyncOfflineProjects(projects: Project[]) {
+    return syncOfflineProjects(projects.map(p => p.id))
         .then((result) => {
             toast.add({
                 color: 'success',
@@ -39,9 +54,10 @@ async function handleSyncOffline() {
                 duration: 5000,
             });
         });
+}
 
-    const timesToSync = times.value;
-    await syncOfflineTimes(timesToSync.map(t => t.id))
+function handleSyncOfflineTimes(times: Time[]) {
+    return syncOfflineTimes(times.map(t => t.id))
         .then((result) => {
             toast.add({
                 color: 'success',
@@ -60,8 +76,6 @@ async function handleSyncOffline() {
                 duration: 5000,
             });
         });
-
-    loading.value = false;
 }
 </script>
 
@@ -69,6 +83,6 @@ async function handleSyncOffline() {
     <UAlert v-if="hasOfflineData" :title="$t('sync.title')"
         :description="$t('sync.description', { timeCount: times.length, projectCount: projects.length })"
         icon="i-lucide-cloud-upload" :actions="[
-            { label: $t('sync.button'), onClick: handleSyncOffline, loading: loading, disabled: loading },
+            { label: $t('sync.button'), onClick: handleSyncOfflineData, loading: loading, disabled: loading },
         ]" />
 </template>

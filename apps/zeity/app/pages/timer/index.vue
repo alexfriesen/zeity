@@ -64,8 +64,8 @@ watch(toRef(currentOrganisationId), () => {
         <section class="grow py-3 my-3">
             <TimeList default-open :times="sortedTimes" />
 
-            <UAlert v-if="isEmpty" variant="subtle" icon="i-lucide-info" :title="$t('times.empty.title')"
-                :description="$t('times.empty.description')" :ui="{ icon: 'size-20' }" :actions="[
+            <UEmpty v-if="isEmpty" variant="subtle" icon="i-lucide-info" size="lg" :title="$t('times.empty.title')"
+                :description="$t('times.empty.description')" :actions="[
                     { label: timerStore.isStarted ? $t('times.empty.actions.stop') : $t('times.empty.actions.start'), icon: 'i-lucide-play', onClick: toggleDraft },
                     { label: $t('times.empty.actions.addTime'), icon: 'i-lucide-plus', onClick: timeNew }
                 ]" />

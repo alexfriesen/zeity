@@ -62,14 +62,24 @@ Once the application is running, you can access it at `http://localhost:3000`.
 ### Environment Variables
 
 ```env
+# Database Configuration
 ZEITY_DATABASE_URL=
+# Mailer Configuration
 ZEITY_MAILER_SMTP_HOST=
 ZEITY_MAILER_SMTP_PORT=
+ZEITY_MAILER_SMTP_USER=
+ZEITY_MAILER_SMTP_PASSWORD=
+ZEITY_MAILER_FROM_EMAIL=
+ZEITY_MAILER_FROM_NAME=
+# S3 Configuration
 ZEITY_S3_END_POINT=
-ZEITY_S3_ACCESSKEY=
-ZEITY_S3_SECRETKEY=
+ZEITY_S3_ACCESS_KEY=
+ZEITY_S3_SECRET_KEY=
 ZEITY_S3_BUCKET=
+ZEITY_S3_REGION=
+# Security
 ZEITY_SESSION_PASSWORD= // 32 character long password
+ZEITY_JWT_SECRET=
 ```
 
 #### Optional Variables:

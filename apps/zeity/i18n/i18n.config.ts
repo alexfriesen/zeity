@@ -117,6 +117,10 @@ export default defineI18nConfig(() => ({
         },
         noProjectNotes: 'No notes for this project',
         offline: 'Project is not synced',
+        empty: {
+          title: 'No Projects',
+          description: 'You have no projects yet. Create one to get started.',
+        },
       },
       reports: {
         summary: 'Summary',
@@ -374,6 +378,11 @@ export default defineI18nConfig(() => ({
         },
         noProjectNotes: 'Keine Notizen für dieses Projekt',
         offline: 'Projekt ist nicht synchronisiert',
+        empty: {
+          title: 'Keine Projekte',
+          description:
+            'Sie haben noch keine Projekte. Erstellen Sie eines, um zu beginnen.',
+        },
       },
       reports: {
         summary: 'Zusammenfassung',

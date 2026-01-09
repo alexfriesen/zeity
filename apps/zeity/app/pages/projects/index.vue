@@ -102,9 +102,8 @@ onMounted(() => {
                 <p v-else class="text-sm text-muted">{{ $t('projects.noProjectNotes') }}</p>
             </UCard>
 
-            <UAlert v-if="isEmpty" variant="subtle" title="Hey there!"
-                description="It looks like you don't have any projects yet. Why not create one?" icon="i-lucide-info"
-                :ui="{ icon: 'size-20' }" :actions="[
+            <UEmpty v-if="isEmpty" variant="subtle" size="lg" icon="i-lucide-info" :title="$t('projects.empty.title')"
+                :description="$t('projects.empty.description')" :actions="[
                     { label: $t('common.add'), icon: 'i-lucide-plus', to: '/projects/create' }
                 ]" />
         </section>

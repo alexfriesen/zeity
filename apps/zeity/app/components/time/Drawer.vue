@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useIntervalFn, watchDebounced } from '@vueuse/core';
 import { addMilliseconds } from 'date-fns';
+import { parseAbsolute, getLocalTimeZone } from '@internationalized/date';
 import { nanoid } from 'nanoid';
-import z from 'zod';
 
-import { omit } from '@zeity/utils/object';
-import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import type { DraftTime, Time } from '@zeity/types/time';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
+import { pick } from '@zeity/utils/object';
+
+import { type Schema, schema } from '~/schemas/time-form';
 
 const { t } = useI18n();
 
@@ -45,6 +47,9 @@ const isOffline = computed(() => {
     return isTimeValue(time) && !isOnlineTime(time);
 });
 
+const startDateRef = useTemplateRef('startDateRef')
+const endDateRef = useTemplateRef('endDateRef')
+
 const now = ref(nowWithoutMillis());
 const { pause, resume } = useIntervalFn(() => {
     now.value = nowWithoutMillis();
@@ -60,20 +65,22 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
 
         const clone = structuredClone(toRaw(currentTime.value));
 
+        const tz = getLocalTimeZone();
         if (isTimeValue(clone)) {
             const start = new Date(clone.start);
             const end = addMilliseconds(start, clone.duration);
 
             state.value = {
                 id: clone.id,
-                start: clone.start,
-                end: end.toISOString(),
+                start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
+                end: parseAbsolute(end.toISOString(), tz).set({ millisecond: 0 }),
                 notes: clone.notes || '',
                 projectId: clone.projectId || undefined,
             } satisfies Schema;
         } else if (isDraftValue(clone)) {
             state.value = {
                 ...clone,
+                start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
             } as Schema;
         }
     };
@@ -86,14 +93,18 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
 });
 
 const diff = computed(() => {
-    const time = state?.value as Schema;
+    const time = parsedState?.value;
+
+    if (!time) {
+        return 0;
+    }
 
     if (isTimeValue(time) && time.duration) {
         return time.duration;
     }
 
     const start = time?.start;
-    const end = 'end' in time ? time.end as string : now.value;
+    const end = now.value;
 
     if (start && end) {
         return timeDiff(end, start);
@@ -102,20 +113,14 @@ const diff = computed(() => {
     return 0;
 });
 
-const timeSchema = z.object({
-    id: z.string().default(nanoid()),
-    start: z.iso.datetime(),
-    end: z.iso.datetime(),
-    notes: z.string().default(''),
-
-    projectId: z.string().optional(),
-});
-const draftSchema = timeSchema.pick({ start: true, notes: true, projectId: true });
-const schema = z.union([timeSchema, draftSchema]);
-
-type Schema = z.infer<typeof schema>
 const state = ref<Schema>();
 const loading = ref(false);
+
+const parsedState = computed(() => {
+    if (!state.value) return;
+
+    return parseSchema(state.value);
+});
 
 watchDebounced(
     state,
@@ -124,7 +129,7 @@ watchDebounced(
             handleSave(data);
         }
     },
-    { debounce: 500, maxWait: 1000, deep: true },
+    { debounce: 500, maxWait: 1000, deep: true, },
 )
 
 async function handleSave(data: Schema) {
@@ -134,6 +139,8 @@ async function handleSave(data: Schema) {
             return;
         }
         const time = parseSchema(validated.data);
+
+        if (!time) return;
 
         if (isDraftValue(time)) {
             timeStore.updateDraft(time);
@@ -156,9 +163,11 @@ function handleTimeDetailOpenUpdate(state: boolean) {
 
 function parseSchema(data: Schema) {
     let duration: number | undefined;
-    if ('end' in data) {
-        duration = timeDiff(data.end, data.start);
-        data = omit(data, 'end');
+
+    const start = data.start.toAbsoluteString();
+    const end = 'end' in data ? data.end.toAbsoluteString() : undefined;
+    if (end) {
+        duration = timeDiff(end, start);
     }
 
     let id: string | undefined;
@@ -169,15 +178,17 @@ function parseSchema(data: Schema) {
     // Time contain id and duration
     if (id && duration) {
         return {
-            ...data,
-            duration,
+            ...pick(data, ['notes', 'projectId']),
             id,
+            start,
+            duration,
         } satisfies Time;
     }
 
     // otherwise, it's a draft
     return {
-        ...data,
+        ...pick(data, ['notes', 'projectId']),
+        start,
     } satisfies DraftTime;
 }
 
@@ -251,13 +262,45 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
         </template>
         <template #body>
             <UForm v-if="state" :scheme="schema" :state="state" class="space-y-4">
-                <UFormField :label="$t('times.form.start')" name="start">
-                    <DateTimeField v-model="state.start" />
-                </UFormField>
+                <div class="grid grid-cols-2 gap-2">
+                    <UFormField ref="startDateRef" :label="$t('times.form.startDate')" name="start">
+                        <UInputDate v-model="state.start" hide-time-zone granularity="day" class="w-full">
+                            <template #trailing>
+                                <UPopover :reference="startDateRef?.$el">
+                                    <UButton color="neutral" variant="link" size="sm" icon="i-lucide-calendar"
+                                        aria-label="Select a date" class="px-0" />
 
-                <UFormField v-if="state && 'end' in state" :label="$t('times.form.end')" name="end">
-                    <DateTimeField v-if="isTimeValue(state)" v-model="state.end" />
-                </UFormField>
+                                    <template #content>
+                                        <UCalendar v-model="state.start" class="p-2" />
+                                    </template>
+                                </UPopover>
+                            </template>
+                        </UInputDate>
+                    </UFormField>
+                    <UFormField :label="$t('times.form.startTime')" name="start">
+                        <UInputTime v-model="state.start" hide-time-zone granularity="second" class="w-full" />
+                    </UFormField>
+                </div>
+
+                <div v-if="state && 'end' in state && isTimeValue(state)" class="grid grid-cols-2 gap-2">
+                    <UFormField ref="endDateRef" :label="$t('times.form.endDate')" name="end">
+                        <UInputDate v-model="state.end" hide-time-zone granularity="day" class="w-full">
+                            <template #trailing>
+                                <UPopover :reference="endDateRef?.$el">
+                                    <UButton color="neutral" variant="link" size="sm" icon="i-lucide-calendar"
+                                        aria-label="Select a date" class="px-0" />
+
+                                    <template #content>
+                                        <UCalendar v-model="state.end" class="p-2" />
+                                    </template>
+                                </UPopover>
+                            </template>
+                        </UInputDate>
+                    </UFormField>
+                    <UFormField :label="$t('times.form.endTime')" name="end">
+                        <UInputTime v-model="state.end" hide-time-zone granularity="second" class="w-full" />
+                    </UFormField>
+                </div>
 
                 <UFormField :label="$t('times.form.project')" name="projectId">
                     <USelectMenu v-model="state.projectId" value-key="value" :items="projectItems" class="w-full" />

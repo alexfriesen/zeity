@@ -77,8 +77,10 @@ export default defineI18nConfig(() => ({
       times: {
         title: 'Times',
         form: {
-          start: 'Start',
-          end: 'End',
+          startDate: 'Start Date',
+          startTime: 'Start Time',
+          endDate: 'End Date',
+          endTime: 'End Time',
           project: 'Project',
           notes: 'Notes',
         },
@@ -338,8 +340,10 @@ export default defineI18nConfig(() => ({
       times: {
         title: 'Zeiten',
         form: {
-          start: 'Start',
-          end: 'Ende',
+          startDate: 'Start Datum',
+          startTime: 'Start Zeit',
+          endDate: 'End Datum',
+          endTime: 'End Zeit',
           project: 'Projekt',
           notes: 'Notizen',
         },

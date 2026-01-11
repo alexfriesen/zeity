@@ -1,29 +1,20 @@
 import type { ZonedDateTime } from '@internationalized/date';
 import { nanoid } from 'nanoid';
-import {
-  type infer as ZodInfer,
-  object,
-  string,
-  _default,
-  custom,
-  union,
-  optional,
-  pick,
-} from 'zod/mini';
+import z from 'zod';
 
-export const timeSchema = object({
-  id: _default(string(), () => nanoid()),
-  start: custom<ZonedDateTime>(),
-  end: custom<ZonedDateTime>(),
-  notes: _default(string(), ''),
+export const timeSchema = z.object({
+  id: z.string().default(nanoid),
+  start: z.custom<ZonedDateTime>(),
+  end: z.custom<ZonedDateTime>(),
+  notes: z.string().default(''),
 
-  projectId: optional(string()),
+  projectId: z.optional(z.string()),
 });
-export const draftSchema = pick(timeSchema, {
+export const draftSchema = timeSchema.pick({
   start: true,
   notes: true,
   projectId: true,
 });
-export const schema = union([timeSchema, draftSchema]);
+export const schema = z.union([timeSchema, draftSchema]);
 
-export type Schema = ZodInfer<typeof schema>;
+export type Schema = z.infer<typeof schema>;

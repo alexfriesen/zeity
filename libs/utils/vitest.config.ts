@@ -1,18 +1,9 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
-export default defineConfig(({ mode }) => ({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/utils',
-
-  plugins: [],
-
+export default defineConfig(() => ({
   test: {
     globals: true,
     include: ['src/**/*.{test,spec}.ts'],
     reporters: ['default'],
-  },
-  define: {
-    'import.meta.vitest': mode !== 'production',
   },
 }));

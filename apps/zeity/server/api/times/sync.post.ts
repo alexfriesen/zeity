@@ -1,5 +1,7 @@
-import { times } from '@zeity/database/time';
 import z from 'zod';
+
+import { times } from '@zeity/database/time';
+import { TIME_TYPES } from '@zeity/types';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -9,6 +11,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.array(
       z.object({
+        type: z.enum(TIME_TYPES).optional(),
         start: z.coerce.date(),
         duration: z.coerce.number().nonnegative().default(0),
         // tags: z.array(z.number()).optional(),

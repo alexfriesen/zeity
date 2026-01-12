@@ -72,6 +72,7 @@ watch([isDraft, isOpen], ([isDraft, isOpen]) => {
 
             state.value = {
                 id: clone.id,
+                type: clone.type,
                 start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
                 end: parseAbsolute(end.toISOString(), tz).set({ millisecond: 0 }),
                 notes: clone.notes || '',
@@ -178,7 +179,7 @@ function parseSchema(data: Schema) {
     // Time contain id and duration
     if (id && duration) {
         return {
-            ...pick(data, ['notes', 'projectId']),
+            ...pick(data, ['type', 'notes', 'projectId']),
             id,
             start,
             duration,
@@ -187,7 +188,7 @@ function parseSchema(data: Schema) {
 
     // otherwise, it's a draft
     return {
-        ...pick(data, ['notes', 'projectId']),
+        ...pick(data, ['type', 'notes', 'projectId']),
         start,
     } satisfies DraftTime;
 }
@@ -244,15 +245,16 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
     <UDrawer :open="isOpen" :ui="{ container: 'max-w-xl mx-auto' }" title="Time Detail" description="Edit time details"
         @update:open="handleTimeDetailOpenUpdate">
         <template #header>
-            <div class="flex items-center justify-around">
-                <div class="flex justify-center w-8">
+            <div class="flex justify-between items-center gap-4">
+                <div class="flex flex-1 justify-center items-center gap-2">
+                    <TimeType :time="currentTime" />
                     <UIcon v-if="loading" name="i-lucide-loader-2" class="animate-spin text-xl" />
                 </div>
-                <div>
+                <div class="flex-2">
                     <TimeDurationFlowing v-model="diff"
                         class="flex justify-center font-mono text-2xl tabular-nums lining-nums tracking-wide" />
                 </div>
-                <div class="w-8">
+                <div class="flex flex-1 justify-center items-center gap-2">
                     <UTooltip :text="$t('common.sync')">
                         <UButton v-if="isOffline" type="button" color="neutral" variant="subtle"
                             icon="i-lucide-cloud-upload" @click="handleSync" />

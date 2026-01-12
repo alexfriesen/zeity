@@ -1,7 +1,12 @@
 import { addMilliseconds, isSameDay } from 'date-fns';
 import { nanoid } from 'nanoid';
 
-import type { DraftTime, Time } from '@zeity/types';
+import {
+  type DraftTime,
+  type Time,
+  TIME_TYPE_BREAK,
+  TIME_TYPE_MANUAL,
+} from '@zeity/types';
 import { nowWithoutMillis, parseDate, timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
@@ -137,6 +142,7 @@ export function useTime() {
   }
   function startDraft(time?: Partial<DraftTime>): DraftTime {
     const newDraft = {
+      type: TIME_TYPE_MANUAL,
       start: nowWithoutMillis().toISOString(),
       notes: '',
       ...time,
@@ -205,7 +211,7 @@ export function useTime() {
 
     return {
       id: `break-${previousItem.id}`,
-      type: 'break',
+      type: TIME_TYPE_BREAK,
       start: prevEnd.toISOString(),
       duration: duration,
       notes: t('times.break.notes'),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAfter, isBefore } from 'date-fns';
-import { type Time, ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER, PROJECT_STATUS_ACTIVE } from '@zeity/types';
+import { type Time, ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER, PROJECT_STATUS_ACTIVE, TIME_TYPE_BREAK } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
 import type { OrganisationTeam } from '@zeity/database/organisation-team';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
@@ -106,7 +106,11 @@ function applyTimeBreaks(times: Time[]): Time[] {
     return result;
 }
 
-const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
+const workedTimes = computed(() =>
+    filteredTimes.value.filter((time) => time.type !== TIME_TYPE_BREAK)
+);
+
+const timeSum = computed(() => calculateDiffSum(workedTimes.value));
 
 const orgRole = computed(() => currentOrganisation.value?.role);
 const showAdminControls = computed(() => orgRole.value && [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value));

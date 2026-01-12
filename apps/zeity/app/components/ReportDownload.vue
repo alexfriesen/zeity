@@ -31,13 +31,14 @@ const formatOptions = [
     { label: 'JSON', value: 'json' },
 ];
 
-type EnhancedTime = Time & { project: string | null, user: string | null };
-const exportedFields: (keyof EnhancedTime)[] = ['user', 'start', 'duration', 'project', 'notes'] as const;
+type EnhancedTime = Time & { project: string | null, user: string | null, type: string };
+const exportedFields: (keyof EnhancedTime)[] = ['user', 'type', 'start', 'duration', 'project', 'notes'] as const;
 
 async function downloadReport(type = 'json') {
     const times = props.times;
     const enhancedTimes = Object.values(times).flat().map((item) => ({
         ...item,
+        type: t(`times.type.${item.type}`),
         project: getProjectName(item.projectId),
         user: getUserName(item.userId),
     }));

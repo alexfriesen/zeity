@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
 
+import { TIME_TYPE_BREAK } from '@zeity/types';
 import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
@@ -17,6 +18,12 @@ const diff = computed(() => {
         return timeDiff(now.value, start);
     }
     return 0;
+});
+const icon = computed(() => {
+    if (draft.value?.type === TIME_TYPE_BREAK) {
+        return 'i-lucide-coffee';
+    }
+    return null;
 });
 
 const now = ref(nowWithoutMillis());
@@ -46,7 +53,7 @@ watch(isStarted, (value) => {
 <template>
     <div class="relative mx-2">
         <div v-if="isStarted" class="rounded-md shadow bg-[var(--ui-bg-accented)]">
-            <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl"
+            <UButton type="button" variant="ghost" color="neutral" class="w-full h-12" size="xl" :icon="icon"
                 @mouseup="() => draft && openDetails(draft)">
                 <TimeDurationFlowing v-model="diff" class="font-mono text-2xl tabular-nums lining-nums tracking-wide" />
             </UButton>

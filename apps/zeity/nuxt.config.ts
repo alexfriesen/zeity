@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   experimental: {
     asyncContext: true,
     typescriptPlugin: true,
+    componentIslands: true,
   },
   modules: [
     '@nuxt/hints',

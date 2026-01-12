@@ -7,6 +7,8 @@ services:
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
+    ports:
+      - 3000:3000
     environment:
       - ZEITY_DATABASE_URL=postgresql://postgres:postgres@postgres:5432/zeity
       - ZEITY_S3_END_POINT=http://minio:9000

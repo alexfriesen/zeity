@@ -39,6 +39,7 @@ describe('useSettingsStore', () => {
       themePrimary: 'sky',
       openTimeDetailsOnStart: true,
       openTimeDetailsOnStop: false,
+      calculateBreaks: false,
     });
   });
 
@@ -57,6 +58,7 @@ describe('useSettingsStore', () => {
         themePrimary: 'red',
         openTimeDetailsOnStart: true,
         openTimeDetailsOnStop: false,
+        calculateBreaks: false,
       });
     });
 
@@ -77,6 +79,7 @@ describe('useSettingsStore', () => {
           themePrimary: 'sky',
           openTimeDetailsOnStart: true,
           openTimeDetailsOnStop: false,
+          calculateBreaks: false,
         })
       );
     });
@@ -93,6 +96,7 @@ describe('useSettingsStore', () => {
         themePrimary: 'sky',
         openTimeDetailsOnStart: true,
         openTimeDetailsOnStop: false,
+        calculateBreaks: false,
       });
     });
   });

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { addMilliseconds } from 'date-fns'
 import type { Time } from '@zeity/types/time';
 import type { DateLike } from '@zeity/utils/date';
-import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay, timeDiff, parseDate } from '@zeity/utils/date';
+import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay } from '@zeity/utils/date';
 
 const { times, calculateBreaks } = defineProps({
 	class: { type: String, default: '' },
@@ -11,6 +10,7 @@ const { times, calculateBreaks } = defineProps({
 	calculateBreaks: { type: Boolean, default: false },
 });
 const { locale } = storeToRefs(useSettingsStore());
+const { calculateBreakTime } = useTime();
 
 const groups = computed(() => {
 	const all = times || [];
@@ -27,21 +27,15 @@ const groups = computed(() => {
 		groups[key].data.push(item);
 
 		if (calculateBreaks) {
-			const nextItem = all[i + 1];
-			if (!nextItem) continue;
-			// only add break if next item is in the same group
-			if (key !== getGroupKey(nextItem.start)) continue;
+			// we are iterating in reverse order. so next item is previous in time
+			const prevItem = all[i + 1];
+			if (!prevItem) continue;
 
-			const nextEnd = addMilliseconds(parseDate(nextItem.start), nextItem.duration);
-			const duration = timeDiff(item.start, nextEnd);
-			if (duration < 1) continue;
+			// calculate break time between item and prevItem
+			const breakTime = calculateBreakTime(item, prevItem);
+			if (!breakTime) continue;
 
-			groups[key].data.push({
-				id: `break-${item.id}`,
-				type: 'break',
-				start: nextEnd.toISOString(),
-				duration: duration,
-			} as Time);
+			groups[key].data.push(breakTime);
 		}
 	}
 

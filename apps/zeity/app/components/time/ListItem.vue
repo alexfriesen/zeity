@@ -53,44 +53,25 @@ function handleToggle() {
 	</UButton>
 
 	<div v-if="open" :class="$props.class">
-		<template v-for="time in times" :key="time.id">
-			<template v-if="time.type === 'break'">
-				<UButton type="button" variant="ghost" class="w-full flex items-center justify-between gap-2" disabled>
-					<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
-						<UIcon name="i-lucide-coffee" class="inline-block mr-1" />
-						<span>
-							{{ $t('times.break.notes') }}
-						</span>
-					</div>
+		<UButton v-for="time in times" :key="time.id" :disabled="time.type === 'break'" type="button" variant="ghost"
+			class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
 
-					<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
-						<span class="tabular-nums">
-							{{ formatDuration(time.duration) }}
-						</span>
-					</div>
-				</UButton>
-			</template>
-			<template v-else>
-				<UButton type="button" variant="ghost" class="w-full flex items-center justify-between gap-2"
-					@click="timeDetail.open(time)">
+			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
+				<UIcon v-if="time.type === 'break'" name="i-lucide-coffee" class="inline-block mr-1" />
+				<span>
+					{{ time.notes || $t('times.addNotes') }}
+				</span>
+			</div>
 
-					<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
-						<span>
-							{{ time.notes || $t('times.addNotes') }}
-						</span>
-					</div>
+			<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
+				<UTooltip v-if="loggedIn && !time.userId" :text="$t('times.offline')">
+					<UIcon name="i-lucide-cloud-off" />
+				</UTooltip>
 
-					<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
-						<UTooltip v-if="loggedIn && !time.userId" :text="$t('times.offline')">
-							<UIcon name="i-lucide-cloud-off" />
-						</UTooltip>
-
-						<span class="tabular-nums">
-							{{ formatDuration(time.duration) }}
-						</span>
-					</div>
-				</UButton>
-			</template>
-		</template>
+				<span class="tabular-nums">
+					{{ formatDuration(time.duration) }}
+				</span>
+			</div>
+		</UButton>
 	</div>
 </template>

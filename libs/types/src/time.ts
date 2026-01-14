@@ -1,5 +1,6 @@
 export interface Time {
   id: string;
+  type?: string;
 
   start: string;
   duration: number;

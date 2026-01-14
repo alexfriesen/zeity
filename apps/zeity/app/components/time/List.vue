@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { addMilliseconds } from 'date-fns'
 import type { Time } from '@zeity/types/time';
 import type { DateLike } from '@zeity/utils/date';
-import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay } from '@zeity/utils/date';
+import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay, timeDiff, parseDate } from '@zeity/utils/date';
 
-const { times } = defineProps({
+const { times, calculateBreaks } = defineProps({
 	class: { type: String, default: '' },
 	times: { type: Array as PropType<Time[]>, required: true },
 	defaultOpen: { type: Boolean, default: false },
+	calculateBreaks: { type: Boolean, default: false },
 });
 const { locale } = storeToRefs(useSettingsStore());
 
@@ -23,6 +25,24 @@ const groups = computed(() => {
 			groups[key] = { label: key, data: [] };
 		}
 		groups[key].data.push(item);
+
+		if (calculateBreaks) {
+			const nextItem = all[i + 1];
+			if (!nextItem) continue;
+			// only add break if next item is in the same group
+			if (key !== getGroupKey(nextItem.start)) continue;
+
+			const nextEnd = addMilliseconds(parseDate(nextItem.start), nextItem.duration);
+			const duration = timeDiff(item.start, nextEnd);
+			if (duration < 1) continue;
+
+			groups[key].data.push({
+				id: `break-${item.id}`,
+				type: 'break',
+				start: nextEnd.toISOString(),
+				duration: duration,
+			} as Time);
+		}
 	}
 
 	return groups;

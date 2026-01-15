@@ -88,6 +88,9 @@ export default defineI18nConfig(() => ({
         noProject: 'No project',
         offline: 'Time is not synced',
         dateFilter: 'Date',
+        start: 'Start Time Tracker',
+        stop: 'Stop Time Tracker',
+        recordNext: 'Start Next Entry',
         empty: {
           title: 'No Times',
           description:
@@ -363,6 +366,9 @@ export default defineI18nConfig(() => ({
         noProject: 'Kein Projekt',
         offline: 'Zeit is nicht synchronisiert',
         dateFilter: 'Datum',
+        start: 'Zeiterfassung starten',
+        stop: 'Zeiterfassung stoppen',
+        recordNext: 'Nächste Eintragung starten',
         empty: {
           title: 'Keine Zeiten',
           description:

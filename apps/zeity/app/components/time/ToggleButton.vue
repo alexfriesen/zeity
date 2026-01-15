@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { ButtonProps } from '@nuxt/ui';
-import { TIME_TYPE_BREAK } from '@zeity/types';
+// import { TIME_TYPE_BREAK } from '@zeity/types';
 import { useTimerStore } from '~/stores/timerStore';
 
 const store = useTimerStore();
 const { toggleDraft, startDraft, stopDraft } = useTime();
-const { isStarted, loading, draft } = storeToRefs(store);
+const { isStarted, loading } = storeToRefs(store);
 
-const isBreakDraft = computed(() =>
-    draft.value?.type === TIME_TYPE_BREAK
-);
+// const isBreakDraft = computed(() =>
+//     draft.value?.type === TIME_TYPE_BREAK
+// );
 
 const startTimeButton = {
     icon: 'i-lucide-play',
@@ -26,16 +26,16 @@ const nextTimeButton = {
     label: 'times.recordNext',
     onClick: onStartNext,
 }
-const breakTimeButton = {
-    icon: 'i-lucide-coffee',
-    label: 'times.break.start',
-    onClick: onStartBreak,
-}
-const stopBreakButton = {
-    icon: 'i-lucide-play',
-    label: 'times.break.continue',
-    onClick: onStopBreak,
-}
+// const breakTimeButton = {
+//     icon: 'i-lucide-coffee',
+//     label: 'times.break.start',
+//     onClick: onStartBreak,
+// }
+// const stopBreakButton = {
+//     icon: 'i-lucide-play',
+//     label: 'times.break.continue',
+//     onClick: onStopBreak,
+// }
 
 const buttons = computed(() => {
     if (!isStarted.value) {
@@ -73,18 +73,18 @@ async function onStartNext() {
     store.setLoading(false);
 }
 
-async function onStartBreak() {
-    store.setLoading(true);
-    await stopDraft();
-    await startDraft({ type: TIME_TYPE_BREAK });
-    store.setLoading(false);
-}
-async function onStopBreak() {
-    store.setLoading(true);
-    await stopDraft();
-    await startDraft();
-    store.setLoading(false);
-}
+// async function onStartBreak() {
+//     store.setLoading(true);
+//     await stopDraft();
+//     await startDraft({ type: TIME_TYPE_BREAK });
+//     store.setLoading(false);
+// }
+// async function onStopBreak() {
+//     store.setLoading(true);
+//     await stopDraft();
+//     await startDraft();
+//     store.setLoading(false);
+// }
 </script>
 
 <template>

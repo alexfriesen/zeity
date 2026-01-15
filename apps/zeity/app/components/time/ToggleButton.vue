@@ -42,11 +42,11 @@ const buttons = computed(() => {
         return [startTimeButton];
     }
 
-    if (isBreakDraft.value) {
-        return [stopTimeButton, stopBreakButton];
-    } else {
-        return [breakTimeButton, nextTimeButton, stopTimeButton];
-    }
+    // if (isBreakDraft.value) {
+    //     return [stopTimeButton, stopBreakButton];
+    // } else {
+    //     return [breakTimeButton, nextTimeButton, stopTimeButton];
+    // }
 
     return [nextTimeButton, stopTimeButton];
 });

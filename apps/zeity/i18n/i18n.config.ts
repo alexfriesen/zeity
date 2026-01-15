@@ -98,8 +98,15 @@ export default defineI18nConfig(() => ({
             addTime: 'Add time',
           },
         },
+        type: {
+          manual: 'Manual',
+          break: 'Break',
+        },
         break: {
           notes: 'Break',
+          start: 'Start Break',
+          stop: 'Stop Break',
+          continue: 'Continue Work',
         },
       },
       projects: {
@@ -137,6 +144,7 @@ export default defineI18nConfig(() => ({
           duration: 'Duration',
           project: 'Project',
           notes: 'Notes',
+          type: 'Record Type',
         },
       },
       settings: {
@@ -365,8 +373,15 @@ export default defineI18nConfig(() => ({
             addTime: 'Zeit hinzufügen',
           },
         },
+        type: {
+          manual: 'Manuell',
+          break: 'Pause',
+        },
         break: {
           notes: 'Pause',
+          start: 'Pause starten',
+          stop: 'Pause stoppen',
+          continue: 'Weiterarbeiten',
         },
       },
       projects: {
@@ -405,6 +420,7 @@ export default defineI18nConfig(() => ({
           duration: 'Dauer',
           project: 'Projekt',
           notes: 'Notizen',
+          type: 'Eintragstyp',
         },
       },
       offline: {

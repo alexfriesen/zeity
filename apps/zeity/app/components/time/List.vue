@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Time } from '@zeity/types/time';
+import { TIME_TYPE_BREAK, type Time } from '@zeity/types/time';
 import type { DateLike } from '@zeity/utils/date';
 import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay } from '@zeity/utils/date';
 
@@ -52,6 +52,10 @@ function getGroupKey(date: DateLike): string {
 
 	return formatDate(toStartOfDay(date), locale.value);
 }
+
+function withoutBreaks(times: Time[]): Time[] {
+	return times.filter(time => time.type !== TIME_TYPE_BREAK);
+}
 </script>
 
 <template>
@@ -59,7 +63,8 @@ function getGroupKey(date: DateLike): string {
 		<div v-for="group in groups" :key="group.label"
 			class="w-full flex flex-col overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-md">
 			<TimeListItem :default-open="defaultOpen" :label="group.label"
-				:description="formatDuration(calculateDiffSum(group.data))" :times="group.data" class="m-1" />
+				:description="formatDuration(calculateDiffSum(withoutBreaks(group.data)))" :times="group.data"
+				class="m-1" />
 		</div>
 	</div>
 </template>

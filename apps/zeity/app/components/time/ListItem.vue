@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Time } from '@zeity/types/time';
+import { type Time, TIME_TYPE_BREAK } from '@zeity/types/time';
 import { formatDuration } from '@zeity/utils/date';
 
 const { loggedIn } = useUserSession();
@@ -53,11 +53,11 @@ function handleToggle() {
 	</UButton>
 
 	<div v-if="open" :class="$props.class">
-		<UButton v-for="time in times" :key="time.id" :disabled="time.type === 'break'" type="button" variant="ghost"
-			class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
+		<UButton v-for="time in times" :key="time.id" :disabled="time.type === TIME_TYPE_BREAK" type="button"
+			variant="ghost" class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
 
 			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
-				<UIcon v-if="time.type === 'break'" name="i-lucide-coffee" class="inline-block mr-1" />
+				<UIcon v-if="time.type === TIME_TYPE_BREAK" name="i-lucide-coffee" class="inline-block mr-1" />
 				<span>
 					{{ time.notes || $t('times.addNotes') }}
 				</span>
@@ -71,6 +71,8 @@ function handleToggle() {
 				<span class="tabular-nums">
 					{{ formatDuration(time.duration) }}
 				</span>
+
+				<TimeType :time="time" />
 			</div>
 		</UButton>
 	</div>

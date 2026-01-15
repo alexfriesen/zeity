@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
+import { TIME_TYPES } from '@zeity/types';
 import { findTimeById } from '~~/server/utils/time';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
     event,
     z
       .object({
+        type: z.enum(TIME_TYPES).optional(),
         start: z.coerce.date(),
         duration: z.coerce.number().nonnegative(),
         // tags: z.array(z.number()).optional(),

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { times } from '@zeity/database/time';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
+import { TIME_TYPES, TIME_TYPE_MANUAL } from '@zeity/types';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -10,6 +11,7 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(
     event,
     z.object({
+      type: z.enum(TIME_TYPES).default(TIME_TYPE_MANUAL),
       start: z.coerce.date(),
       duration: z.coerce.number().nonnegative().default(0),
       // tags: z.array(z.number()).optional(),

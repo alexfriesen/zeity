@@ -1,0 +1,1 @@
+ALTER TABLE "time" ADD COLUMN "type" varchar(100) DEFAULT 'manual' NOT NULL;

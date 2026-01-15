@@ -5,16 +5,23 @@ import {
   text,
   timestamp,
   uuid,
+  varchar,
 } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 import { projects } from './project';
 import { users } from './user';
 import { organisations } from './organisation';
+import { TIME_TYPE_MANUAL, TimeType } from '@zeity/types';
 
 export const times = pgTable(
   'time',
   {
     id: uuid('id').defaultRandom().notNull().primaryKey(),
+
+    type: varchar('type', { length: 100 })
+      .notNull()
+      .default(TIME_TYPE_MANUAL)
+      .$type<TimeType>(),
 
     start: timestamp('start', {
       withTimezone: true,

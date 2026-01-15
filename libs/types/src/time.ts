@@ -1,6 +1,12 @@
+export const TIME_TYPE_MANUAL = 'manual' as const;
+export const TIME_TYPE_BREAK = 'break' as const;
+
+export const TIME_TYPES = [TIME_TYPE_MANUAL, TIME_TYPE_BREAK];
+export type TimeType = (typeof TIME_TYPES)[number];
+
 export interface Time {
   id: string;
-  type?: string;
+  type: TimeType;
 
   start: string;
   duration: number;

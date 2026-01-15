@@ -7,6 +7,7 @@ interface SettingsState {
   themePrimary: string;
   openTimeDetailsOnStart: boolean;
   openTimeDetailsOnStop: boolean;
+  calculateBreaks: boolean;
 }
 
 const defaultSettings: SettingsState = {
@@ -15,6 +16,7 @@ const defaultSettings: SettingsState = {
   themePrimary: 'sky',
   openTimeDetailsOnStart: true,
   openTimeDetailsOnStop: false,
+  calculateBreaks: false,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -25,8 +27,8 @@ export const useSettingsStore = defineStore('settings', () => {
       return useColorMode().value || defaultSettings.themeMode;
     },
     set(option) {
-      useColorMode().preference = option
-    }
+      useColorMode().preference = option;
+    },
   });
   function setThemeMode(value: string) {
     themeMode.value = value;
@@ -39,6 +41,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const openTimeDetailsOnStart = ref(defaultSettings.openTimeDetailsOnStart);
   const openTimeDetailsOnStop = ref(defaultSettings.openTimeDetailsOnStop);
+  const calculateBreaks = ref(defaultSettings.calculateBreaks);
 
   const settings = computed<SettingsState>(() => ({
     locale: locale.value,
@@ -46,6 +49,7 @@ export const useSettingsStore = defineStore('settings', () => {
     themePrimary: themePrimary.value,
     openTimeDetailsOnStart: openTimeDetailsOnStart.value,
     openTimeDetailsOnStop: openTimeDetailsOnStop.value,
+    calculateBreaks: calculateBreaks.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
@@ -64,6 +68,10 @@ export const useSettingsStore = defineStore('settings', () => {
     }
     if (data.openTimeDetailsOnStop !== undefined) {
       openTimeDetailsOnStop.value = data.openTimeDetailsOnStop;
+    }
+
+    if (data.calculateBreaks !== undefined) {
+      calculateBreaks.value = data.calculateBreaks;
     }
   }
 
@@ -104,6 +112,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     openTimeDetailsOnStart,
     openTimeDetailsOnStop,
+    calculateBreaks,
 
     loadFromLocalStorage,
   };

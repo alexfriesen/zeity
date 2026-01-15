@@ -10,8 +10,8 @@ const projectStore = useProjectStore();
 
 const props = defineProps({
     times: {
-        type: Array as PropType<Time[]>,
-        default: () => [],
+        type: Object as PropType<Record<string, Time[]>>,
+        default: () => { },
     },
     projects: {
         type: Array as PropType<Project[]>,
@@ -36,7 +36,7 @@ const exportedFields: (keyof EnhancedTime)[] = ['user', 'start', 'duration', 'pr
 
 async function downloadReport(type = 'json') {
     const times = props.times;
-    const enhancedTimes = times.map((item) => ({
+    const enhancedTimes = Object.values(times).flat().map((item) => ({
         ...item,
         project: getProjectName(item.projectId),
         user: getUserName(item.userId),

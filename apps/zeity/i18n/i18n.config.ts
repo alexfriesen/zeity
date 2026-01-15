@@ -98,6 +98,9 @@ export default defineI18nConfig(() => ({
             addTime: 'Add time',
           },
         },
+        break: {
+          notes: 'Break',
+        },
       },
       projects: {
         title: 'Projects',
@@ -153,6 +156,7 @@ export default defineI18nConfig(() => ({
           title: 'Timer',
           detailsOnStart: 'Open details on start',
           detailsOnStop: 'Open details on stop',
+          calculateBreaks: 'Calculate breaks',
         },
       },
       offline: {
@@ -361,6 +365,9 @@ export default defineI18nConfig(() => ({
             addTime: 'Zeit hinzufügen',
           },
         },
+        break: {
+          notes: 'Pause',
+        },
       },
       projects: {
         title: 'Projekte',
@@ -536,6 +543,7 @@ export default defineI18nConfig(() => ({
           title: 'Timer',
           detailsOnStart: 'Details beim Start einblenden',
           detailsOnStop: 'Details beim Stoppen einblenden',
+          calculateBreaks: 'Pausen berechnen',
         },
       },
       about: {

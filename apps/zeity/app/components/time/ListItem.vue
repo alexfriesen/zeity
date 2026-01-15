@@ -53,10 +53,11 @@ function handleToggle() {
 	</UButton>
 
 	<div v-if="open" :class="$props.class">
-		<UButton v-for="time in times" :key="time.id" type="button" variant="ghost"
+		<UButton v-for="time in times" :key="time.id" :disabled="time.type === 'break'" type="button" variant="ghost"
 			class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
 
 			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
+				<UIcon v-if="time.type === 'break'" name="i-lucide-coffee" class="inline-block mr-1" />
 				<span>
 					{{ time.notes || $t('times.addNotes') }}
 				</span>

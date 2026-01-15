@@ -4,6 +4,7 @@ import { nowWithoutMillis, sortDatesDescending } from '@zeity/utils/date';
 const { user } = useUser();
 const timeDetail = useTimeDetail();
 const timerStore = useTimerStore();
+const settingsStore = useSettingsStore();
 const { currentOrganisationId } = useOrganisation();
 const { loadTimes, toggleDraft, getOrganisationTimes } = useTime();
 
@@ -62,7 +63,7 @@ watch(toRef(currentOrganisationId), () => {
         <TimeDrawer />
 
         <section class="grow py-3 my-3">
-            <TimeList default-open :times="sortedTimes" />
+            <TimeList default-open :times="sortedTimes" :calculate-breaks="settingsStore.calculateBreaks" />
 
             <UEmpty v-if="isEmpty" variant="subtle" icon="i-lucide-info" size="lg" :title="$t('times.empty.title')"
                 :description="$t('times.empty.description')" :actions="[

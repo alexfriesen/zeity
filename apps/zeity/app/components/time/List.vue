@@ -3,12 +3,14 @@ import type { Time } from '@zeity/types/time';
 import type { DateLike } from '@zeity/utils/date';
 import { calculateDiffSum, dayDiff, formatDate, formatDuration, formatRelativeDate, toStartOfDay } from '@zeity/utils/date';
 
-const { times } = defineProps({
+const { times, calculateBreaks } = defineProps({
 	class: { type: String, default: '' },
 	times: { type: Array as PropType<Time[]>, required: true },
 	defaultOpen: { type: Boolean, default: false },
+	calculateBreaks: { type: Boolean, default: false },
 });
 const { locale } = storeToRefs(useSettingsStore());
+const { calculateBreakTime } = useTime();
 
 const groups = computed(() => {
 	const all = times || [];
@@ -23,6 +25,18 @@ const groups = computed(() => {
 			groups[key] = { label: key, data: [] };
 		}
 		groups[key].data.push(item);
+
+		if (calculateBreaks) {
+			// we are iterating in reverse order. so next item is previous in time
+			const prevItem = all[i + 1];
+			if (!prevItem) continue;
+
+			// calculate break time between item and prevItem
+			const breakTime = calculateBreakTime(item, prevItem);
+			if (!breakTime) continue;
+
+			groups[key].data.push(breakTime);
+		}
 	}
 
 	return groups;

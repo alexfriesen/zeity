@@ -1,6 +1,8 @@
-import type { DraftTime, Time } from '@zeity/types';
-import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
+import { addMilliseconds, isSameDay } from 'date-fns';
 import { nanoid } from 'nanoid';
+
+import type { DraftTime, Time } from '@zeity/types';
+import { nowWithoutMillis, parseDate, timeDiff } from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
 
 interface FetchTimesOptions {
@@ -47,6 +49,7 @@ function deleteTime(id: string) {
 }
 
 export function useTime() {
+  const { t } = useI18n();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
   const settings = toRef(useSettings().settings);
@@ -178,6 +181,38 @@ export function useTime() {
     return !!time?.userId;
   }
 
+  function calculateBreakTime(nextItem: Time, previousItem: Time): Time | null {
+    const prevEnd = addMilliseconds(
+      parseDate(previousItem.start),
+      previousItem.duration
+    );
+
+    // if on different days, no break
+    if (!isSameDay(prevEnd, parseDate(nextItem.start))) {
+      return null;
+    }
+
+    // if previous item's end is not on the same day as its start, no break
+    if (!isSameDay(prevEnd, parseDate(previousItem.start))) {
+      return null;
+    }
+
+    const duration = timeDiff(nextItem.start, prevEnd);
+
+    if (duration <= 0) {
+      return null;
+    }
+
+    return {
+      id: `break-${previousItem.id}`,
+      type: 'break',
+      start: prevEnd.toISOString(),
+      duration: duration,
+      notes: t('times.break.notes'),
+      userId: previousItem.userId,
+    } satisfies Time;
+  }
+
   return {
     loadTimes,
     loadTime,
@@ -194,5 +229,7 @@ export function useTime() {
     toggleDraft,
     startDraft,
     stopDraft,
+
+    calculateBreakTime,
   };
 }

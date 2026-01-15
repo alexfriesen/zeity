@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAfter, isBefore } from 'date-fns';
-import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER, PROJECT_STATUS_ACTIVE } from '@zeity/types';
+import { type Time, ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER, PROJECT_STATUS_ACTIVE } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
 import type { OrganisationTeam } from '@zeity/database/organisation-team';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
@@ -9,8 +9,9 @@ import type { DateRange } from '~/types/date-filter';
 const { user } = useUser();
 const { isLoggedIn } = useAuth();
 const { loadProjects } = useProject();
-const { loadTimes, getOrganisationTimes } = useTime();
+const { loadTimes, getOrganisationTimes, calculateBreakTime } = useTime();
 const { currentOrganisationId, currentOrganisation } = useOrganisation();
+const settingsStore = useSettingsStore();
 
 const dateFilter = ref<DateRange>();
 const projectFilters = ref<string[]>([]);
@@ -62,6 +63,48 @@ const filteredTimes = computed(() => {
 
     return times;
 });
+
+const groupedTimes = computed(() => {
+    const groups: Record<string, Time[]> = {};
+    for (const time of filteredTimes.value) {
+        const userId = time.userId || 'unknown';
+        if (!groups[userId]) {
+            groups[userId] = [];
+        }
+        groups[userId].push(time);
+    }
+
+    if (settingsStore.calculateBreaks) {
+        // include breaks in each group
+        for (const userId in groups) {
+            const times = groups[userId];
+            if (!times) continue;
+
+            groups[userId] = applyTimeBreaks(times);
+        }
+    }
+
+    return groups;
+});
+
+function applyTimeBreaks(times: Time[]): Time[] {
+    const result: Time[] = [];
+    for (let i = 0; i < times.length; i++) {
+        const item = times[i];
+        if (!item) continue;
+
+        result.push(item);
+
+        const prevItem = times[i + 1];
+        if (!prevItem) continue;
+
+        const breakTime = calculateBreakTime(item, prevItem);
+        if (breakTime) {
+            result.push(breakTime);
+        }
+    }
+    return result;
+}
 
 const timeSum = computed(() => calculateDiffSum(filteredTimes.value));
 
@@ -154,7 +197,7 @@ watch([dateFilter, projectFilters, filteredUserIds], async ([dateRange, projects
                 <h2>{{ $t('reports.report') }}</h2>
             </template>
 
-            <ReportDownload :times="filteredTimes" :members="memberFilters" />
+            <ReportDownload :times="groupedTimes" :members="memberFilters" />
         </UCard>
     </div>
 </template>

@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.8",
-    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/coverage-v8": "^4.0.17",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   },
   "pnpm": {
     "overrides": {

@@ -2,10 +2,6 @@
 
 Zeity is a time tracking app with a focus on UX.
 
-> [!IMPORTANT]
-> 
-> This project is in an early stage of development.
-
 ## Getting Started
 
 ### Prerequisites
@@ -22,6 +18,7 @@ pnpm dev
 ```
 
 ### Building the Application
+
 To build the application for production, run:
 
 ```sh
@@ -29,6 +26,7 @@ pnpm build
 ```
 
 ### Linting
+
 To lint the code, run:
 
 ```sh
@@ -36,6 +34,7 @@ pnpm lint
 ```
 
 ### Testing
+
 To run the tests, run:
 
 ```sh
@@ -43,16 +42,19 @@ pnpm test
 ```
 
 ## Running via Docker
+
 To run Zeity using the official Docker image, make sure you have Docker and Docker Compose installed.
 
 The provided `docker-compose.yml` is preconfigured to use the image `alexfriesen/zeity:main` from Docker Hub.
 
 To start the application, run:
+
 ```sh
 docker compose up
 ```
 
 To stop the running Docker containers, run:
+
 ```sh
 docker compose down
 ```
@@ -83,6 +85,7 @@ ZEITY_JWT_SECRET=
 ```
 
 #### Optional Variables:
+
 ```env
 # Google OAuth
 ZEITY_OAUTH_GOOGLE_CLIENT_ID=

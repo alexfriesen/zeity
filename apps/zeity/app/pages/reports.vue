@@ -99,7 +99,7 @@ function applyTimeBreaks(times: Time[]): Time[] {
         if (!prevItem) continue;
 
         const breakTime = calculateBreakTime(item, prevItem);
-        if (breakTime && breakTime.duration > 0) {
+        if (breakTime) {
             result.push(breakTime);
         }
     }

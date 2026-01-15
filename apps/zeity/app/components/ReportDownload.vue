@@ -11,7 +11,7 @@ const projectStore = useProjectStore();
 const props = defineProps({
     times: {
         type: Object as PropType<Record<string, Time[]>>,
-        default: () => [],
+        default: () => { },
     },
     projects: {
         type: Array as PropType<Project[]>,

@@ -25,7 +25,7 @@
 					<!-- <LangSelect /> -->
 					<div>
 						<p class="text-base p-2">
-							&copy; 2025 - zeity.co
+							&copy; 2025 - zeity.dev
 						</p>
 					</div>
 					<div class="flex items-center gap-4">

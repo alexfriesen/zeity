@@ -29,7 +29,7 @@ useSeoMeta({
 })
 
 defineOgImageComponent('MetaOgImage', {
-	siteName: 'www.zeity.co',
+	siteName: 'www.zeity.dev',
 	image: '/favicon.svg',
 	imageRound: false,
 });

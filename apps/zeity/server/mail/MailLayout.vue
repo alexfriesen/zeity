@@ -56,7 +56,7 @@ defineProps({
         <Body class="font-sans">
             <Container class="bg-bg text-text p-4 my-auto rounded-lg shadow-lg">
 
-                <Img src="https://www.zeity.co/favicon.svg" width="80" height="80" alt="zeity" class="m-auto" />
+                <Img src="https://www.zeity.dev/favicon.svg" width="80" height="80" alt="zeity" class="m-auto" />
 
                 <Section>
                     <slot />

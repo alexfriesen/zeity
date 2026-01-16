@@ -51,6 +51,6 @@ const title = computed(() => route?.meta?.title ? t(route?.meta?.title as string
 const description = computed(() => route?.meta?.description ? t(route?.meta?.description as string) : null);
 
 const socialLinks = [
-	{ label: 'Github', icon: 'i-ri-github-fill', href: 'https://github.com/alexfriesen/zeity' },
+	{ label: 'Github', icon: 'i-ri-github-fill', href: 'https://github.com/zeity-dev/zeity' },
 ];
 </script>

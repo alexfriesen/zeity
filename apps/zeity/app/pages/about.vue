@@ -56,7 +56,7 @@ const config = useSystemStore();
         <USeparator />
 
         <div>
-            <UButton to="https://github.com/alexfriesen/zeity" target="_blank" variant="soft" color="neutral" size="xl"
+            <UButton to="https://github.com/zeity-dev/zeity" target="_blank" variant="soft" color="neutral" size="xl"
                 icon="i-lucide-github" label="Github" class="w-full" />
         </div>
 

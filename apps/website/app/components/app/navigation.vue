@@ -34,7 +34,7 @@ const menu = [
 		{ label: t('docs.title'), to: localePath('/docs'), icon: 'i-lucide-library-big' },
 	],
 	[
-		{ label: 'GitHub', to: 'https://github.com/alexfriesen/zeity', icon: 'i-ri-github-fill' },
+		{ label: 'GitHub', to: 'https://github.com/zeity-dev/zeity', icon: 'i-ri-github-fill' },
 	]
 ]
 
